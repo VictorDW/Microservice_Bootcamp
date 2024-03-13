@@ -2,6 +2,7 @@ package com.pragma.bootcamp.adapters.driving.http.controller;
 
 import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyAdapter;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class TechnologyController {
   private final ITechnologyAdapter adapter;
 
   @PostMapping
-  public ResponseEntity<Void> createTechnology(@RequestBody AddTechnologyRequest request) {
+  public ResponseEntity<Void> createTechnology(@RequestBody @Valid AddTechnologyRequest request) {
     adapter.createTechnology(request);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
