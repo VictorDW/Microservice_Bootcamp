@@ -15,7 +15,7 @@ import java.util.List;
 public class ExceptionManager {
 
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-  public ResponseEntity<ExceptionResponse> generalExceptionHandler(String exceptionMessage, HttpStatus httpStatus) {
+  private ResponseEntity<ExceptionResponse> generalExceptionHandler(String exceptionMessage, HttpStatus httpStatus) {
 
     ExceptionResponse response = new ExceptionResponse(
         formatter.format(LocalDateTime.now()),

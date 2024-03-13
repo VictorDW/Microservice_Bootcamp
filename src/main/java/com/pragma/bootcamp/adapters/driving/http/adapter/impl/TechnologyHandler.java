@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TechnologyServiceAdapter implements ITechnologyServiceAdapter {
+public class TechnologyHandler implements ITechnologyServiceAdapter {
 
   private final ITechnologyServicePort technologyServicePort;
   private final ITechnologyRequestMapper requestMapper;
