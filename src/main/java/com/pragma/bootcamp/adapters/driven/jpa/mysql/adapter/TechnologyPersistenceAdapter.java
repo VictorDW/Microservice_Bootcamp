@@ -21,6 +21,6 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort 
 
   @Override
   public Optional<Technology> verifyByName(String name) {
-    return technologyRepository.findByName(name).map(technologyEntityMapper::EntityToModel);
+    return technologyRepository.findByNameIgnoreCase(name).map(technologyEntityMapper::EntityToModel);
   }
 }
