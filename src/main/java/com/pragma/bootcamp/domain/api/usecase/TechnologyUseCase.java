@@ -14,9 +14,12 @@ public class TechnologyUseCase implements ITechnologyServicePort {
 
   @Override
   public void create(Technology technology) {
-    technologyPersistencePort.verifyByName(technology.getName())
-        .ifPresent(isTechnology-> {throw new TechnologyAlreadyExistException("La tecnologia ya esta creada");});
-
+    executeValidationExistTechnology(technology);
     technologyPersistencePort.saveTechnology(technology);
+  }
+
+  private void executeValidationExistTechnology(Technology technology) {
+    technologyPersistencePort.verifyByName(technology.getName())
+        .ifPresent(existTechnology-> {throw new TechnologyAlreadyExistException("La tecnologia ya esta creada");});
   }
 }
