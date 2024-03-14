@@ -1,4 +1,4 @@
-package com.pragma.bootcamp.configuration.util;
+package com.pragma.bootcamp.domain.util;
 
 public interface IMessageUtil {
 

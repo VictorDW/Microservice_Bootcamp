@@ -1,6 +1,6 @@
 package com.pragma.bootcamp.domain.api.usecase;
 
-import com.pragma.bootcamp.configuration.util.IMessageUtil;
+import com.pragma.bootcamp.domain.util.IMessageUtil;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
 import com.pragma.bootcamp.domain.exception.TechnologyAlreadyExistException;
 import com.pragma.bootcamp.domain.model.Technology;
@@ -27,7 +27,7 @@ public class TechnologyUseCase implements ITechnologyServicePort {
     technologyPersistencePort.verifyByName(technology.getName())
         .ifPresent(existTechnology-> {
           throw new TechnologyAlreadyExistException(
-              message.getMessage("message.error.already.exist", DomainClass.TECHNOLOGY.getName(), existTechnology.getName())
+              message.getMessage("error.already.exist.message", DomainClass.TECHNOLOGY.getName(), existTechnology.getName())
           );
         });
   }

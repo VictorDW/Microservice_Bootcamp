@@ -3,7 +3,7 @@ package com.pragma.bootcamp.configuration;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter.TechnologyPersistenceAdapter;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ITechnologyEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ITechnologyRepository;
-import com.pragma.bootcamp.configuration.util.IMessageUtil;
+import com.pragma.bootcamp.domain.util.IMessageUtil;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
 import com.pragma.bootcamp.domain.api.usecase.TechnologyUseCase;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;

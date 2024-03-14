@@ -1,6 +1,7 @@
 package com.pragma.bootcamp.configuration.util;
 
 
+import com.pragma.bootcamp.domain.util.IMessageUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +11,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
-public class MessageUtil implements IMessageUtil{
+public class MessageUtil implements IMessageUtil {
 
   private final MessageSource messageSource;
   private final Logger loggerClass = LoggerFactory.getLogger(MessageUtil.class);
@@ -34,6 +34,6 @@ public class MessageUtil implements IMessageUtil{
     } catch (NoSuchMessageException e) {
       loggerClass.warn(e.getMessage());
     }
-    return "";
+    return messageSource.getMessage("error.default.message", null, Locale.getDefault());
   }
 }
