@@ -1,6 +1,6 @@
 package com.pragma.bootcamp.adapters.driving.http.adapter.impl;
 
-import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyAdapter;
+import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyServiceAdapter;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
 import com.pragma.bootcamp.adapters.driving.http.mapper.ITechnologyRequestMapper;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TechnologyAdapter implements ITechnologyAdapter {
+public class TechnologyHandler implements ITechnologyServiceAdapter {
 
   private final ITechnologyServicePort technologyServicePort;
   private final ITechnologyRequestMapper requestMapper;
