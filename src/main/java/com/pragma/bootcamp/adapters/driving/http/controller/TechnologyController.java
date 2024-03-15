@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/techology")
+@RequestMapping("/api/technology")
 @RequiredArgsConstructor
 public class TechnologyController {
 
