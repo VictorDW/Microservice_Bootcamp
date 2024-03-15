@@ -24,11 +24,11 @@ public class TechnologyUseCase implements ITechnologyServicePort {
 
   @Override
   public void create(Technology technology) {
-    executeValidationExistTechnology(technology);
+    executeValidationTechnologyAlreadyExist(technology);
     technologyPersistencePort.saveTechnology(technology);
   }
 
-  private void executeValidationExistTechnology(Technology technology) {
+  private void executeValidationTechnologyAlreadyExist(Technology technology) {
     technologyPersistencePort.verifyByName(technology.getName())
         .ifPresent(existTechnology-> {
           throw new TechnologyAlreadyExistException(
@@ -40,10 +40,10 @@ public class TechnologyUseCase implements ITechnologyServicePort {
   @Override
   public List<Technology> getAll(Integer page, Integer size, String order) {
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, order);
-    return executeValidationTechnologiesNotFound(technologyPersistencePort.getAllTecnology(paginationData));
+    return executeValidateNotEmptyTechnologyList(technologyPersistencePort.getAllTecnology(paginationData));
   }
 
-  private List<Technology> executeValidationTechnologiesNotFound(List<Technology> technologies) {
+  private List<Technology> executeValidateNotEmptyTechnologyList(List<Technology> technologies) {
     if (technologies.isEmpty()) {
       throw new NoDataFoundException(message.getMessage("empty.list.message"));
     }
