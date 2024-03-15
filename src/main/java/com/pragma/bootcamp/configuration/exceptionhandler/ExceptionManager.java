@@ -1,5 +1,6 @@
 package com.pragma.bootcamp.configuration.exceptionhandler;
 
+import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.exception.TechnologyAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,11 @@ public class ExceptionManager {
         .toList();
 
     return ResponseEntity.badRequest().body(errors);
+  }
+
+  @ExceptionHandler(NoDataFoundException.class)
+  public ResponseEntity<ExceptionResponse> handlerNoDataFoundException(NoDataFoundException exception) {
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
 }
