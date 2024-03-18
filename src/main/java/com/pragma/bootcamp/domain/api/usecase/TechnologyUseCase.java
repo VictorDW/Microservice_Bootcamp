@@ -6,7 +6,7 @@ import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
 import com.pragma.bootcamp.domain.exception.TechnologyAlreadyExistException;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
-import com.pragma.bootcamp.domain.util.DomainClass;
+import com.pragma.bootcamp.domain.util.DomainConstants;
 import com.pragma.bootcamp.domain.util.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.PaginationData;
 
@@ -24,28 +24,39 @@ public class TechnologyUseCase implements ITechnologyServicePort {
 
   @Override
   public void create(Technology technology) {
+
     executeValidationTechnologyAlreadyExist(technology);
     technologyPersistencePort.saveTechnology(technology);
   }
 
   private void executeValidationTechnologyAlreadyExist(Technology technology) {
-    technologyPersistencePort.verifyByName(technology.getName())
-        .ifPresent(existTechnology-> {
+
+   var verifyTechnology = technologyPersistencePort.verifyByName(technology.getName());
+
+    verifyTechnology.ifPresent(
+        existingTechnology-> {
+
           throw new TechnologyAlreadyExistException(
-              messagePort.getMessage("error.already.exist.message", DomainClass.TECHNOLOGY.getName(), existTechnology.getName())
+              messagePort.getMessage(
+                  DomainConstants.ALREADY_EXIST_MESSAGE,
+                  DomainConstants.Class.TECHNOLOGY,
+                  existingTechnology.getName())
           );
         });
   }
 
   @Override
   public List<Technology> getAll(Integer page, Integer size, String order) {
+
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, order);
-    return executeValidateNotEmptyTechnologyList(technologyPersistencePort.getAllTecnology(paginationData));
+    List<Technology> allTechnology = technologyPersistencePort.getAllTecnology(paginationData);
+    return executeValidateNotEmptyTechnologyList(allTechnology);
   }
 
   private List<Technology> executeValidateNotEmptyTechnologyList(List<Technology> technologies) {
+
     if (technologies.isEmpty()) {
-      throw new NoDataFoundException(messagePort.getMessage("empty.list.message"));
+      throw new NoDataFoundException(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE));
     }
     return technologies;
   }
