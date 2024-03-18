@@ -1,7 +1,7 @@
 package com.pragma.bootcamp.domain.api.usecase;
 
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
-import com.pragma.bootcamp.domain.util.IMessageUtil;
+import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
 import com.pragma.bootcamp.domain.exception.TechnologyAlreadyExistException;
 import com.pragma.bootcamp.domain.model.Technology;
@@ -14,12 +14,12 @@ import java.util.List;
 
 public class TechnologyUseCase implements ITechnologyServicePort {
   private final ITechnologyPersistencePort technologyPersistencePort;
-  private final IMessageUtil message;
+  private final IMessagePort messagePort;
 
 
-  public TechnologyUseCase(ITechnologyPersistencePort technologyPersistencePort, IMessageUtil messageUtil) {
+  public TechnologyUseCase(ITechnologyPersistencePort technologyPersistencePort, IMessagePort messageUtil) {
     this.technologyPersistencePort = technologyPersistencePort;
-    this.message = messageUtil;
+    this.messagePort = messageUtil;
   }
 
   @Override
@@ -32,7 +32,7 @@ public class TechnologyUseCase implements ITechnologyServicePort {
     technologyPersistencePort.verifyByName(technology.getName())
         .ifPresent(existTechnology-> {
           throw new TechnologyAlreadyExistException(
-              message.getMessage("error.already.exist.message", DomainClass.TECHNOLOGY.getName(), existTechnology.getName())
+              messagePort.getMessage("error.already.exist.message", DomainClass.TECHNOLOGY.getName(), existTechnology.getName())
           );
         });
   }
@@ -45,7 +45,7 @@ public class TechnologyUseCase implements ITechnologyServicePort {
 
   private List<Technology> executeValidateNotEmptyTechnologyList(List<Technology> technologies) {
     if (technologies.isEmpty()) {
-      throw new NoDataFoundException(message.getMessage("empty.list.message"));
+      throw new NoDataFoundException(messagePort.getMessage("empty.list.message"));
     }
     return technologies;
   }

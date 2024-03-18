@@ -1,6 +1,6 @@
-package com.pragma.bootcamp.domain.util;
+package com.pragma.bootcamp.domain.spi;
 
-public interface IMessageUtil {
+public interface IMessagePort {
 
   String getMessage(String code);
   String getMessage(String code, Object ...arg);
