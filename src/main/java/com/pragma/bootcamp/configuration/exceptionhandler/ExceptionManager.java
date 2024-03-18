@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -53,6 +54,13 @@ public class ExceptionManager {
         .toList();
 
     return ResponseEntity.badRequest().body(errors);
+  }
+
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  public ResponseEntity<ExceptionArgumentResponse> handlerTypeInvalid(MethodArgumentTypeMismatchException exception) {
+    return ResponseEntity.badRequest().body(
+        new ExceptionArgumentResponse(exception.getName(), exception.getMessage())
+    );
   }
 
   @ExceptionHandler(NoDataFoundException.class)
