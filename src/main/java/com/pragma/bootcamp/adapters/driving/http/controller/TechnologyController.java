@@ -4,15 +4,18 @@ import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyServiceAdapt
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
+@Validated
 @RequestMapping("/api/technology")
 @RequiredArgsConstructor
 public class TechnologyController {
@@ -26,8 +29,12 @@ public class TechnologyController {
   }
 
   @GetMapping
-  public ResponseEntity<List<TechnologyResponse>> getAllTechnologies(@RequestParam(required = false) Integer page,
-                                                                    @RequestParam(required = false) Integer size,
+  public ResponseEntity<List<TechnologyResponse>> getAllTechnologies(@RequestParam(required = false)
+                                                                       @Min(value = 0, message = "{page.invalid.message}")
+                                                                       Integer page,
+                                                                    @RequestParam(required = false)
+                                                                      @Min(value = 1, message = "{size.invalid.message}")
+                                                                      Integer size,
                                                                     @RequestParam(required = false) String order) {
 
     return ResponseEntity.ok(technologyHandler.getAllTechnologies(page, size, order));

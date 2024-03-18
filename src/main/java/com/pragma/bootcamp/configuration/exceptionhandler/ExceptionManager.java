@@ -2,6 +2,7 @@ package com.pragma.bootcamp.configuration.exceptionhandler;
 
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.exception.TechnologyAlreadyExistException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,6 +37,17 @@ public class ExceptionManager {
   public ResponseEntity<List<ExceptionArgumentResponse>> handlerArgumentInvalidException(MethodArgumentNotValidException exception) {
 
     var errors = exception.getFieldErrors()
+        .stream()
+        .map(ExceptionArgumentResponse::new)
+        .toList();
+
+    return ResponseEntity.badRequest().body(errors);
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<List<ExceptionArgumentResponse>> handlerCommandInvalid(ConstraintViolationException exception) {
+
+    var errors = exception.getConstraintViolations()
         .stream()
         .map(ExceptionArgumentResponse::new)
         .toList();
