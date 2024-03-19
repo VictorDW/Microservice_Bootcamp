@@ -49,7 +49,7 @@ public class TechnologyUseCase implements ITechnologyServicePort {
   public List<Technology> getAll(Integer page, Integer size, String order) {
 
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, order);
-    List<Technology> technologies = technologyPersistencePort.getAllTecnology(paginationData);
+    List<Technology> technologies = technologyPersistencePort.getAllTechnology(paginationData);
     return executeValidateNotEmptyTechnologyList(technologies);
   }
 

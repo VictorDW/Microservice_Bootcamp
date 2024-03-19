@@ -26,16 +26,18 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort 
 
   @Override
   public Optional<Technology> verifyByName(String name) {
-    return technologyRepository.findByNameIgnoreCase(name).map(technologyEntityMapper::entityToModel);
+
+    var technologyEntity = technologyRepository.findByNameIgnoreCase(name);
+    return technologyEntity.map(technologyEntityMapper::entityToModel);
   }
 
   @Override
-  public List<Technology> getAllTecnology(PaginationData data) {
+  public List<Technology> getAllTechnology(PaginationData data) {
 
     Sort sort = Sort.by(Sort.Direction.fromString(data.order()) , data.field());
     Pageable pagination = PageRequest.of(data.page(), data.size(), sort);
 
-    var technologies = technologyRepository.findAll(pagination).getContent();
-    return technologyEntityMapper.toModelList(technologies);
+    var technologyEntities = technologyRepository.findAll(pagination).getContent();
+    return technologyEntityMapper.toModelList(technologyEntities);
   }
 }

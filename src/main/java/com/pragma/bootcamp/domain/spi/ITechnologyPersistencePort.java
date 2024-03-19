@@ -10,5 +10,5 @@ public interface ITechnologyPersistencePort {
 
   void saveTechnology(Technology technology);
   Optional<Technology> verifyByName(String name);
-  List<Technology> getAllTecnology(PaginationData values);
+  List<Technology> getAllTechnology(PaginationData values);
 }
