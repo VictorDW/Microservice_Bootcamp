@@ -39,7 +39,7 @@ public class TechnologyUseCase implements ITechnologyServicePort {
           throw new TechnologyAlreadyExistException(
               messagePort.getMessage(
                   DomainConstants.ALREADY_EXIST_MESSAGE,
-                  DomainConstants.Class.TECHNOLOGY,
+                  DomainConstants.Class.TECHNOLOGY.getName(),
                   existingTechnology.getName())
           );
         });
@@ -49,8 +49,8 @@ public class TechnologyUseCase implements ITechnologyServicePort {
   public List<Technology> getAll(Integer page, Integer size, String order) {
 
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, order);
-    List<Technology> allTechnology = technologyPersistencePort.getAllTecnology(paginationData);
-    return executeValidateNotEmptyTechnologyList(allTechnology);
+    List<Technology> technologies = technologyPersistencePort.getAllTecnology(paginationData);
+    return executeValidateNotEmptyTechnologyList(technologies);
   }
 
   private List<Technology> executeValidateNotEmptyTechnologyList(List<Technology> technologies) {

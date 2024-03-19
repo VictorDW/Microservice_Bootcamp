@@ -1,6 +1,7 @@
 package com.pragma.bootcamp.adapters.driven.message.adapter;
 
 
+import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -32,6 +33,6 @@ public class MessageAdapter implements IMessagePort {
     } catch (NoSuchMessageException e) {
       loggerClass.warn(e.getMessage());
     }
-    return messageSource.getMessage("error.default.message", null, Locale.getDefault());
+    return this.message(Constants.DEFAULT_MESSAGE);
   }
 }
