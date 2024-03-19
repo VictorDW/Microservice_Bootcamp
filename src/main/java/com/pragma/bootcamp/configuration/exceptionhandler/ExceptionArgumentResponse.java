@@ -1,5 +1,6 @@
 package com.pragma.bootcamp.configuration.exceptionhandler;
 
+import jakarta.validation.ConstraintViolation;
 import org.springframework.validation.FieldError;
 
 public record ExceptionArgumentResponse(
@@ -8,5 +9,9 @@ public record ExceptionArgumentResponse(
 ) {
   public ExceptionArgumentResponse(FieldError error) {
     this(error.getField(), error.getDefaultMessage());
+  }
+
+  public ExceptionArgumentResponse(ConstraintViolation<?> error) {
+    this("Request parameter", error.getMessage());
   }
 }
