@@ -31,10 +31,10 @@ public class TechnologyController {
 
   @GetMapping
   public ResponseEntity<List<TechnologyResponse>> getAllTechnologies(@RequestParam(required = false)
-                                                                       @Min(value = 0, message = Constants.PAGE_INVALID_MESSAGE)
+                                                                       @Min(value = 0, message = "{"+Constants.PAGE_INVALID_MESSAGE+"}")
                                                                        Integer page,
                                                                     @RequestParam(required = false)
-                                                                      @Min(value = 1, message = Constants.SIZE_INVALID_MESSAGE)
+                                                                      @Min(value = 1, message = "{"+Constants.SIZE_INVALID_MESSAGE+"}")
                                                                       Integer size,
                                                                     @RequestParam(required = false) String order) {
 
