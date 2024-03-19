@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
@@ -20,4 +23,7 @@ public class TechnologyEntity {
 
   @Column(nullable = false, length = 90)
   private String description;
+
+  @ManyToMany(mappedBy = "technologyEntities")
+  Set<CapacityEntity> capacityEntities = new HashSet<>();
 }
