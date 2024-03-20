@@ -23,13 +23,13 @@ public class TechnologyUseCase implements ITechnologyServicePort {
   }
 
   @Override
-  public void create(Technology technology) {
+  public Technology create(Technology technology) {
 
     executeValidationTechnologyAlreadyExist(technology);
-    technologyPersistencePort.saveTechnology(technology);
+    return technologyPersistencePort.saveTechnology(technology);
   }
 
-  public void executeValidationTechnologyAlreadyExist(Technology technology) {
+  private void executeValidationTechnologyAlreadyExist(Technology technology) {
 
    var verifyTechnology = technologyPersistencePort.verifyByName(technology.getName());
 

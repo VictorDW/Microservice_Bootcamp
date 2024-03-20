@@ -1,5 +1,6 @@
 package com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter;
 
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.TechnologyEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ITechnologyEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ITechnologyRepository;
 import com.pragma.bootcamp.domain.model.Technology;
@@ -20,8 +21,11 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort 
   private final ITechnologyRepository technologyRepository;
 
   @Override
-  public void saveTechnology(Technology technology) {
-    technologyRepository.save(technologyEntityMapper.modelToEntity(technology));
+  public Technology saveTechnology(Technology technology) {
+
+    TechnologyEntity entity = technologyEntityMapper.modelToEntity(technology);
+    TechnologyEntity savedTechnology = technologyRepository.save(entity);
+    return technologyEntityMapper.entityToModel(savedTechnology);
   }
 
   @Override
