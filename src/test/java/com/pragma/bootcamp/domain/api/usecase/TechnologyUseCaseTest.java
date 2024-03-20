@@ -34,51 +34,49 @@ class TechnologyUseCaseTest {
   private IMessagePort messagePort;
   @InjectMocks
   private TechnologyUseCase technologyUseCase;
+  private Technology givenTechnology;
+  private Technology expectedTechnology;
 
 
   @BeforeEach
   void setUp() {
+    givenTechnology = new Technology(1L, "Java", "Java con versión JDK 17");
+    expectedTechnology = new Technology(1L, "Java", "Java con versión JDK 17");
   }
 
-  @DisplayName("It should launch an exception in case a technology already exists.")
-  @Test()
-  void executeValidationTechnologyAlreadyExistTest() {
+  @DisplayName("given a technology should throw an exception since it is already registered")
+  @Test
+  void test1() {
 
     //GIVEN
-    Technology givenTechnology = new Technology(1L, "java", "Java con versión JDK 17");
-    Technology expectedTechnology = new Technology(1L, "Java", "Java con versión JDK 17");
     String keyMessage = "error.already.exist.message";
     String responseMessage = "The Technology Java you want to create already exists";
 
-    given(technologyPersistencePort.verifyByName(givenTechnology.getName()))
+    given(technologyPersistencePort.verifyByName("Java"))
         .willReturn(Optional.of(expectedTechnology));
 
     given(messagePort.getMessage(keyMessage, "Technology", "Java")).willReturn(responseMessage);
 
-    // Crear un spy de technologyUseCase
-   // TechnologyUseCase technologyUseCaseSpy = Mockito.spy(technologyUseCase);
 
-    //THEN
-    assertThrows(TechnologyAlreadyExistException.class, ()-> technologyUseCase.executeValidationTechnologyAlreadyExist(givenTechnology));
-   /*
-   Method method = ReflectionUtils.findMethod(TechnologyUseCase.class, "executeValidationTechnologyAlready").orElse(null);
-    //THEN
+    //THAT
+    assertThrows(TechnologyAlreadyExistException.class, ()-> technologyUseCase.create(givenTechnology));
 
-    if (Objects.nonNull(method)) {
-
-      ReflectionUtils.makeAccessible(method);
-      //TechnologyAlreadyExistException result = (TechnologyAlreadyExistException) method.invoke(technologyUseCase, givenTechnology);
-
-      // Aquí puedes hacer tus aserciones
-      assertThrows(TechnologyAlreadyExistException.class,() -> method.invoke(technologyUseCaseSpy, givenTechnology));
-    }
-
-    */
   }
 
+  @DisplayName("Given a technology should allow to create it")
   @Test
-  void create() {
+  void test2() {
 
-    
+    //GIVEN
+   /* given(technologyPersistencePort.verifyByName("Ruby"))
+        .willReturn(Optional.empty());*/
+
+    given(technologyPersistencePort.saveTechnology(givenTechnology)).willReturn(expectedTechnology);
+
+    //WHEN
+     Technology result = technologyUseCase.create(givenTechnology);
+
+    //THAT
+    assertEquals(expectedTechnology, result);
   }
 }
