@@ -29,7 +29,7 @@ public class TechnologyUseCase implements ITechnologyServicePort {
     technologyPersistencePort.saveTechnology(technology);
   }
 
-  private void executeValidationTechnologyAlreadyExist(Technology technology) {
+  public void executeValidationTechnologyAlreadyExist(Technology technology) {
 
    var verifyTechnology = technologyPersistencePort.verifyByName(technology.getName());
 
