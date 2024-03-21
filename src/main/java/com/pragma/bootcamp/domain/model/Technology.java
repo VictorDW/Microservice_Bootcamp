@@ -24,12 +24,4 @@ public class Technology {
     return description;
   }
 
-  @Override
-  public String toString() {
-    return "Technology{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", description='" + description + '\'' +
-        '}';
-  }
 }
