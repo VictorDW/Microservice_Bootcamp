@@ -39,13 +39,14 @@ class TechnologyPersistenceAdapterTest {
   void test1() {
 
     //GIVEN
-    Technology giveTechnology = new Technology(1L, "Java", "Java con versión JDK 17");
+    Technology giveTechnology = new Technology(null, "Java", "Java con versión JDK 17");
     Technology expectedTechnology = new Technology(1L, "Java", "Java con versión JDK 17");
     TechnologyEntity technologyEntity = new TechnologyEntity(1L, "Java", "Java con versión JDK 17");
 
     given(technologyEntityMapper.modelToEntity(giveTechnology)).willReturn(technologyEntity);
     given(technologyRepository.save(technologyEntity)).willReturn(technologyEntity);
-    given(technologyEntityMapper.entityToModel(technologyEntity)).willReturn(giveTechnology);
+    given(technologyEntityMapper.entityToModel(technologyEntity))
+        .willReturn(new Technology(1L, "Java","Java con versión JDK 17"));
 
     //WHEN
     var result = technologyPersistenceAdapter.saveTechnology(giveTechnology);
