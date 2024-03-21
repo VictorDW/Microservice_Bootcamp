@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ITechnologyServicePort {
 
-  void create(Technology technology);
+  Technology create(Technology technology);
 
   List<Technology> getAll(Integer page, Integer size, String order);
 }

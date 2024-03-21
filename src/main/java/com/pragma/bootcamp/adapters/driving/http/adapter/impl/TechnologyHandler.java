@@ -4,7 +4,9 @@ import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyServiceAdapt
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import com.pragma.bootcamp.adapters.driving.http.mapper.ITechnologyRequestMapper;
+import com.pragma.bootcamp.adapters.driving.http.mapper.ITechnologyResponseMapper;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
+import com.pragma.bootcamp.domain.model.Technology;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,14 +18,21 @@ public class TechnologyHandler implements ITechnologyServiceAdapter {
 
   private final ITechnologyServicePort technologyServicePort;
   private final ITechnologyRequestMapper requestMapper;
+  private final ITechnologyResponseMapper responseMapper;
 
   @Override
-  public void createTechnology(AddTechnologyRequest request) {
-    technologyServicePort.create(requestMapper.createRequestToTechnology(request));
+  public TechnologyResponse createTechnology(AddTechnologyRequest request) {
+
+    var toTechnology = requestMapper.createRequestToTechnology(request);
+    var technologyCreated = technologyServicePort.create(toTechnology);
+
+    return responseMapper.TechnologyToTechnologyResponse(technologyCreated);
   }
 
   @Override
   public List<TechnologyResponse> getAllTechnologies(Integer page, Integer size, String order) {
-    return requestMapper.toTecnologyResponseList(technologyServicePort.getAll(page, size, order));
+
+    List<Technology> technologies = technologyServicePort.getAll(page, size, order);
+    return responseMapper.toTecnologyResponseList(technologies);
   }
 }

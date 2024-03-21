@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ITechnologyPersistencePort {
 
-  void saveTechnology(Technology technology);
+  Technology saveTechnology(Technology technology);
   Optional<Technology> verifyByName(String name);
   List<Technology> getAllTechnology(PaginationData values);
 }
