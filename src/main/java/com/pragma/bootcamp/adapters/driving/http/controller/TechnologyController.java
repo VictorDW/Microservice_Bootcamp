@@ -24,9 +24,10 @@ public class TechnologyController {
   private final ITechnologyServiceAdapter technologyHandler;
 
   @PostMapping
-  public ResponseEntity<Void> createTechnology(@RequestBody @Valid AddTechnologyRequest request) {
-    technologyHandler.createTechnology(request);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+  public ResponseEntity<TechnologyResponse> createTechnology(@RequestBody @Valid AddTechnologyRequest request) {
+
+    TechnologyResponse technologyCreated = technologyHandler.createTechnology(request);
+    return ResponseEntity.status(HttpStatus.CREATED).body(technologyCreated);
   }
 
   @GetMapping

@@ -12,7 +12,7 @@ public record AddTechnologyRequest(
     String name,
 
     @NotBlank(message = "{"+Constants.FIELD_EMPTY_MESSAGE+"}")
-    @Pattern(regexp = "^[A-Za-z0-9\\s]+$", message = "{"+Constants.SPECIAL_CHARACTER_MESSAGE+"}")
+    @Pattern(regexp = "^[A-Za-z0-9\\sáéíóúÁÉÍÓÚñÑ]+$", message = "{"+Constants.SPECIAL_CHARACTER_MESSAGE+"}")
     @Size(min = 10, max = 90, message = "{"+Constants.DESCRIPTION_SIZE_MESSAGE+"}")
     String description
 ) {
