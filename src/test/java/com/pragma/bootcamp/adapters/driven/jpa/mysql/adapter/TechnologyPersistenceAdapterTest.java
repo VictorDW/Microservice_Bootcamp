@@ -4,6 +4,7 @@ import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.TechnologyEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ITechnologyEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ITechnologyRepository;
 import com.pragma.bootcamp.domain.model.Technology;
+import com.pragma.bootcamp.domain.util.PaginationData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,10 +12,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,7 +64,7 @@ class TechnologyPersistenceAdapterTest {
     assertEquals(expectedTechnology, result);
   }
 
-  @DisplayName("given the name of a technology must return an optional with technology since it is already registered.")
+  @DisplayName("Given the name of a technology must return an optional with technology since it is already registered.")
   @Test
   void test2() {
 
@@ -75,7 +83,7 @@ class TechnologyPersistenceAdapterTest {
     assertEquals(optionalTechnology, result);
   }
 
-  @DisplayName("given the name of a technology must return an empty optional since it is not registered")
+  @DisplayName("Given the name of a technology must return an empty optional since it is not registered")
   @Test
   void test3() {
 
@@ -88,5 +96,23 @@ class TechnologyPersistenceAdapterTest {
 
     //THAT
     assertEquals(expectedTechnology, result);
+  }
+
+  @Test
+  @DisplayName("Must return an empty list of technologies, since no results were found in the database")
+  void test4() {
+
+    //GIVEN
+    PaginationData paginationData = new PaginationData(2, 10, "ASC", "name");
+    Sort sort = Sort.by(Sort.Direction.fromString(paginationData.order()) , paginationData.field());
+    Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size(), sort);
+
+    given(technologyRepository.findAll(pagination)).willReturn(new PageImpl<>(new ArrayList<>()));
+
+    //WHEN
+    List<Technology> result = technologyPersistenceAdapter.getAllTechnology(paginationData);
+
+    //THAT
+    assertThat(result).isEmpty();
   }
 }

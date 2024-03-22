@@ -50,13 +50,13 @@ class TechnologyUseCaseTest {
   void test1() {
 
     //GIVEN
-    String keyMessage = "error.already.exist.message";
+    String messageException = DomainConstants.ALREADY_EXIST_MESSAGE;
     String responseMessage = "The Technology Java you want to create already exists";
 
     given(technologyPersistencePort.verifyByName("Java"))
         .willReturn(Optional.of(expectedTechnology));
 
-    given(messagePort.getMessage(keyMessage, "Technology", "Java")).willReturn(responseMessage);
+    given(messagePort.getMessage(messageException, "Technology", "Java")).willReturn(responseMessage);
 
 
     //THAT
@@ -67,10 +67,6 @@ class TechnologyUseCaseTest {
   @DisplayName("Given a technology should allow to create it")
   @Test
   void test2() {
-
-    //GIVEN
-   /* given(technologyPersistencePort.verifyByName("Ruby"))
-        .willReturn(Optional.empty());*/
 
     given(technologyPersistencePort.saveTechnology(givenTechnology)).willReturn(expectedTechnology);
 
@@ -98,9 +94,7 @@ class TechnologyUseCaseTest {
     given(messagePort.getMessage(messageException)).willReturn(messageResponse);
 
     //WHEN - THAT
-    assertThrows(NoDataFoundException.class, () -> {
-      technologyUseCase.getAll(page, size, order);
-    });
+    assertThrows(NoDataFoundException.class, () -> technologyUseCase.getAll(page, size, order));
   }
 
   @Test
