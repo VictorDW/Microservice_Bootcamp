@@ -50,7 +50,7 @@ class TechnologyControllerTest {
 
         given(technologyHandler.createTechnology(any(AddTechnologyRequest.class))).willReturn(response);
 
-        String bodyRequest = "{\"name\":\"Python\",\"description\":\"Java con versión JDK 17\"}";
+        String bodyRequest = "{\"name\":\"Java\",\"description\":\"Java con versión JDK 17\"}";
 
         MockHttpServletRequestBuilder requestBuilder = post("/api/technology")
                 .contentType(MediaType.APPLICATION_JSON)
