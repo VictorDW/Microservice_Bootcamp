@@ -1,5 +1,6 @@
 package com.pragma.bootcamp.domain.model;
 
+import com.pragma.bootcamp.domain.exception.RepeatedTechnologyException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -70,7 +71,7 @@ class CapacityTest {
         new Technology(2L, "Python", "Python")
     );
 
-     String expectedMessage = "el minimo de tecnolgias es 3";
+     String expectedMessage = "The minimum of technologies that can be added to the capacity is " + Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES;
     //GIVEN
 
     try {
@@ -92,7 +93,7 @@ class CapacityTest {
         new Technology(2L, "Python", "Python")
     );
 
-    assertThrows(RuntimeException.class, () -> {
+    assertThrows(RepeatedTechnologyException.class, () -> {
       new Capacity(1L, "Backend Java", "Developer backend java", technologies);
     });
   }

@@ -21,4 +21,7 @@ public final class DomainConstants {
 
   public static final String EMPTY_LIST_MESSAGE = "empty.list.message";
   public static final String ALREADY_EXIST_MESSAGE = "error.already.exist.message";
+  public static final String NUMBER_TECHNOLOGIES_MIN_MESSAGE = "The minimum of technologies that can be added to the capacity is %s";
+  public static final String NUMBER_TECHNOLOGIES_MAX_MESSAGE = "The maximum number of technologies that can be added to the capacity is %s";
+  public static final String REPEATED_TECHNOLOGY_MESSAGE = "The capacity must not have repeated technologies";
 }

@@ -1,8 +1,9 @@
 package com.pragma.bootcamp.domain.model;
 
-import com.pragma.bootcamp.domain.exception.NameTechnologyRepeatedException;
-import com.pragma.bootcamp.domain.exception.NumberTechnolgiesLessThanTreeException;
-import com.pragma.bootcamp.domain.exception.NumberTechnologiesGreaterThanTwentyException;
+import com.pragma.bootcamp.domain.exception.RepeatedTechnologyException;
+import com.pragma.bootcamp.domain.exception.NumberTechnolgiesLessThanException;
+import com.pragma.bootcamp.domain.exception.NumberTechnologiesGreaterThanException;
+import com.pragma.bootcamp.domain.util.DomainConstants;
 
 import java.util.HashSet;
 import java.util.List;
@@ -10,8 +11,8 @@ import java.util.List;
 public class Capacity {
 
     private final Long id;
-    private static final  Integer DEFAULT_MIN_NUMBER_TECHNOLOGIES = 3;
-    private static final Integer DEFAULT_MAX_NUMBER_TECHNOLOGIES = 20;
+    public static final  Integer DEFAULT_MIN_NUMBER_TECHNOLOGIES = 3;
+    public static final Integer DEFAULT_MAX_NUMBER_TECHNOLOGIES = 20;
     private final String name;
     private final String description;
     private final List<Technology> technologyList;
@@ -46,10 +47,14 @@ public class Capacity {
     private void executeValidationTechnologyRanges(List<Technology> technologyList) {
 
         if (technologyList.size() < DEFAULT_MIN_NUMBER_TECHNOLOGIES) {
-            throw new NumberTechnolgiesLessThanTreeException("el minimo de tecnolgias que se pueden agregar a la capacidad es de " + DEFAULT_MIN_NUMBER_TECHNOLOGIES + " tecnologias");
+            throw new NumberTechnolgiesLessThanException(
+                String.format(DomainConstants.NUMBER_TECHNOLOGIES_MIN_MESSAGE, Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES)
+            );
         }
         if (technologyList.size() > DEFAULT_MAX_NUMBER_TECHNOLOGIES) {
-            throw new NumberTechnologiesGreaterThanTwentyException("el maximo e tecnolgias que se pueden agregar a la capacidad es de " + DEFAULT_MAX_NUMBER_TECHNOLOGIES+ " tecnologias");
+            throw new NumberTechnologiesGreaterThanException(
+               String.format(DomainConstants.NUMBER_TECHNOLOGIES_MAX_MESSAGE, Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES)
+            );
         }
     }
 
@@ -59,7 +64,7 @@ public class Capacity {
 
         technologyList.forEach(technology -> {
             if (!uniqueName.add(technology.getName()))
-                throw new NameTechnologyRepeatedException("La capacidad no debe tener tecnologias repetidas");
+                throw new RepeatedTechnologyException(DomainConstants.REPEATED_TECHNOLOGY_MESSAGE);
         });
 
     }
