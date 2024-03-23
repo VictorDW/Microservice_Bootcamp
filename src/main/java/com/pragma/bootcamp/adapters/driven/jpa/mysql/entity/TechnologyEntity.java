@@ -25,5 +25,5 @@ public class TechnologyEntity {
   private String description;
 
   @ManyToMany(mappedBy = "technologyEntities")
-  Set<CapacityEntity> capacityEntities = new HashSet<>();
+  private Set<CapacityEntity> capacityEntities = new HashSet<>();
 }

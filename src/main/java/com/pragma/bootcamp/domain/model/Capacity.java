@@ -30,6 +30,31 @@ public class Capacity {
         this.technologyList = technologyList;
     }
 
+    private void executeValidationTechnologyRanges(List<Technology> technologyList) {
+
+        if (technologyList.size() < DEFAULT_MIN_NUMBER_TECHNOLOGIES) {
+            throw new NumberTechnolgiesLessThanException(
+                String.format(DomainConstants.NUMBER_TECHNOLOGIES_MIN_MESSAGE, Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES)
+            );
+        }
+        if (technologyList.size() > DEFAULT_MAX_NUMBER_TECHNOLOGIES) {
+            throw new NumberTechnologiesGreaterThanException(
+                String.format(DomainConstants.NUMBER_TECHNOLOGIES_MAX_MESSAGE, Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES)
+            );
+        }
+    }
+
+    private void executeValidationNameTechnologyRepeated(List<Technology> technologyList) {
+
+        HashSet<String> uniqueName = new HashSet<>(technologyList.size());
+
+        technologyList.forEach(technology -> {
+            if (!uniqueName.add(technology.getName()))
+                throw new RepeatedTechnologyException(DomainConstants.REPEATED_TECHNOLOGY_MESSAGE);
+        });
+
+    }
+
     public Long getId() {
         return id;
     }
@@ -46,28 +71,4 @@ public class Capacity {
         return technologyList;
     }
 
-    private void executeValidationTechnologyRanges(List<Technology> technologyList) {
-
-        if (technologyList.size() < DEFAULT_MIN_NUMBER_TECHNOLOGIES) {
-            throw new NumberTechnolgiesLessThanException(
-                String.format(DomainConstants.NUMBER_TECHNOLOGIES_MIN_MESSAGE, Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES)
-            );
-        }
-        if (technologyList.size() > DEFAULT_MAX_NUMBER_TECHNOLOGIES) {
-            throw new NumberTechnologiesGreaterThanException(
-               String.format(DomainConstants.NUMBER_TECHNOLOGIES_MAX_MESSAGE, Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES)
-            );
-        }
-    }
-
-    private void executeValidationNameTechnologyRepeated(List<Technology> technologyList) {
-
-        HashSet<String> uniqueName = new HashSet<>(technologyList.size());
-
-        technologyList.forEach(technology -> {
-            if (!uniqueName.add(technology.getName()))
-                throw new RepeatedTechnologyException(DomainConstants.REPEATED_TECHNOLOGY_MESSAGE);
-        });
-
-    }
 }

@@ -25,11 +25,11 @@ public class CapacityEntity {
     @Column(nullable = false, length = 90)
     private String description;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
        name = "capacity_technology_mapping",
-       joinColumns = @JoinColumn(name = "capacity_id"),
-       inverseJoinColumns = @JoinColumn(name = "technology_id")
+       joinColumns = @JoinColumn(name = "capacity_id", referencedColumnName = "id"),
+       inverseJoinColumns = @JoinColumn(name = "technology_id", referencedColumnName = "id")
     )
-    Set<TechnologyEntity> technologyEntities = new HashSet<>();
+    private Set<TechnologyEntity> technologyEntities = new HashSet<>();
 }

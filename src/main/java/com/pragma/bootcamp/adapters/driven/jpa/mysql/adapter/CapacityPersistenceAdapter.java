@@ -30,18 +30,18 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
     @Override
     public Capacity saveCapacity(Capacity capacity) {
 
-        var capacityEntity = capacityEntityMapper.capacityToCapacityEntity(capacity);
+        var capacityEntity = capacityEntityMapper.modelToEntity(capacity);
         capacityEntity.setTechnologyEntities(getTechnologyEntity(capacity.getTechnologyList()));
         var savedCapacity = capacityRepository.save(capacityEntity);
-        return capacityEntityMapper.capacityEntityToCapacity(savedCapacity);
+        return capacityEntityMapper.entityToModel(savedCapacity);
     }
 
     private Set<TechnologyEntity> getTechnologyEntity(List<Technology> technologies) {
 
         return technologies.stream()
-                .map(technology -> technologyRepository.findByNameIgnoreCase(technology.getName())
-                .orElseThrow(() -> new NotFoundException("La tecnologia "+technology.getName()+" no se encuentra registrada"))
-        ).collect(Collectors.toSet());
+            .map(technology -> technologyRepository.findByNameIgnoreCase(technology.getName())
+                .orElseThrow(() -> new NotFoundException("La tecnologia " + technology.getName() + " no se encuentra registrada"))
+            ).collect(Collectors.toSet());
     }
 
     @Override
