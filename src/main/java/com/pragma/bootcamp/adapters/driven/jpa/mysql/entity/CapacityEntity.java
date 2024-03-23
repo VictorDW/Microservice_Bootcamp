@@ -25,7 +25,7 @@ public class CapacityEntity {
     @Column(nullable = false, length = 90)
     private String description;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(
        name = "capacity_technology_mapping",
        joinColumns = @JoinColumn(name = "capacity_id"),
