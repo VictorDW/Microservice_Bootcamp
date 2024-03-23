@@ -1,5 +1,8 @@
 package com.pragma.bootcamp.domain.model;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class Technology {
 
   private final Long id;

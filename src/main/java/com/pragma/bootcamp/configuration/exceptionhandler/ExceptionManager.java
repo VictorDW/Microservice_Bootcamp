@@ -1,7 +1,7 @@
 package com.pragma.bootcamp.configuration.exceptionhandler;
 
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
-import com.pragma.bootcamp.domain.exception.TechnologyAlreadyExistException;
+import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +29,8 @@ public class ExceptionManager {
 
     return new ResponseEntity<>(response, httpStatus);
   }
-  @ExceptionHandler(TechnologyAlreadyExistException.class)
-  public ResponseEntity<ExceptionResponse> handlerTechnologyAlreadyExistException(TechnologyAlreadyExistException exception) {
+  @ExceptionHandler(AlreadyExistException.class)
+  public ResponseEntity<ExceptionResponse> handlerTechnologyAlreadyExistException(AlreadyExistException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
 

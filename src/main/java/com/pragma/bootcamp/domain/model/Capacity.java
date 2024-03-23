@@ -4,10 +4,12 @@ import com.pragma.bootcamp.domain.exception.RepeatedTechnologyException;
 import com.pragma.bootcamp.domain.exception.NumberTechnolgiesLessThanException;
 import com.pragma.bootcamp.domain.exception.NumberTechnologiesGreaterThanException;
 import com.pragma.bootcamp.domain.util.DomainConstants;
+import lombok.EqualsAndHashCode;
 
 import java.util.HashSet;
 import java.util.List;
 
+@EqualsAndHashCode
 public class Capacity {
 
     private final Long id;
