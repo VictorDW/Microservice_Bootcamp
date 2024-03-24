@@ -1,6 +1,5 @@
 package com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter;
 
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.CapacityEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.TechnologyEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NotFoundException;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ICapacityEntityMapper;

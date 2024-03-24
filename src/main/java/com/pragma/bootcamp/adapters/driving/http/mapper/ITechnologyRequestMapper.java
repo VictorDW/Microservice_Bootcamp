@@ -8,5 +8,5 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ITechnologyRequestMapper {
   @Mapping(target = "id", ignore = true)
-  Technology createRequestToTechnology(AddTechnologyRequest request);
+  Technology requestToModel(AddTechnologyRequest request);
 }

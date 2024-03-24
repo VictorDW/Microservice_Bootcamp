@@ -1,19 +1,19 @@
 package com.pragma.bootcamp.adapters.driving.http.adapter.impl;
 
-import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyServiceAdapter;
+import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import com.pragma.bootcamp.adapters.driving.http.mapper.ITechnologyRequestMapper;
 import com.pragma.bootcamp.adapters.driving.http.mapper.ITechnologyResponseMapper;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 @RequiredArgsConstructor
-public class TechnologyHandler implements ITechnologyServiceAdapter {
+public class TechnologyHandler implements ITechnologyHandler {
 
   private final ITechnologyServicePort technologyServicePort;
   private final ITechnologyRequestMapper requestMapper;
@@ -21,7 +21,7 @@ public class TechnologyHandler implements ITechnologyServiceAdapter {
 
   @Override
   public void createTechnology(AddTechnologyRequest request) {
-    technologyServicePort.create(requestMapper.createRequestToTechnology(request));
+    technologyServicePort.create(requestMapper.requestToModel(request));
   }
 
   @Override
