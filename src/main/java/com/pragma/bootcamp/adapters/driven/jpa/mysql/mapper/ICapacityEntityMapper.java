@@ -14,11 +14,6 @@ public interface ICapacityEntityMapper {
 
     /* -> en este caso se especifico como se llama el campo en la entity(source) y como se llama en el modelo(target),
      para asi se MapStruct lo mapee */
-    @Mapping(source = "capacityEntity.technologyEntities", target = "technologyList")
+    @Mapping(source = "technologyEntities", target = "technologyList")
     Capacity entityToModel(CapacityEntity capacityEntity);
-
-    @Mapping(target = "technologyList", ignore = true)
-    Capacity entityToModelWithoutTechnologies(CapacityEntity capacityEntity);
-
-
 }

@@ -13,8 +13,6 @@ import com.pragma.bootcamp.domain.spi.IMessagePort;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
 
@@ -39,7 +37,7 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
         return capacityEntityMapper.entityToModel(savedCapacity);
     }
 
-    private Set<TechnologyEntity> getTechnologyEntity(List<Technology> technologies) {
+    private List<TechnologyEntity> getTechnologyEntity(List<Technology> technologies) {
 
         return technologies.stream()
             .map(technology -> 
@@ -50,12 +48,12 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
                       technology.getName()
                    )
                 ))
-            ).collect(Collectors.toSet());
+            ).toList();
     }
 
     @Override
     public Optional<Capacity> verifyByName(String name) {
         var existCapacityEntity = capacityRepository.findByNameIgnoreCase(name);
-        return existCapacityEntity.map(capacityEntityMapper::entityToModelWithoutTechnologies);
+        return existCapacityEntity.map(capacityEntityMapper::entityToModel);
     }
 }
