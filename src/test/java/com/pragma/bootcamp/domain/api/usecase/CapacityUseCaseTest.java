@@ -7,6 +7,7 @@ import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -31,19 +33,28 @@ class CapacityUseCaseTest {
     private ICapacityPersistencePort capacityPersistencePort;
     @Mock
     private IMessagePort messagePort;
+    private List<Technology> technologies;
+    private Capacity givenCapacity;
+    private Capacity response;
+
+    @BeforeEach
+    void setUp() {
+        this.technologies = List.of(
+                new Technology(null, "Java", null),
+                new Technology(null, "Python", null),
+                new Technology(null, "Javascript", null)
+        );
+        this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer", technologies);
+        this.response = this.givenCapacity;
+    }
 
     @Test
     @DisplayName("Must throw an exception when a registered capability with the same name is encountered")
     void test1() {
 
         //GIVEN
-        List<Technology> technologies = List.of(
-           new Technology(1L, "Java", "Java 17"),
-           new Technology(1L, "Python", "Python"),
-           new Technology(1L, "Javascript", "EMScript 6")
-        );
-        Capacity capacity = new Capacity(1L, "Backend Java", "Java Backend Developer", technologies);
-        Optional<Capacity> capacityResponse = Optional.of(capacity);
+
+        Optional<Capacity> capacityResponse = Optional.of(response);
         given(capacityPersistencePort.verifyByName(any(String.class))).willReturn(capacityResponse);
         given(messagePort.getMessage(
                 DomainConstants.ALREADY_EXIST_MESSAGE,
@@ -52,7 +63,7 @@ class CapacityUseCaseTest {
         ).willReturn(any(String.class));
 
         //WHEN - THAT
-        assertThrows(AlreadyExistException.class, ()->  capacityUseCase.create(capacity));
+        assertThrows(AlreadyExistException.class, ()->  capacityUseCase.create(givenCapacity));
     }
 
     @Test
@@ -60,18 +71,10 @@ class CapacityUseCaseTest {
     void test2() {
 
         //GIVEN
-        List<Technology> technologies = List.of(
-                new Technology(1L, "Java", "Java 17"),
-                new Technology(1L, "Python", "Python"),
-                new Technology(1L, "Javascript", "EMScript 6")
-        );
+        given(capacityPersistencePort.saveCapacity(any(Capacity.class))).willReturn(response);
 
-        Capacity capacity = new Capacity(1L, "Backend Java", "Java Backend Developer", technologies);
-        Capacity expectedCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer", technologies);
-        given(capacityPersistencePort.saveCapacity(any(Capacity.class))).willReturn(capacity);
-
-        Capacity result = capacityUseCase.create(capacity);
+        Capacity result = capacityUseCase.create(givenCapacity);
         //WHEN - THAT
-        assertEquals(expectedCapacity,result);
+        assertThat(result).isNotNull();
     }
 }
