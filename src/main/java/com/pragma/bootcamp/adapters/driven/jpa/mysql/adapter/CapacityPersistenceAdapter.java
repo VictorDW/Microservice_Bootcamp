@@ -1,5 +1,6 @@
 package com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter;
 
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.CapacityEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.TechnologyEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NotFoundException;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ICapacityEntityMapper;
@@ -42,7 +43,8 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
     private Set<TechnologyEntity> getTechnologyEntity(List<Technology> technologies) {
 
         return technologies.stream()
-            .map(technology -> technologyRepository.findByNameIgnoreCase(technology.getName())
+            .map(technology -> 
+                 technologyRepository.findByNameIgnoreCase(technology.getName())
                 .orElseThrow(() -> new NotFoundException(
                    messagePort.getMessage(
                       Constants.NOT_FOUND_TECHNOLOGY_MESSAGE,
@@ -54,6 +56,7 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
 
     @Override
     public Optional<Capacity> verifyByName(String name) {
-        return Optional.empty();
+        var existCapacityEntity = capacityRepository.findByNameIgnoreCase(name);
+        return existCapacityEntity.map(capacityEntityMapper::entityToModelWithoutTechnologies);
     }
 }

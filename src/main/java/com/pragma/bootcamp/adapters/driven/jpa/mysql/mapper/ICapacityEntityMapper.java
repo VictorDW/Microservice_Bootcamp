@@ -17,5 +17,8 @@ public interface ICapacityEntityMapper {
     @Mapping(source = "capacityEntity.technologyEntities", target = "technologyList")
     Capacity entityToModel(CapacityEntity capacityEntity);
 
+    @Mapping(target = "technologyList", ignore = true)
+    Capacity entityToModelWithoutTechnologies(CapacityEntity capacityEntity);
+
 
 }
