@@ -97,7 +97,7 @@ class CapacityPersistenceAdapterTest {
     CapacityEntity capacityEntity = new CapacityEntity();
 
     given(capacityRepository.findByNameIgnoreCase(name)).willReturn(Optional.of(capacityEntity));
-    given(capacityEntityMapper.entityToModelWithoutTechnologies(capacityEntity))
+    given(capacityEntityMapper.entityToModel(capacityEntity))
             .willReturn(response);
 
     //WHEN
