@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -25,11 +25,11 @@ public class CapacityEntity {
     @Column(nullable = false, length = 90)
     private String description;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
        name = "capacity_technology_mapping",
-       joinColumns = @JoinColumn(name = "capacity_id"),
-       inverseJoinColumns = @JoinColumn(name = "technology_id")
+       joinColumns = @JoinColumn(name = "capacity_id", referencedColumnName = "id"),
+       inverseJoinColumns = @JoinColumn(name = "technology_id", referencedColumnName = "id")
     )
-    Set<TechnologyEntity> technologyEntities = new HashSet<>();
+    List<TechnologyEntity> technologyEntities = new ArrayList<>();
 }

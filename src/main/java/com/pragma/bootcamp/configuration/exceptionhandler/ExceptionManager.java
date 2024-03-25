@@ -1,8 +1,12 @@
 package com.pragma.bootcamp.configuration.exceptionhandler;
 
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundException;
+import com.pragma.bootcamp.domain.exception.CapacityDomainException;
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
-import com.pragma.bootcamp.domain.exception.TechnologyAlreadyExistException;
+import com.pragma.bootcamp.domain.exception.AlreadyExistException;
+import com.pragma.bootcamp.domain.spi.IMessagePort;
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @ControllerAdvice
+@RequiredArgsConstructor
 public class ExceptionManager {
 
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
@@ -29,8 +34,8 @@ public class ExceptionManager {
 
     return new ResponseEntity<>(response, httpStatus);
   }
-  @ExceptionHandler(TechnologyAlreadyExistException.class)
-  public ResponseEntity<ExceptionResponse> handlerTechnologyAlreadyExistException(TechnologyAlreadyExistException exception) {
+  @ExceptionHandler(AlreadyExistException.class)
+  public ResponseEntity<ExceptionResponse> handlerTechnologyAlreadyExistException(AlreadyExistException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
 
@@ -65,6 +70,16 @@ public class ExceptionManager {
 
   @ExceptionHandler(NoDataFoundException.class)
   public ResponseEntity<ExceptionResponse> handlerNoDataFoundException(NoDataFoundException exception) {
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(NoEntityFoundException.class)
+  public ResponseEntity<ExceptionResponse> handlerNoEntityFoundException(NoEntityFoundException exception) {
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(CapacityDomainException.class)
+  public ResponseEntity<ExceptionResponse> handlerNoDataFoundException(CapacityDomainException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 

@@ -1,6 +1,6 @@
 package com.pragma.bootcamp.adapters.driving.http.controller;
 
-import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyServiceAdapter;
+import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import com.pragma.bootcamp.configuration.Constants;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TechnologyController {
 
-  private final ITechnologyServiceAdapter technologyHandler;
+  private final ITechnologyHandler technologyHandler;
 
   @PostMapping
   public ResponseEntity<TechnologyResponse> createTechnology(@RequestBody @Valid AddTechnologyRequest request) {

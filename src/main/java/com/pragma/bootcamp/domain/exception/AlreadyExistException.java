@@ -1,6 +1,6 @@
 package com.pragma.bootcamp.domain.exception;
 
-public class TechnologyAlreadyExistException extends RuntimeException{
+public class AlreadyExistException extends RuntimeException{
   /**
    * Constructs a new runtime exception with the specified detail message.
    * The cause is not initialized, and may subsequently be initialized by a
@@ -9,7 +9,7 @@ public class TechnologyAlreadyExistException extends RuntimeException{
    * @param message the detail message. The detail message is saved for
    *                later retrieval by the {@link #getMessage()} method.
    */
-  public TechnologyAlreadyExistException(String message) {
+  public AlreadyExistException(String message) {
     super(message);
   }
 }

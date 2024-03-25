@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor @NoArgsConstructor
@@ -25,5 +25,5 @@ public class TechnologyEntity {
   private String description;
 
   @ManyToMany(mappedBy = "technologyEntities")
-  Set<CapacityEntity> capacityEntities = new HashSet<>();
+  private List<CapacityEntity> capacityEntities = new ArrayList<>();
 }

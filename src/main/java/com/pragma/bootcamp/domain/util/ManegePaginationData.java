@@ -12,7 +12,7 @@ public final class ManegePaginationData {
 
   private ManegePaginationData() { throw new IllegalStateException("utility class"); }
 
-  public enum Direction {
+  private enum Direction {
     DESC,
     ASC
   }

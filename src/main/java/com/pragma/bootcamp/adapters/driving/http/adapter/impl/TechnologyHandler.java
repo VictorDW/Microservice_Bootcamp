@@ -1,6 +1,6 @@
 package com.pragma.bootcamp.adapters.driving.http.adapter.impl;
 
-import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyServiceAdapter;
+import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import com.pragma.bootcamp.adapters.driving.http.mapper.ITechnologyRequestMapper;
@@ -8,13 +8,13 @@ import com.pragma.bootcamp.adapters.driving.http.mapper.ITechnologyResponseMappe
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
 import com.pragma.bootcamp.domain.model.Technology;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
 @RequiredArgsConstructor
-public class TechnologyHandler implements ITechnologyServiceAdapter {
+public class TechnologyHandler implements ITechnologyHandler {
 
   private final ITechnologyServicePort technologyServicePort;
   private final ITechnologyRequestMapper requestMapper;
@@ -23,10 +23,10 @@ public class TechnologyHandler implements ITechnologyServiceAdapter {
   @Override
   public TechnologyResponse createTechnology(AddTechnologyRequest request) {
 
-    var toTechnology = requestMapper.createRequestToTechnology(request);
+    var toTechnology = requestMapper.requestToModel(request);
     var technologyCreated = technologyServicePort.create(toTechnology);
 
-    return responseMapper.TechnologyToTechnologyResponse(technologyCreated);
+    return responseMapper.modelToResponse(technologyCreated);
   }
 
   @Override
