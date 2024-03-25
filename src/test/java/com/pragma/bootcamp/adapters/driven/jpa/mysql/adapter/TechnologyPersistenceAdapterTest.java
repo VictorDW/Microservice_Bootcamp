@@ -1,5 +1,6 @@
 package com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter;
 
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.CapacityEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.TechnologyEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ITechnologyEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ITechnologyRepository;
@@ -12,7 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
@@ -42,7 +45,8 @@ class TechnologyPersistenceAdapterTest {
     //GIVEN
     Technology giveTechnology = new Technology(null, "Java", "Java con versión JDK 17");
     Technology expectedTechnology = new Technology(1L, "Java", "Java con versión JDK 17");
-    TechnologyEntity technologyEntity = new TechnologyEntity(1L, "Java", "Java con versión JDK 17", new HashSet<>());
+    TechnologyEntity technologyEntity = new TechnologyEntity(1L, "Java", "Java con versión JDK 17", new ArrayList<>() {
+    });
 
     given(technologyEntityMapper.modelToEntity(giveTechnology)).willReturn(technologyEntity);
     given(technologyRepository.save(technologyEntity)).willReturn(technologyEntity);
@@ -63,7 +67,7 @@ class TechnologyPersistenceAdapterTest {
     //GIVEN
     Technology technologyMapped = new Technology(1L, "Java", "Java con versión JDK 17");
     Optional<Technology> optionalTechnology = Optional.of(new Technology(1L, "Java", "Java con versión JDK 17"));
-    Optional<TechnologyEntity> technologyEntity = Optional.of(new TechnologyEntity(1L, "Java", "Java con versión JDK 17", new HashSet<>()));
+    Optional<TechnologyEntity> technologyEntity = Optional.of(new TechnologyEntity(1L, "Java", "Java con versión JDK 17", new ArrayList<>()));
 
     given(technologyRepository.findByNameIgnoreCase(this.name)).willReturn(technologyEntity);
     given(technologyEntityMapper.entityToModel(technologyEntity.get())).willReturn(technologyMapped);

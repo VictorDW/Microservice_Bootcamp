@@ -1,6 +1,6 @@
 package com.pragma.bootcamp.domain.api.usecase;
 
-import com.pragma.bootcamp.domain.exception.TechnologyAlreadyExistException;
+import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
@@ -36,7 +36,7 @@ class TechnologyUseCaseTest {
     expectedTechnology = new Technology(1L, "Java", "Java con versión JDK 17");
   }
 
-  @DisplayName("given a technology should throw an exception since it is already registered")
+  @DisplayName("Given a technology should throw an exception since it is already registered")
   @Test
   void test1() {
 
@@ -51,7 +51,7 @@ class TechnologyUseCaseTest {
 
 
     //THAT
-    assertThrows(TechnologyAlreadyExistException.class, ()-> technologyUseCase.create(givenTechnology));
+    assertThrows(AlreadyExistException.class, ()-> technologyUseCase.create(givenTechnology));
 
   }
 
@@ -60,8 +60,6 @@ class TechnologyUseCaseTest {
   void test2() {
 
     //GIVEN
-   /* given(technologyPersistencePort.verifyByName("Ruby"))
-        .willReturn(Optional.empty());*/
 
     given(technologyPersistencePort.saveTechnology(givenTechnology)).willReturn(expectedTechnology);
 
