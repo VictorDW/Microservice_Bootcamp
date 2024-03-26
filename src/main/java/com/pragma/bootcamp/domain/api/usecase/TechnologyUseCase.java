@@ -46,9 +46,9 @@ public class TechnologyUseCase implements ITechnologyServicePort {
   }
 
   @Override
-  public List<Technology> getAll(Integer page, Integer size, String order) {
+  public List<Technology> getAll(Integer page, Integer size, String direction) {
 
-    PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, order);
+    PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction);
     List<Technology> technologies = technologyPersistencePort.getAllTechnology(paginationData);
     return executeValidateNotEmptyTechnologyList(technologies);
   }

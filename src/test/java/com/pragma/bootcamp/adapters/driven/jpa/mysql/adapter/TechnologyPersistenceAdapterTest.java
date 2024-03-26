@@ -1,6 +1,5 @@
 package com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter;
 
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.CapacityEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.TechnologyEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ITechnologyEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ITechnologyRepository;
@@ -14,8 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
@@ -30,7 +27,7 @@ class TechnologyPersistenceAdapterTest {
   @Mock
   private ITechnologyRepository technologyRepository;
   @InjectMocks
-  private TechnologyPersistenceAdapter technologyPersistenceAdapter;
+  private TechnologyPersistenceSimple technologyPersistenceAdapter;
   private String name;
 
   @BeforeEach

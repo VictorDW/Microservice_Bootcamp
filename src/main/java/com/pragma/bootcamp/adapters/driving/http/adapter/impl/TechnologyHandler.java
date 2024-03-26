@@ -30,9 +30,9 @@ public class TechnologyHandler implements ITechnologyHandler {
   }
 
   @Override
-  public List<TechnologyResponse> getAllTechnologies(Integer page, Integer size, String order) {
+  public List<TechnologyResponse> getAllTechnologies(Integer page, Integer size, String direction) {
 
-    List<Technology> technologies = technologyServicePort.getAll(page, size, order);
+    List<Technology> technologies = technologyServicePort.getAll(page, size, direction);
     return responseMapper.toTecnologyResponseList(technologies);
   }
 }

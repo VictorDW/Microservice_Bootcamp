@@ -11,17 +11,16 @@ import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
+import com.pragma.bootcamp.domain.util.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.PaginationData;
-import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
 
-public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
+public class CapacityPersistenceSimple implements ICapacityPersistencePort, ISimplePagination<CapacityEntity, TechnologyEntity> {
 
     private final ICapacityEntityMapper capacityEntityMapper;
     private final ITechnologyRepository technologyRepository;
@@ -29,7 +28,7 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
     private final IMessagePort messagePort;
 
 
-    public CapacityPersistenceAdapter(ICapacityEntityMapper capacityEntityMapper, ITechnologyRepository technologyRepository, ICapacityRepository capacityRepository, IMessagePort messagePort) {
+    public CapacityPersistenceSimple(ICapacityEntityMapper capacityEntityMapper, ITechnologyRepository technologyRepository, ICapacityRepository capacityRepository, IMessagePort messagePort) {
         this.capacityEntityMapper = capacityEntityMapper;
         this.technologyRepository = technologyRepository;
         this.capacityRepository = capacityRepository;
@@ -70,35 +69,26 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
 
         List<CapacityEntity> capacityEntities;
 
-        if (!Constants.DEFAULT_QUERY_ORDER.equalsIgnoreCase(paginationData.property())) {
+          if (!ManegePaginationData.DEFAULT_PROPERTY.equalsIgnoreCase(paginationData.property())) {
+              capacityEntities = advancedQuery(paginationData);
+              return capacityEntityMapper.ToModelList(capacityEntities);
+          }
 
-            capacityEntities = advancedQuery(paginationData);
-            return capacityEntityMapper.ToModelList(capacityEntities);
-        }
-
-        Sort sort = Sort.by(Sort.Direction.fromString(paginationData.direction()), paginationData.property());
-        Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size(), sort);
-
+        Pageable pagination = simplePagination(paginationData);
         capacityEntities = capacityRepository.findAll(pagination).getContent();
+
         return capacityEntityMapper.ToModelList(capacityEntities);
     }
-
-   /* private Pageable simplePagination(PaginationData paginationData) {
-        Sort sort = Sort.by(Sort.Direction.fromString(paginationData.direction()), paginationData.property());
-        return PageRequest.of(paginationData.page(), paginationData.size(), sort);
-    }
-
-    */
 
     private List<CapacityEntity> advancedQuery(PaginationData paginationData) {
 
         Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size());
-        Specification<CapacityEntity> specification = queryWithSpecification(paginationData.direction());
+        Specification<CapacityEntity> specification = queryWithSpecification(paginationData.direction(), CapacityEntity.FIELD_CONTAINING_RELATIONSHIP);
 
         return capacityRepository.findAll(specification,pagination).getContent();
     }
 
-    private Specification<CapacityEntity> queryWithSpecification(String direction){
+   /* private Specification<CapacityEntity> queryWithSpecification(String direction){
 
         return (root, query, criteriaBuilder) -> {
 
@@ -112,5 +102,5 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
 
             return criteriaBuilder.conjunction();
         };
-    }
+    } */
 }

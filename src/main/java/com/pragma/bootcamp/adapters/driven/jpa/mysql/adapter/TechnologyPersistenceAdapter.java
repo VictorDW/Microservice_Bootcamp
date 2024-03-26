@@ -7,15 +7,13 @@ import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
 import com.pragma.bootcamp.domain.util.PaginationData;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort {
+public class TechnologyPersistenceSimple implements ITechnologyPersistencePort, ISimplePagination {
 
   private final ITechnologyEntityMapper technologyEntityMapper;
   private final ITechnologyRepository technologyRepository;
@@ -38,10 +36,9 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort 
   @Override
   public List<Technology> getAllTechnology(PaginationData data) {
 
-    Sort sort = Sort.by(Sort.Direction.fromString(data.direction()) , data.property());
-    Pageable pagination = PageRequest.of(data.page(), data.size(), sort);
-
+    Pageable pagination = simplePagination(data);
     var technologyEntities = technologyRepository.findAll(pagination).getContent();
+
     return technologyEntityMapper.toModelList(technologyEntities);
   }
 }
