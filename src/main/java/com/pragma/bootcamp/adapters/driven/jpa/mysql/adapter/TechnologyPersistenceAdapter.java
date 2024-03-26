@@ -38,7 +38,7 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort 
   @Override
   public List<Technology> getAllTechnology(PaginationData data) {
 
-    Sort sort = Sort.by(Sort.Direction.fromString(data.order()) , data.field());
+    Sort sort = Sort.by(Sort.Direction.fromString(data.direction()) , data.property());
     Pageable pagination = PageRequest.of(data.page(), data.size(), sort);
 
     var technologyEntities = technologyRepository.findAll(pagination).getContent();

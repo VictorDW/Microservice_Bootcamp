@@ -1,10 +1,13 @@
 package com.pragma.bootcamp.configuration;
 
+import com.pragma.bootcamp.domain.util.ManegePaginationData;
+
 public final class Constants {
 
     private Constants()  {
         throw new IllegalStateException("Utility class");
     }
+    public static final String DEFAULT_QUERY_ORDER = ManegePaginationData.DEFAULT_PROPERTY;
     public static final String DEFAULT_MESSAGE = "error.default.message";
     public static final String FIELD_EMPTY_MESSAGE = "empty.field.message";
     public static final String ONLY_LETTERS_MESSAGE = "only.letters.message";

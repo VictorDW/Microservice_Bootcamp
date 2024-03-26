@@ -6,8 +6,11 @@ import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityResponse;
 import com.pragma.bootcamp.adapters.driving.http.mapper.ICapacityRequestMapper;
 import com.pragma.bootcamp.adapters.driving.http.mapper.ICapacityResponseMapper;
 import com.pragma.bootcamp.domain.api.ICapacityServicePort;
+import com.pragma.bootcamp.domain.model.Capacity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,4 +25,13 @@ public class CapacityHandler implements ICapacityHandler {
         var savedCapacity = capacityServicePort.create(capacity);
         return capacityResponseMapper.modelToResponse(savedCapacity);
     }
+
+    @Override
+    public List<CapacityResponse> getAllCapacity(Integer page, Integer size, String direction, String orderBy) {
+
+        List<Capacity> capacities = capacityServicePort.getAll(page, size, direction, orderBy);
+        return capacityResponseMapper.ToResponseList(capacities);
+    }
+
+
 }

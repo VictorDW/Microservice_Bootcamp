@@ -6,6 +6,8 @@ import com.pragma.bootcamp.domain.model.Capacity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ICapacityEntityMapper {
 
@@ -16,4 +18,6 @@ public interface ICapacityEntityMapper {
      para asi se MapStruct lo mapee */
     @Mapping(source = "technologyEntities", target = "technologyList")
     Capacity entityToModel(CapacityEntity capacityEntity);
+    @Mapping(source = "technologyEntities", target = "technologyList")
+    List<Capacity> ToModelList(List<CapacityEntity> capacityEntities);
 }
