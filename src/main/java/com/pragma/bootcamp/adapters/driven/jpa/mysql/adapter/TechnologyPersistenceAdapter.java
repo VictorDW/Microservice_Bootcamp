@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort, ISimplePagination {
+public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort, IPaginationProvider {
 
   private final ITechnologyEntityMapper technologyEntityMapper;
   private final ITechnologyRepository technologyRepository;
@@ -36,7 +36,7 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort,
   @Override
   public List<Technology> getAllTechnology(PaginationData data) {
 
-    Pageable pagination = simplePagination(data);
+    Pageable pagination = paginationWithSorting(data);
     var technologyEntities = technologyRepository.findAll(pagination).getContent();
 
     return technologyEntityMapper.toModelList(technologyEntities);
