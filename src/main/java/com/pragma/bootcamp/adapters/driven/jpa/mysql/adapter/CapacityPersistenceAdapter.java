@@ -20,7 +20,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.List;
 import java.util.Optional;
 
-public class CapacityPersistenceSimple implements ICapacityPersistencePort, ISimplePagination<CapacityEntity, TechnologyEntity> {
+public class CapacityPersistenceAdapter implements ICapacityPersistencePort, ISimplePagination, IQuerySpecification<CapacityEntity, TechnologyEntity> {
 
     private final ICapacityEntityMapper capacityEntityMapper;
     private final ITechnologyRepository technologyRepository;
@@ -28,7 +28,7 @@ public class CapacityPersistenceSimple implements ICapacityPersistencePort, ISim
     private final IMessagePort messagePort;
 
 
-    public CapacityPersistenceSimple(ICapacityEntityMapper capacityEntityMapper, ITechnologyRepository technologyRepository, ICapacityRepository capacityRepository, IMessagePort messagePort) {
+    public CapacityPersistenceAdapter(ICapacityEntityMapper capacityEntityMapper, ITechnologyRepository technologyRepository, ICapacityRepository capacityRepository, IMessagePort messagePort) {
         this.capacityEntityMapper = capacityEntityMapper;
         this.technologyRepository = technologyRepository;
         this.capacityRepository = capacityRepository;
@@ -87,20 +87,5 @@ public class CapacityPersistenceSimple implements ICapacityPersistencePort, ISim
 
         return capacityRepository.findAll(specification,pagination).getContent();
     }
-
-   /* private Specification<CapacityEntity> queryWithSpecification(String direction){
-
-        return (root, query, criteriaBuilder) -> {
-
-            Join<CapacityEntity, TechnologyEntity> capacityTechnologyMapping = root.join(CapacityEntity.FIELD_CONTAINING_RELATIONSHIP, JoinType.LEFT);
-            query.groupBy(root.get("id"));
-            Expression<Long> count = criteriaBuilder.count(capacityTechnologyMapping);
-
-            Order order = direction.equals(Sort.Direction.ASC.name()) ?
-                    criteriaBuilder.asc(count) : criteriaBuilder.desc(count);
-            query.orderBy(order);
-
-            return criteriaBuilder.conjunction();
-        };
-    } */
+    
 }

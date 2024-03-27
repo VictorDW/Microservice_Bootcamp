@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class TechnologyPersistenceSimple implements ITechnologyPersistencePort, ISimplePagination {
+public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort, ISimplePagination {
 
   private final ITechnologyEntityMapper technologyEntityMapper;
   private final ITechnologyRepository technologyRepository;
