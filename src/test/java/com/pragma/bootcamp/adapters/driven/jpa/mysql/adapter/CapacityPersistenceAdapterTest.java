@@ -10,21 +10,29 @@ import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
+import com.pragma.bootcamp.domain.util.PaginationData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class CapacityPersistenceAdapterTest {
@@ -39,9 +47,14 @@ class CapacityPersistenceAdapterTest {
   private  ICapacityRepository capacityRepository;
   @Mock
   private IMessagePort messagePort;
+  @Captor
+  private ArgumentCaptor<Specification<CapacityEntity>> specificationCaptor;
   private List<Technology> technologies;
   private Capacity givenCapacity;
   private Capacity response;
+  private List<CapacityEntity> allEntity;
+  private List<Capacity> allModel;
+
   @BeforeEach
   void setUp() {
     this.technologies = List.of(
@@ -49,6 +62,9 @@ class CapacityPersistenceAdapterTest {
             new Technology(null, "Python", null),
             new Technology(null, "Javascript", null)
     );
+    this.allEntity = List.of( new CapacityEntity(1L,"Backend Java", "Test", new ArrayList<>()));
+    this.allModel = List.of( new Capacity(1L,"Backend Java", "Test", technologies));
+
     this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer", technologies);
     this.response = this.givenCapacity;
   }
@@ -117,6 +133,65 @@ class CapacityPersistenceAdapterTest {
 
     //WHEN
     var result = capacityPersistenceAdapter.verifyByName(name);
+
+    //THAT
+    assertThat(result).isEmpty();
+  }
+
+  @Test
+  @DisplayName("Must return a list containing the capacities from pagination with simple ordering")
+  void test5() {
+
+    //GIVEN
+    PaginationData paginationData = new PaginationData(0, 10, "DESC", "name");
+
+    Sort sort = Sort.by(Sort.Direction.fromString(paginationData.direction()), paginationData.property());
+    Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size(), sort);
+
+    given(capacityRepository.findAll(pagination)).willReturn(new PageImpl<>(allEntity));
+    given(capacityEntityMapper.ToModelList(allEntity)).willReturn(allModel);
+
+    //WHEN
+
+    var result = capacityPersistenceAdapter.getAllCapacity(paginationData);
+
+    //THAT
+    assertThat(result).isNotEmpty();
+  }
+
+  @Test
+  @DisplayName("Must return a list containing the capacities from the pagination with advanced query")
+  void test6() {
+
+    //GIVEN
+    PaginationData paginationData = new PaginationData(0, 10, "DESC", "technologies");
+    Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size());
+
+    given(capacityRepository.findAll(specificationCaptor.capture(),eq(pagination))).willReturn(new PageImpl<>(allEntity));
+    given(capacityEntityMapper.ToModelList(allEntity)).willReturn(allModel);
+
+    //WHEN
+
+    var result = capacityPersistenceAdapter.getAllCapacity(paginationData);
+
+    //THAT
+    assertThat(result).isNotEmpty();
+  }
+
+  @Test
+  @DisplayName("Must return an empty list of capacity, since no results were found in the database")
+  void test7() {
+
+    PaginationData paginationData = new PaginationData(0, 10, "DESC", "name");
+
+    Sort sort = Sort.by(Sort.Direction.fromString(paginationData.direction()), paginationData.property());
+    Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size(), sort);
+
+    given(capacityRepository.findAll(pagination)).willReturn(new PageImpl<>(new ArrayList<>()));
+
+    //WHEN
+
+    var result = capacityPersistenceAdapter.getAllCapacity(paginationData);
 
     //THAT
     assertThat(result).isEmpty();

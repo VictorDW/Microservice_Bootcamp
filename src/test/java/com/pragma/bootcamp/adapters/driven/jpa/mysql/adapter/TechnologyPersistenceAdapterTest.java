@@ -27,7 +27,7 @@ class TechnologyPersistenceAdapterTest {
   @Mock
   private ITechnologyRepository technologyRepository;
   @InjectMocks
-  private TechnologyPersistenceSimple technologyPersistenceAdapter;
+  private TechnologyPersistenceAdapter technologyPersistenceAdapter;
   private String name;
 
   @BeforeEach
