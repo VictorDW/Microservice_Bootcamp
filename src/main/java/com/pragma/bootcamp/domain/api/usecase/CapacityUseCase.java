@@ -48,16 +48,16 @@ public class CapacityUseCase implements ICapacityServicePort {
   @Override
   public List<Capacity> getAll(Integer page, Integer size, String direction, String orderBy) {
 
-      PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
-      List<Capacity> capacities = capacityPersistencePort.getAllCapacity(paginationData);
-      return executeValidationNotEmptyCapacityList(capacities);
+    PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
+    List<Capacity> capacities = capacityPersistencePort.getAllCapacity(paginationData);
+    return executeValidationNotEmptyCapacityList(capacities);
   }
 
-    private List<Capacity> executeValidationNotEmptyCapacityList(List<Capacity> capacities) {
+  private List<Capacity> executeValidationNotEmptyCapacityList(List<Capacity> capacities) {
 
-      if (capacities.isEmpty()) {
-          throw new NoDataFoundException(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE));
-      }
-      return capacities;
+    if (capacities.isEmpty()) {
+      throw new NoDataFoundException(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE));
     }
+    return capacities;
+  }
 }
