@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ITechnologyHandler {
   TechnologyResponse createTechnology(AddTechnologyRequest request);
-  List<TechnologyResponse> getAllTechnologies(Integer page, Integer size, String order);
+  List<TechnologyResponse> getAllTechnologies(Integer page, Integer size, String direction);
 }

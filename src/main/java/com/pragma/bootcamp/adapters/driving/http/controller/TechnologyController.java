@@ -37,8 +37,8 @@ public class TechnologyController {
                                                                     @RequestParam(required = false)
                                                                       @Min(value = 1, message = "{"+Constants.SIZE_INVALID_MESSAGE+"}")
                                                                       Integer size,
-                                                                    @RequestParam(required = false) String order) {
+                                                                    @RequestParam(required = false) String direction) {
 
-    return ResponseEntity.ok(technologyHandler.getAllTechnologies(page, size, order));
+    return ResponseEntity.ok(technologyHandler.getAllTechnologies(page, size, direction));
   }
 }

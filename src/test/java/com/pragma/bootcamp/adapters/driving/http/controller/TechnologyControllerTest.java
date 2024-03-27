@@ -1,6 +1,7 @@
 package com.pragma.bootcamp.adapters.driving.http.controller;
 
-import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyServiceAdapter;
+
+import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class TechnologyControllerTest {
     @Mock
-    private ITechnologyServiceAdapter technologyHandler;
+    private ITechnologyHandler technologyHandler;
     @InjectMocks
     private TechnologyController restController;
 

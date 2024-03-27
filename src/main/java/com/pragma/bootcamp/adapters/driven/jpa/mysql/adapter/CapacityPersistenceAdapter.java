@@ -11,16 +11,21 @@ import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
+import com.pragma.bootcamp.domain.util.ManegePaginationData;
+import com.pragma.bootcamp.domain.util.PaginationData;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
 
-public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
+public class CapacityPersistenceAdapter implements ICapacityPersistencePort, IPaginationProvider, IQuerySpecificationProvider<CapacityEntity, TechnologyEntity> {
 
     private final ICapacityEntityMapper capacityEntityMapper;
     private final ITechnologyRepository technologyRepository;
     private final ICapacityRepository capacityRepository;
     private final IMessagePort messagePort;
+
 
     public CapacityPersistenceAdapter(ICapacityEntityMapper capacityEntityMapper, ITechnologyRepository technologyRepository, ICapacityRepository capacityRepository, IMessagePort messagePort) {
         this.capacityEntityMapper = capacityEntityMapper;
@@ -57,4 +62,29 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort {
         var existCapacityEntity = capacityRepository.findByNameIgnoreCase(name);
         return existCapacityEntity.map(capacityEntityMapper::entityToModel);
     }
+
+    @Override
+   public List<Capacity> getAllCapacity(PaginationData paginationData) {
+
+        List<CapacityEntity> capacityEntities;
+
+          if (!ManegePaginationData.DEFAULT_PROPERTY.equalsIgnoreCase(paginationData.property())) {
+              capacityEntities = advancedQuery(paginationData);
+              return capacityEntityMapper.ToModelList(capacityEntities);
+          }
+
+        Pageable pagination = paginationWithSorting(paginationData);
+        capacityEntities = capacityRepository.findAll(pagination).getContent();
+
+        return capacityEntityMapper.ToModelList(capacityEntities);
+    }
+
+    private List<CapacityEntity> advancedQuery(PaginationData paginationData) {
+
+        Pageable pagination = simplePagination(paginationData);
+        Specification<CapacityEntity> specification = queryWithSpecification(paginationData.direction(), CapacityEntity.FIELD_CONTAINING_RELATIONSHIP);
+
+        return capacityRepository.findAll(specification,pagination).getContent();
+    }
+    
 }

@@ -25,6 +25,8 @@ public class CapacityEntity {
     @Column(nullable = false, length = 90)
     private String description;
 
+    public static final String FIELD_CONTAINING_RELATIONSHIP = "technologyEntities";
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
        name = "capacity_technology_mapping",
