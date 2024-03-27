@@ -7,15 +7,15 @@ import jakarta.persistence.criteria.Order;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
-public interface IQuerySpecification<T,K> {
+public interface IQuerySpecificationProvider<T,K> {
 
   default Specification<T> queryWithSpecification(String direction, String fieldRelationship){
 
     return (root, query, criteriaBuilder) -> {
 
-      Join<T, K> intermediateTableRelationship = root.join(fieldRelationship, JoinType.LEFT);
+      Join<T, K> jointRelationship = root.join(fieldRelationship, JoinType.LEFT);
       query.groupBy(root.get("id"));
-      Expression<Long> count = criteriaBuilder.count(intermediateTableRelationship);
+      Expression<Long> count = criteriaBuilder.count(jointRelationship);
 
       Order order = direction.equals(Sort.Direction.ASC.name()) ?
           criteriaBuilder.asc(count) : criteriaBuilder.desc(count);

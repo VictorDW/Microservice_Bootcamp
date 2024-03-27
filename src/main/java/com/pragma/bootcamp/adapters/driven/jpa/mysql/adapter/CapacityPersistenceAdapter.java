@@ -13,14 +13,13 @@ import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.PaginationData;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
 
-public class CapacityPersistenceAdapter implements ICapacityPersistencePort, ISimplePagination, IQuerySpecification<CapacityEntity, TechnologyEntity> {
+public class CapacityPersistenceAdapter implements ICapacityPersistencePort, IPaginationProvider, IQuerySpecificationProvider<CapacityEntity, TechnologyEntity> {
 
     private final ICapacityEntityMapper capacityEntityMapper;
     private final ITechnologyRepository technologyRepository;
@@ -74,7 +73,7 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort, ISi
               return capacityEntityMapper.ToModelList(capacityEntities);
           }
 
-        Pageable pagination = simplePagination(paginationData);
+        Pageable pagination = paginationWithSorting(paginationData);
         capacityEntities = capacityRepository.findAll(pagination).getContent();
 
         return capacityEntityMapper.ToModelList(capacityEntities);
@@ -82,7 +81,7 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort, ISi
 
     private List<CapacityEntity> advancedQuery(PaginationData paginationData) {
 
-        Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size());
+        Pageable pagination = simplePagination(paginationData);
         Specification<CapacityEntity> specification = queryWithSpecification(paginationData.direction(), CapacityEntity.FIELD_CONTAINING_RELATIONSHIP);
 
         return capacityRepository.findAll(specification,pagination).getContent();
