@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 public interface ICapacityRequestMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "technology.id", ignore = true)
+    @Mapping(target = "technology.description", ignore = true)
     @Mapping(source = "technologies", target = "technologyList")
     Capacity requestToModel(AddCapacityRequest addCapacityRequest);
 }

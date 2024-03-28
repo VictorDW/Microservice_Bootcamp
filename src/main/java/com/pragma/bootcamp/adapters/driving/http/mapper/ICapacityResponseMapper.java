@@ -13,5 +13,5 @@ public interface ICapacityResponseMapper {
     @Mapping(source = "technologyList", target = "technologies")
     CapacityResponse modelToResponse(Capacity capacity);
     @Mapping(source = "technologyList", target = "technologies")
-    List<CapacityResponse> ToResponseList(List<Capacity> capacities);
+    List<CapacityResponse> toResponseList(List<Capacity> capacities);
 }
