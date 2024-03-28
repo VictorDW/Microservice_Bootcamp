@@ -1,8 +1,8 @@
 package com.pragma.bootcamp.domain.exception;
 
-public class RepeatedTechnologyException extends ModelDomainException {
+public class RepeatedModelException extends ModelDomainException {
 
-  public RepeatedTechnologyException(String message) {
+  public RepeatedModelException(String message) {
     super(message);
   }
 }

@@ -1,8 +1,7 @@
 package com.pragma.bootcamp.domain.model;
 
-import com.pragma.bootcamp.domain.exception.RepeatedTechnologyException;
-import com.pragma.bootcamp.domain.exception.NumberTechnolgiesLessThanException;
-import com.pragma.bootcamp.domain.exception.NumberTechnologiesGreaterThanException;
+import com.pragma.bootcamp.domain.exception.NumberOutOfRangeException;
+import com.pragma.bootcamp.domain.exception.RepeatedModelException;
 import com.pragma.bootcamp.domain.util.DomainConstants;
 import lombok.EqualsAndHashCode;
 
@@ -21,7 +20,7 @@ public class Capacity {
 
     public Capacity(Long id, String name, String description, List<Technology> technologyList) {
 
-        executeValidationTechnologyRanges(technologyList);
+        executeValidationTechnologyRange(technologyList);
         executeValidationNameTechnologyRepeated(technologyList);
 
         this.id = id;
@@ -30,17 +29,19 @@ public class Capacity {
         this.technologyList = technologyList;
     }
 
-    private void executeValidationTechnologyRanges(List<Technology> technologyList) {
+    private void executeValidationTechnologyRange(List<Technology> technologyList) {
 
-        if (technologyList.size() < DEFAULT_MIN_NUMBER_TECHNOLOGIES) {
-            throw new NumberTechnolgiesLessThanException(
-                String.format(DomainConstants.NUMBER_TECHNOLOGIES_MIN_MESSAGE, Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES)
-            );
-        }
-        if (technologyList.size() > DEFAULT_MAX_NUMBER_TECHNOLOGIES) {
-            throw new NumberTechnologiesGreaterThanException(
-                String.format(DomainConstants.NUMBER_TECHNOLOGIES_MAX_MESSAGE, Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES)
-            );
+        int technologySize = technologyList.size();
+
+        if (technologySize < DEFAULT_MIN_NUMBER_TECHNOLOGIES || technologySize > DEFAULT_MAX_NUMBER_TECHNOLOGIES) {
+
+            throw new NumberOutOfRangeException(
+                String.format(
+                    DomainConstants.NUMBER_RANGE_MESSAGE,
+                    DomainConstants.Class.TECHNOLOGY.getPluralName(),
+                    DomainConstants.Class.CAPACITY.getName(),
+                    Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES,
+                    Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES));
         }
     }
 
@@ -50,7 +51,11 @@ public class Capacity {
 
         technologyList.forEach(technology -> {
             if (!uniqueName.add(technology.getName()))
-                throw new RepeatedTechnologyException(DomainConstants.REPEATED_TECHNOLOGY_MESSAGE);
+                throw new RepeatedModelException(
+                    String.format(
+                        DomainConstants.REPEATED_MODEL_MESSAGE,
+                        DomainConstants.Class.CAPACITY.getName(),
+                        DomainConstants.Class.TECHNOLOGY.getPluralName()));
         });
 
     }

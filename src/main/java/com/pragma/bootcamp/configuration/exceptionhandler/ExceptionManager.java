@@ -1,10 +1,9 @@
 package com.pragma.bootcamp.configuration.exceptionhandler;
 
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundException;
-import com.pragma.bootcamp.domain.exception.CapacityDomainException;
+import com.pragma.bootcamp.domain.exception.ModelDomainException;
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
-import com.pragma.bootcamp.domain.spi.IMessagePort;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -78,8 +77,8 @@ public class ExceptionManager {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
-  @ExceptionHandler(CapacityDomainException.class)
-  public ResponseEntity<ExceptionResponse> handlerNoDataFoundException(CapacityDomainException exception) {
+  @ExceptionHandler(ModelDomainException.class)
+  public ResponseEntity<ExceptionResponse> handlerNoDataFoundException(ModelDomainException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
