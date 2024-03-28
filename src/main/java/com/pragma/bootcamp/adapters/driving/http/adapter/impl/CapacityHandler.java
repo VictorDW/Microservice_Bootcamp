@@ -30,7 +30,7 @@ public class CapacityHandler implements ICapacityHandler {
     public List<CapacityResponse> getAllCapacity(Integer page, Integer size, String direction, String orderBy) {
 
         List<Capacity> capacities = capacityServicePort.getAll(page, size, direction, orderBy);
-        return capacityResponseMapper.ToResponseList(capacities);
+        return capacityResponseMapper.toResponseList(capacities);
     }
 
 

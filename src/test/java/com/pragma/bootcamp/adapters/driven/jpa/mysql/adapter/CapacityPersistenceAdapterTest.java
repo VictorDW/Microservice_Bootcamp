@@ -182,7 +182,6 @@ class CapacityPersistenceAdapterTest {
   void test7() {
 
     PaginationData paginationData = new PaginationData(0, 10, "DESC", "name");
-
     Sort sort = Sort.by(Sort.Direction.fromString(paginationData.direction()), paginationData.property());
     Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size(), sort);
 
