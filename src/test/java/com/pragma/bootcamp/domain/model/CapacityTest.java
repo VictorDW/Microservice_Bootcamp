@@ -58,22 +58,25 @@ class CapacityTest {
   @DisplayName("Should throw an exception when the number of technologies is less than three and greater than twenty.")
   void test1(List<Technology> technologies) {
 
+    Capacity capacity = new Capacity(1L, "Backend Java", "Developer backend java");
+
     assertThrows(NumberOutOfRangeException.class, () -> {
-      new Capacity(1L, "Backend Java", "Developer backend java", technologies);
+      capacity.addTechnologyList(technologies);
     });
   }
 
   @ParameterizedTest
   @MethodSource("provideListTechnologyToValidateMinAndMaxQuantity")
-  @DisplayName("Given a number of technologies less than three, you must return the custom message of the exception.")
+  @DisplayName("Given a number of technologies less than three and greater that twenty, must return the custom message of the exception.")
   void test2(List<Technology> technologies) {
 
+    Capacity capacity = new Capacity(1L, "Backend Java", "Developer backend java");
      String expectedMessage = "The number of Technologies that can be added to the Capacity most be between "
          + Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES + " and " + Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES;
     //GIVEN
 
     try {
-       new Capacity(1L, "Backend Java", "Developer backend java", technologies);
+      capacity.addTechnologyList(technologies);
        //WHEN
     }catch (NumberOutOfRangeException e) {
       assertEquals(expectedMessage, e.getMessage());
@@ -90,9 +93,10 @@ class CapacityTest {
         new Technology(2L, "Python", "Python"),
         new Technology(2L, "Python", "Python")
     );
+    Capacity capacity = new Capacity(1L, "Backend Java", "Developer backend java");
 
     assertThrows(RepeatedModelException.class, () -> {
-      new Capacity(1L, "Backend Java", "Developer backend java", technologies);
+      capacity.addTechnologyList(technologies);
     });
   }
 

@@ -13,7 +13,11 @@ public class Capacity extends ParentModel {
     public static final Integer DEFAULT_MAX_NUMBER_TECHNOLOGIES = 20;
     private List<Technology> technologyList = new ArrayList<>();
 
-  public void addTechnologyList(List<Technology> technologyList) {
+    public Capacity(Long id, String name, String description) {
+      super(id, name, description);
+    }
+
+    public void addTechnologyList(List<Technology> technologyList) {
 
     ModelValidationUtil.executeValidationModel(
         technologyList,
@@ -23,10 +27,6 @@ public class Capacity extends ParentModel {
         DEFAULT_MAX_NUMBER_TECHNOLOGIES);
 
     this.technologyList = technologyList;
-  }
-
-  public Capacity(Long id, String name, String description) {
-      super(id, name, description);
     }
 
     public List<Technology> getTechnologyList() {

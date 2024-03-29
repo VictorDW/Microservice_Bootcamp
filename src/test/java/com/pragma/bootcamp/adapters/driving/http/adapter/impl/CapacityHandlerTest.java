@@ -57,7 +57,7 @@ class CapacityHandlerTest {
         );
 
         var request = new AddCapacityRequest("Backend Java", "Java Backend Developer",technologyBasic);
-        var capacity = new Capacity(1L, "Backend Java", "Java Backend Developer", technologies);
+        var capacity = new Capacity(1L, "Backend Java", "Java Backend Developer");
         var response = new CapacityResponse(1L, "Backend Java", "Java Backend Developer",TechnologyResponses);
 
         given(capacityRequestMapper.requestToModel(request)).willReturn(capacity);

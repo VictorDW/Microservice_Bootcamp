@@ -62,9 +62,9 @@ class CapacityPersistenceAdapterTest {
             new Technology(null, "Javascript", null)
     );
     this.allEntity = List.of( new CapacityEntity(1L,"Backend Java", "Test", new ArrayList<>()));
-    this.allModel = List.of( new Capacity(1L,"Backend Java", "Test", technologies));
-
-    this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer", technologies);
+    this.allModel = List.of( new Capacity(1L,"Backend Java", "Test"));
+    this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer");
+    this.givenCapacity.addTechnologyList(technologies);
     this.response = this.givenCapacity;
   }
 
@@ -148,7 +148,7 @@ class CapacityPersistenceAdapterTest {
     Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size(), sort);
 
     given(capacityRepository.findAll(pagination)).willReturn(new PageImpl<>(allEntity));
-    given(capacityEntityMapper.ToModelList(allEntity)).willReturn(allModel);
+    given(capacityEntityMapper.toModelList(allEntity)).willReturn(allModel);
 
     //WHEN
 
@@ -167,7 +167,7 @@ class CapacityPersistenceAdapterTest {
     Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size());
 
     given(capacityRepository.findAll(specificationCaptor.capture(),eq(pagination))).willReturn(new PageImpl<>(allEntity));
-    given(capacityEntityMapper.ToModelList(allEntity)).willReturn(allModel);
+    given(capacityEntityMapper.toModelList(allEntity)).willReturn(allModel);
 
     //WHEN
 

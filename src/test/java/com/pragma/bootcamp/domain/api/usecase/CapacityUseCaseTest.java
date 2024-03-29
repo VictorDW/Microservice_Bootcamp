@@ -48,7 +48,7 @@ class CapacityUseCaseTest {
                 new Technology(null, "Python", null),
                 new Technology(null, "Javascript", null)
         );
-        this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer", technologies);
+        this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer");
         this.response = this.givenCapacity;
     }
 
