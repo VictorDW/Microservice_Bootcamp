@@ -19,5 +19,5 @@ public interface ICapacityEntityMapper {
     @Mapping(source = "technologyEntities", target = "technologyList")
     Capacity entityToModel(CapacityEntity capacityEntity);
     @Mapping(source = "technologyEntities", target = "technologyList")
-    List<Capacity> ToModelList(List<CapacityEntity> capacityEntities);
+    List<Capacity> toModelList(List<CapacityEntity> capacityEntities);
 }

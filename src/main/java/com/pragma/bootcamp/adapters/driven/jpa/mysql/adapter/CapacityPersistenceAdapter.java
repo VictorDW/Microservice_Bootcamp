@@ -70,13 +70,13 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort, IPa
 
           if (!ManegePaginationData.DEFAULT_PROPERTY.equalsIgnoreCase(paginationData.property())) {
               capacityEntities = advancedQuery(paginationData);
-              return capacityEntityMapper.ToModelList(capacityEntities);
+              return capacityEntityMapper.toModelList(capacityEntities);
           }
 
         Pageable pagination = paginationWithSorting(paginationData);
         capacityEntities = capacityRepository.findAll(pagination).getContent();
 
-        return capacityEntityMapper.ToModelList(capacityEntities);
+        return capacityEntityMapper.toModelList(capacityEntities);
     }
 
     private List<CapacityEntity> advancedQuery(PaginationData paginationData) {

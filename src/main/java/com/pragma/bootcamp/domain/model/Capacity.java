@@ -1,75 +1,32 @@
 package com.pragma.bootcamp.domain.model;
 
-import com.pragma.bootcamp.domain.exception.NumberOutOfRangeException;
-import com.pragma.bootcamp.domain.exception.RepeatedModelException;
 import com.pragma.bootcamp.domain.util.DomainConstants;
+import com.pragma.bootcamp.domain.util.ModelValidationUtil;
 import lombok.EqualsAndHashCode;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode
-public class Capacity {
-
-    private final Long id;
+@EqualsAndHashCode(callSuper = false)
+public class Capacity extends ParentModel {
     public static final  Integer DEFAULT_MIN_NUMBER_TECHNOLOGIES = 3;
     public static final Integer DEFAULT_MAX_NUMBER_TECHNOLOGIES = 20;
-    private final String name;
-    private final String description;
-    private final List<Technology> technologyList;
+    private List<Technology> technologyList = new ArrayList<>();
 
-    public Capacity(Long id, String name, String description, List<Technology> technologyList) {
+  public void addTechnologyList(List<Technology> technologyList) {
 
-        executeValidationTechnologyRange(technologyList);
-        executeValidationNameTechnologyRepeated(technologyList);
+    ModelValidationUtil.executeValidationModel(
+        technologyList,
+        DomainConstants.Class.TECHNOLOGY.getPluralName(),
+        DomainConstants.Class.CAPACITY.getName(),
+        DEFAULT_MIN_NUMBER_TECHNOLOGIES,
+        DEFAULT_MAX_NUMBER_TECHNOLOGIES);
 
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.technologyList = technologyList;
-    }
+    this.technologyList = technologyList;
+  }
 
-    private void executeValidationTechnologyRange(List<Technology> technologyList) {
-
-        int technologySize = technologyList.size();
-
-        if (technologySize < DEFAULT_MIN_NUMBER_TECHNOLOGIES || technologySize > DEFAULT_MAX_NUMBER_TECHNOLOGIES) {
-
-            throw new NumberOutOfRangeException(
-                String.format(
-                    DomainConstants.NUMBER_RANGE_MESSAGE,
-                    DomainConstants.Class.TECHNOLOGY.getPluralName(),
-                    DomainConstants.Class.CAPACITY.getName(),
-                    Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES,
-                    Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES));
-        }
-    }
-
-    private void executeValidationNameTechnologyRepeated(List<Technology> technologyList) {
-
-        HashSet<String> uniqueName = new HashSet<>(technologyList.size());
-
-        technologyList.forEach(technology -> {
-            if (!uniqueName.add(technology.getName()))
-                throw new RepeatedModelException(
-                    String.format(
-                        DomainConstants.REPEATED_MODEL_MESSAGE,
-                        DomainConstants.Class.CAPACITY.getName(),
-                        DomainConstants.Class.TECHNOLOGY.getPluralName()));
-        });
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
+  public Capacity(Long id, String name, String description) {
+      super(id, name, description);
     }
 
     public List<Technology> getTechnologyList() {
