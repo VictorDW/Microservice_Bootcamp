@@ -4,8 +4,8 @@ import com.pragma.bootcamp.adapters.driving.http.dto.request.AddCapacityRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.TechnologyBasicRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityResponse;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyBasicResponse;
-import com.pragma.bootcamp.adapters.driving.http.mapper.ICapacityRequestMapper;
-import com.pragma.bootcamp.adapters.driving.http.mapper.ICapacityResponseMapper;
+import com.pragma.bootcamp.adapters.driving.http.mapper.request.ICapacityRequestMapper;
+import com.pragma.bootcamp.adapters.driving.http.mapper.response.ICapacityResponseMapper;
 import com.pragma.bootcamp.domain.api.ICapacityServicePort;
 import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.model.Technology;
@@ -19,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,12 +42,6 @@ class CapacityHandlerTest {
                 new TechnologyBasicRequest("Java"),
                 new TechnologyBasicRequest("Python"),
                 new TechnologyBasicRequest("JavaScript"));
-
-        List<Technology> technologies = List.of(
-                new Technology(null, "Java", null),
-                new Technology(null, "Python", null),
-                new Technology(null, "Javascript", null)
-        );
 
         List<TechnologyBasicResponse> TechnologyResponses = List.of(
                 new TechnologyBasicResponse(1L, "Java"),

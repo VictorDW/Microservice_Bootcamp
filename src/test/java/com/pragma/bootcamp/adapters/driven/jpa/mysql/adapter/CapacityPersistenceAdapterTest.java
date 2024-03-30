@@ -61,10 +61,10 @@ class CapacityPersistenceAdapterTest {
             new Technology(null, "Python", null),
             new Technology(null, "Javascript", null)
     );
-    this.allEntity = List.of( new CapacityEntity(1L,"Backend Java", "Test", new ArrayList<>()));
+    this.allEntity = List.of( new CapacityEntity(1L,"Backend Java", "Test", new ArrayList<>(), new ArrayList<>()));
     this.allModel = List.of( new Capacity(1L,"Backend Java", "Test"));
     this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer");
-    this.givenCapacity.addTechnologyList(technologies);
+    this.givenCapacity.setTechnologyList(technologies);
     this.response = this.givenCapacity;
   }
 
