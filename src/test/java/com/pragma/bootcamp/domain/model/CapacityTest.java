@@ -61,7 +61,7 @@ class CapacityTest {
     Capacity capacity = new Capacity(1L, "Backend Java", "Developer backend java");
 
     assertThrows(NumberOutOfRangeException.class, () -> {
-      capacity.addTechnologyList(technologies);
+      capacity.setTechnologyList(technologies);
     });
   }
 
@@ -76,7 +76,7 @@ class CapacityTest {
     //GIVEN
 
     try {
-      capacity.addTechnologyList(technologies);
+      capacity.setTechnologyList(technologies);
        //WHEN
     }catch (NumberOutOfRangeException e) {
       assertEquals(expectedMessage, e.getMessage());
@@ -96,7 +96,7 @@ class CapacityTest {
     Capacity capacity = new Capacity(1L, "Backend Java", "Developer backend java");
 
     assertThrows(RepeatedModelException.class, () -> {
-      capacity.addTechnologyList(technologies);
+      capacity.setTechnologyList(technologies);
     });
   }
 

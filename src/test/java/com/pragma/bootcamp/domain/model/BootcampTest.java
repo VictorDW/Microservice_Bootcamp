@@ -42,7 +42,7 @@ class BootcampTest {
     Bootcamp bootcamp = new Bootcamp(1L, "FullStack Java/Angular", "Developer FullStack");
 
     assertThrows(NumberOutOfRangeException.class, () -> {
-      bootcamp.addCapacityList(capacities);
+      bootcamp.setCapacityList(capacities);
     });
   }
 
@@ -58,7 +58,7 @@ class BootcampTest {
 
     try {
       //WHEN
-      bootcamp.addCapacityList(capacities);
+      bootcamp.setCapacityList(capacities);
     }catch (NumberOutOfRangeException e) {
       //THAT
       assertEquals(expectedMessage, e.getMessage());
@@ -79,7 +79,7 @@ class BootcampTest {
 
     //WHEN - THAT
     assertThrows(RepeatedModelException.class, () -> {
-      bootcamp.addCapacityList(capacities);
+      bootcamp.setCapacityList(capacities);
     });
   }
 }
