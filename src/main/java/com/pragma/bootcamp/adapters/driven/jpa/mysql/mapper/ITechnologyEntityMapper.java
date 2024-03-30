@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ITechnologyEntityMapper {
 
-  @Mapping(target = "capacityEntities", ignore = true)
+  @Mapping(target = "capacityEntities", ignore = true)//→ evitará los warning de los test al no mappear todos los elementos
   TechnologyEntity modelToEntity(Technology technology);
   Technology entityToModel(TechnologyEntity technologyEntity);
   List<Technology> toModelList(List<TechnologyEntity> technologyEntities);
