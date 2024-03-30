@@ -11,13 +11,15 @@ import java.util.List;
 public class Capacity extends ParentModel {
     public static final  Integer DEFAULT_MIN_NUMBER_TECHNOLOGIES = 3;
     public static final Integer DEFAULT_MAX_NUMBER_TECHNOLOGIES = 20;
-    private List<Technology> technologyList = new ArrayList<>();
+
+    private List<Technology> technologyList;
 
     public Capacity(Long id, String name, String description) {
       super(id, name, description);
+      this.technologyList = new ArrayList<>();
     }
 
-    public void addTechnologyList(List<Technology> technologyList) {
+    public void setTechnologyList(List<Technology> technologyList) {
 
     ModelValidationUtil.executeValidationModel(
         technologyList,
