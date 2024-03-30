@@ -48,7 +48,7 @@ public class BootcampPersistenceAdapter implements IBootcampPersistencePort, IPa
 	}
 
 	@Override
-	public Optional<Bootcamp> findByName(String name) {
+	public Optional<Bootcamp> verifyByName(String name) {
 		var bootcampEntity = bootcampRepository.findByNameIgnoreCase(name);
 		return bootcampEntity.map(bootcampEntityMapper::entityToModel);
 	}

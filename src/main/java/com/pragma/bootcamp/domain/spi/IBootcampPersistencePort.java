@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface IBootcampPersistencePort {
   Bootcamp saveBootcamp(Bootcamp bootcamp);
-  Optional<Bootcamp> findByName(String name);
+  Optional<Bootcamp> verifyByName(String name);
 }

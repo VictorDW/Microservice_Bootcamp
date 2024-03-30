@@ -26,7 +26,7 @@ public class BootcampUseCase implements IBootcampServicePort {
 
   private void executeNameVerification(String name) {
 
-    var verifyBootcamp = bootcampPersistencePort.findByName(name);
+    var verifyBootcamp = bootcampPersistencePort.verifyByName(name);
 
     ModelValidationUtil.validationModelAlreadyExist(
         verifyBootcamp,
