@@ -41,7 +41,7 @@ public class ModelValidationUtil {
     HashSet<String> uniqueName = new HashSet<>(list.size());
 
     list.forEach(model -> {
-      if (!uniqueName.add(model.getName()))
+      if (!uniqueName.add(model.getName().toLowerCase()))
         throw new RepeatedModelException(
             String.format(
                 DomainConstants.REPEATED_MODEL_MESSAGE,
