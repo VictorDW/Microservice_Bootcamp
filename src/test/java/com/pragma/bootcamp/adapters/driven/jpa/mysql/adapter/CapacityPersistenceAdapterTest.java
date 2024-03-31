@@ -57,9 +57,9 @@ class CapacityPersistenceAdapterTest {
   @BeforeEach
   void setUp() {
     this.technologies = List.of(
-            new Technology(null, "Java", null),
-            new Technology(null, "Python", null),
-            new Technology(null, "Javascript", null)
+        new Technology(null, "Java", null),
+        new Technology(null, "Python", null),
+        new Technology(null, "Javascript", null)
     );
     this.allEntity = List.of( new CapacityEntity(1L,"Backend Java", "Test", new ArrayList<>(), new ArrayList<>()));
     this.allModel = List.of( new Capacity(1L,"Backend Java", "Test"));
