@@ -18,7 +18,7 @@ public class BootcampHandler implements IBootcampHandler {
 	private final IBootcampResponseMapper bootcampResponseMapper;
 
 	@Override
-	public BootcampResponse create(AddBootcampRequest request) {
+	public BootcampResponse createBootcamp(AddBootcampRequest request) {
 
 		var bootcamp = bootcampRequestMapper.requestToModel(request);
 		var response = bootcampServicePort.create(bootcamp);

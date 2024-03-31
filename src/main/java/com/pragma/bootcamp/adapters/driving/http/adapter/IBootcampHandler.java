@@ -5,5 +5,5 @@ import com.pragma.bootcamp.adapters.driving.http.dto.response.BootcampResponse;
 
 public interface IBootcampHandler {
 
-  BootcampResponse create(AddBootcampRequest request);
+  BootcampResponse createBootcamp(AddBootcampRequest request);
 }

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 public record TechnologyBasicRequest(
         @NotBlank(message = "{"+ Constants.FIELD_EMPTY_MESSAGE+"}")
-        @Pattern(regexp = "^[A-Za-z\\s]+$", message = "{"+Constants.ONLY_LETTERS_MESSAGE+"}")
-        @Size(min = 2, max = 50, message = "{"+Constants.NAME_SIZE_MESSAGE+"}")
+        @Pattern(regexp = Constants.PATTERN_NAME, message = "{"+Constants.SPECIAL_CHARACTER_MESSAGE+"}")
+        @Size(min = 2, max = 50, message = "{"+Constants.NAME_SIZE_TECHNOLOGY_MESSAGE+"}")
         String name
 ) { }
