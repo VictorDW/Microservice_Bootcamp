@@ -109,16 +109,16 @@ class TechnologyControllerTest {
     @DisplayName("should return a status 400 (bad request) when sending a technology with validation errors.")
     void test2(String bodyRequest) throws Exception {
 
+        //WHEN
+
         MockHttpServletRequestBuilder requestBuilder = post("/api/technology")
             .contentType(MediaType.APPLICATION_JSON)
             .content(bodyRequest);
 
-        //GIVEN
+        //THEN
 
         mockMvc.perform(requestBuilder)
             .andExpect(status().isBadRequest());
-
-        //WHEN - THEN
     }
 
 }

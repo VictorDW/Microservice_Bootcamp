@@ -34,173 +34,174 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class CapacityControllerTest {
 
-    @InjectMocks
-    private CapacityController capacityController;
-    @Mock
-    private ICapacityHandler capacityHandler;
-    private MockMvc mockMvc;
+  @InjectMocks
+  private CapacityController capacityController;
+  @Mock
+  private ICapacityHandler capacityHandler;
+  private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(capacityController).build();
-    }
+  @BeforeEach
+  void setUp() {
+    mockMvc = MockMvcBuilders.standaloneSetup(capacityController).build();
+  }
 
-    public static Stream<Arguments> provideTechnologiesToCreateWithValidationErrors() {
-        return Stream.of(
-                Arguments.of(
-                        "{\"name\":\"\"," +
-                                "\"description\":\"Java con versión JDK 17\"," +
-                                "\"technologies\":[" +
-                                "{\"name\":\"Javascript\"}," +
-                                "{\"name\":\"PHP\"}," +
-                                "{\"name\":\"Python\"}]}"
-                ),
-                Arguments.of(
-                        "{\"name\":," +
-                                "\"description\":\"Java con versión JDK 17\"," +
-                                "\"technologies\":[" +
-                                "{\"name\":\"Javascript\"}," +
-                                "{\"name\":\"PHP\"}," +
-                                "{\"name\":\"Python\"}]}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"P\"," +
-                                "\"description\":\"Java con versión JDK 17\"," +
-                                "\"technologies\":[" +
-                                "{\"name\":\"Javascript\"}," +
-                                "{\"name\":\"PHP\"}," +
-                                "{\"name\":\"Python\"}]}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"Ppppppppppppppppppppppppppppppppppppppppppppppppppppppp\"," +
-                                "\"description\":\"Java con versión JDK 17\"," +
-                                "\"technologies\":[" +
-                                "{\"name\":\"Javascript\"}," +
-                                "{\"name\":\"PHP\"}," +
-                                "{\"name\":\"Python\"}]}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"Python45-\"," +
-                                "\"description\":\"Java con versión JDK 17\"," +
-                                "\"technologies\":[" +
-                                "{\"name\":\"Javascript\"}," +
-                                "{\"name\":\"PHP\"}," +
-                                "{\"name\":\"Python\"}]}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"Java\"," +
-                                "\"description\":," +
-                                "\"technologies\":[" +
-                                "{\"name\":\"Javascript\"}," +
-                                "{\"name\":\"PHP\"}," +
-                                "{\"name\":\"Python\"}]}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"Java\"," +
-                                "\"description\":\"\"," +
-                                "\"technologies\":[" +
-                                "{\"name\":\"Javascript\"}," +
-                                "{\"name\":\"PHP\"}," +
-                                "{\"name\":\"Python\"}]}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"Java\"," +
-                                "\"description\":\"Java\"," +
-                                "\"technologies\":[" +
-                                "{\"name\":\"Javascript\"}," +
-                                "{\"name\":\"PHP\"}," +
-                                "{\"name\":\"Python\"}]}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"Java\"," +
-                                "\"description\":\"jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj\"," +
-                                "\"technologies\":[" +
-                                "{\"name\":\"Javascript\"}," +
-                                "{\"name\":\"PHP\"}," +
-                                "{\"name\":\"Python\"}]}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"Java\"," +
-                                "\"description\":\"Java con versión JDK 17@\"," +
-                                "\"technologies\":[" +
-                                "{\"name\":\"Javascript\"}," +
-                                "{\"name\":\"PHP\"}," +
-                                "{\"name\":\"Python\"}]}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"Java\"," +
-                                "\"description\":\"Java con versión JDK 17\"," +
-                                "\"technologies\":}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"Java\"," +
-                                "\"description\":\"Java con versión JDK 17\"," +
-                                "\"technologies\":[]}"
-                ),
-                Arguments.of(
-                        "{\"name\":\"Java\"," +
-                                "\"description\":\"Java con versión JDK 17\"," +
-                                "\"technologies\":[" +
-                                "{\"name\":}," +
-                                "{\"name\":\"\"}," +
-                                "{\"name\":\"Python@\"}]}"
-                )
-        );
-    }
-
-
-    @Test
-    void test1() throws Exception {
-
-        List<TechnologyBasicResponse> TechnologyResponses = List.of(
-                new TechnologyBasicResponse(1L, "Java"),
-                new TechnologyBasicResponse(2L, "PHP"),
-                new TechnologyBasicResponse(3L, "Python")
-        );
-
-        CapacityResponse response = new CapacityResponse(1L, "Backend Java", "Java Backend Developer",TechnologyResponses);
-
-        given(capacityHandler.createCapacity(any(AddCapacityRequest.class))).willReturn(response);
-
-        String bodyRequest = "{\"name\":\"Backend Java\"," +
-                                "\"description\":\"Java Backend Developer\"," +
-                                "\"technologies\":[" +
-                                    "{\"name\":\"Javascript\"}," +
-                                    "{\"name\":\"PHP\"}," +
-                                    "{\"name\":\"Python\"}]" +
-                                "}";
-
-        MockHttpServletRequestBuilder requestBuilder = post("/api/capacity")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bodyRequest);
+  public static Stream<Arguments> provideCapacitiesToCreateWithValidationErrors() {
+    return Stream.of(
+        Arguments.of(
+            "{\"name\":\"\"," +
+                "\"description\":\"Java con versión JDK 17\"," +
+                "\"technologies\":[" +
+                "{\"name\":\"Javascript\"}," +
+                "{\"name\":\"PHP\"}," +
+                "{\"name\":\"Python\"}]}"
+        ),
+        Arguments.of(
+            "{\"name\":," +
+                "\"description\":\"Java con versión JDK 17\"," +
+                "\"technologies\":[" +
+                "{\"name\":\"Javascript\"}," +
+                "{\"name\":\"PHP\"}," +
+                "{\"name\":\"Python\"}]}"
+        ),
+        Arguments.of(
+            "{\"name\":\"P\"," +
+                "\"description\":\"Java con versión JDK 17\"," +
+                "\"technologies\":[" +
+                "{\"name\":\"Javascript\"}," +
+                "{\"name\":\"PHP\"}," +
+                "{\"name\":\"Python\"}]}"
+        ),
+        Arguments.of(
+            "{\"name\":\"Ppppppppppppppppppppppppppppppppppppppppppppppppppppppp\"," +
+                "\"description\":\"Java con versión JDK 17\"," +
+                "\"technologies\":[" +
+                "{\"name\":\"Javascript\"}," +
+                "{\"name\":\"PHP\"}," +
+                "{\"name\":\"Python\"}]}"
+        ),
+        Arguments.of(
+            "{\"name\":\"Python45-\"," +
+                "\"description\":\"Java con versión JDK 17\"," +
+                "\"technologies\":[" +
+                "{\"name\":\"Javascript\"}," +
+                "{\"name\":\"PHP\"}," +
+                "{\"name\":\"Python\"}]}"
+        ),
+        Arguments.of(
+            "{\"name\":\"Java\"," +
+                "\"description\":," +
+                "\"technologies\":[" +
+                "{\"name\":\"Javascript\"}," +
+                "{\"name\":\"PHP\"}," +
+                "{\"name\":\"Python\"}]}"
+        ),
+        Arguments.of(
+            "{\"name\":\"Java\"," +
+                "\"description\":\"\"," +
+                "\"technologies\":[" +
+                "{\"name\":\"Javascript\"}," +
+                "{\"name\":\"PHP\"}," +
+                "{\"name\":\"Python\"}]}"
+        ),
+        Arguments.of(
+            "{\"name\":\"Java\"," +
+                "\"description\":\"Java\"," +
+                "\"technologies\":[" +
+                "{\"name\":\"Javascript\"}," +
+                "{\"name\":\"PHP\"}," +
+                "{\"name\":\"Python\"}]}"
+        ),
+        Arguments.of(
+            "{\"name\":\"Java\"," +
+                "\"description\":\"jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj\"," +
+                "\"technologies\":[" +
+                "{\"name\":\"Javascript\"}," +
+                "{\"name\":\"PHP\"}," +
+                "{\"name\":\"Python\"}]}"
+        ),
+        Arguments.of(
+            "{\"name\":\"Java\"," +
+                "\"description\":\"Java con versión JDK 17@\"," +
+                "\"technologies\":[" +
+                "{\"name\":\"Javascript\"}," +
+                "{\"name\":\"PHP\"}," +
+                "{\"name\":\"Python\"}]}"
+        ),
+        Arguments.of(
+            "{\"name\":\"Java\"," +
+                "\"description\":\"Java con versión JDK 17\"," +
+                "\"technologies\":}"
+        ),
+        Arguments.of(
+            "{\"name\":\"Java\"," +
+                "\"description\":\"Java con versión JDK 17\"," +
+                "\"technologies\":[]}"
+        ),
+        Arguments.of(
+            "{\"name\":\"Java\"," +
+                "\"description\":\"Java con versión JDK 17\"," +
+                "\"technologies\":[" +
+                "{\"name\":}," +
+                "{\"name\":\"\"}," +
+                "{\"name\":\"Python@\"}]}"
+        )
+    );
+  }
 
 
-        //GIVEN
+  @Test
+  @DisplayName("Given an http request you should create a capacity")
+  void test1() throws Exception {
 
-        mockMvc.perform(requestBuilder)
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.name").value("Backend Java"))
-                .andExpect(jsonPath("$.technologies").isNotEmpty());
+    //GIVEN
 
-    }
+    List<TechnologyBasicResponse> technologyResponses = List.of(
+        new TechnologyBasicResponse(1L, "Java"),
+        new TechnologyBasicResponse(2L, "PHP"),
+        new TechnologyBasicResponse(3L, "Python")
+    );
 
-    @ParameterizedTest
-    @MethodSource("provideTechnologiesToCreateWithValidationErrors")
-    @DisplayName("should return a status 400 (bad request) when sending a technology with validation errors")
-    void test2(String bodyRequest) throws Exception {
+    CapacityResponse response = new CapacityResponse(1L, "Backend Java", "Java Backend Developer", technologyResponses);
 
+    given(capacityHandler.createCapacity(any(AddCapacityRequest.class))).willReturn(response);
 
-        MockHttpServletRequestBuilder requestBuilder = post("/api/capacity")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(bodyRequest);
+    String bodyRequest = "{\"name\":\"Backend Java\"," +
+        "\"description\":\"Java Backend Developer\"," +
+        "\"technologies\":[" +
+        "{\"name\":\"Javascript\"}," +
+        "{\"name\":\"PHP\"}," +
+        "{\"name\":\"Python\"}]" +
+        "}";
 
-        //GIVEN
+    //WHEN
+    MockHttpServletRequestBuilder requestBuilder = post("/api/capacity")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(bodyRequest);
 
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().isBadRequest());
+    //THAT
+    mockMvc.perform(requestBuilder)
+        .andDo(print())
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").value(1L))
+        .andExpect(jsonPath("$.name").value("Backend Java"))
+        .andExpect(jsonPath("$.technologies").isNotEmpty());
 
-        //WHEN - THEN
+  }
+
+  @ParameterizedTest
+  @MethodSource("provideCapacitiesToCreateWithValidationErrors")
+  @DisplayName("should return a status 400 (bad request) when sending a technology with validation errors")
+  void test2(String bodyRequest) throws Exception {
+
+    //WHEN
+
+    MockHttpServletRequestBuilder requestBuilder = post("/api/capacity")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(bodyRequest);
+
+    //THEN
+
+    mockMvc.perform(requestBuilder)
+        .andExpect(status().isBadRequest());
     }
 }

@@ -73,7 +73,7 @@ class BootcampTest {
     List<Capacity> capacities = List.of(
         new Capacity(1L, "Backend Java", "Java"),
         new Capacity(1L, "Backend Python", "Python"),
-        new Capacity(1L, "Backend Python", "Python")
+        new Capacity(1L, "Backend python", "Python")
     );
     Bootcamp bootcamp = new Bootcamp(1L, "FullStack Java/Angular", "Developer FullStack");
 
