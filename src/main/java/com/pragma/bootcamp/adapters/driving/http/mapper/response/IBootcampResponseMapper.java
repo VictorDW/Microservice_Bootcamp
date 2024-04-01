@@ -18,6 +18,6 @@ public interface IBootcampResponseMapper {
 	@Mapping(source = "technologyList", target = "technologies")
 	CapacityBasicResponse modelToResponse(Capacity capacity);
 
-	
+	@Mapping(source = "capacityList", target = "capacities")
 	List<BootcampResponse> toResponseList(List<Bootcamp> bootcampList);
 }

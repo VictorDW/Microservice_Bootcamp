@@ -6,8 +6,11 @@ import com.pragma.bootcamp.adapters.driving.http.dto.response.BootcampResponse;
 import com.pragma.bootcamp.adapters.driving.http.mapper.request.IBootcampRequestMapper;
 import com.pragma.bootcamp.adapters.driving.http.mapper.response.IBootcampResponseMapper;
 import com.pragma.bootcamp.domain.api.IBootcampServicePort;
+import com.pragma.bootcamp.domain.model.Bootcamp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,5 +26,12 @@ public class BootcampHandler implements IBootcampHandler {
 		var bootcamp = bootcampRequestMapper.requestToModel(request);
 		var response = bootcampServicePort.create(bootcamp);
 		return bootcampResponseMapper.modelToResponse(response);
+	}
+
+	@Override
+	public List<BootcampResponse> getAllBootcamp(Integer page, Integer size, String direction, String orderBy) {
+
+		List<Bootcamp> bootcamps = bootcampServicePort.getAll(page,size,direction,orderBy);
+		return bootcampResponseMapper.toResponseList(bootcamps);
 	}
 }
