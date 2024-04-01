@@ -5,7 +5,11 @@ import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
+import com.pragma.bootcamp.domain.util.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.ModelValidationUtil;
+import com.pragma.bootcamp.domain.util.PaginationData;
+
+import java.util.List;
 
 public class BootcampUseCase implements IBootcampServicePort {
 
@@ -33,4 +37,13 @@ public class BootcampUseCase implements IBootcampServicePort {
         DomainConstants.Class.BOOTCAMP.getName(),
         messagePort);
   }
+
+  @Override
+  public List<Bootcamp> getAll(Integer page, Integer size, String direction, String orderBy) {
+
+    PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
+    List<Bootcamp> bootcamps = bootcampPersistencePort.getAll(paginationData);
+    return ModelValidationUtil.executeValidationNotEmptyBootcampList(bootcamps,messagePort);
+  }
+
 }

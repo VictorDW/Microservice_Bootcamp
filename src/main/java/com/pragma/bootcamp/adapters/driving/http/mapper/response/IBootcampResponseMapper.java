@@ -7,6 +7,8 @@ import com.pragma.bootcamp.domain.model.Capacity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {ICapacityResponseMapper.class, ITechnologyResponseMapper.class})
 public interface IBootcampResponseMapper {
 
@@ -15,4 +17,7 @@ public interface IBootcampResponseMapper {
 
 	@Mapping(source = "technologyList", target = "technologies")
 	CapacityBasicResponse modelToResponse(Capacity capacity);
+
+	
+	List<BootcampResponse> toResponseList(List<Bootcamp> bootcampList);
 }
