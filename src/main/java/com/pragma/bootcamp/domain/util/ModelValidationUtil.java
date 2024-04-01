@@ -4,7 +4,6 @@ import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.exception.NumberOutOfRangeException;
 import com.pragma.bootcamp.domain.exception.RepeatedModelException;
-import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.model.ParentModel;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 

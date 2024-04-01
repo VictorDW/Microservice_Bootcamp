@@ -1,6 +1,7 @@
 package com.pragma.bootcamp.domain.api.usecase;
 
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
+import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.exception.NumberOutOfRangeException;
 import com.pragma.bootcamp.domain.exception.RepeatedModelException;
 import com.pragma.bootcamp.domain.model.Bootcamp;
@@ -9,6 +10,8 @@ import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
+import com.pragma.bootcamp.domain.util.ManegePaginationData;
+import com.pragma.bootcamp.domain.util.PaginationData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,12 +23,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -81,4 +86,44 @@ class BootcampUseCaseTest {
     assertThat(result).isNotNull();
   }
 
+  @Test
+  @DisplayName("Should throw an exception when you get an empty list of capacities, and the message key must match the contents of the message.properties")
+  void test3() {
+
+    //GIVEN
+
+    String keyMessage = "empty.list.message";
+    PaginationData paginationData = ManegePaginationData.definePaginationData(1,10, "asc", "capacities");
+    given(bootcampPersistencePort.getAll(paginationData)).willReturn(new ArrayList<>());
+    given(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE)).willReturn(DomainConstants.EMPTY_LIST_MESSAGE);
+
+    //WHEN - THAT
+
+    assertAll(
+        ()-> { assertThrows(NoDataFoundException.class, () -> bootcampUseCase.getAll(1,10,"asc","capacities"));},
+        ()-> {
+          try {
+            bootcampUseCase.getAll(1,10,"asc","capacities");
+          }catch (NoDataFoundException e) {
+            assertEquals(keyMessage, e.getMessage());
+          }
+        }
+    );
+  }
+
+  @Test
+  @DisplayName("Given some paging data, it should return a list of bootcamp")
+  void test4() {
+
+    //GIVEN
+    List<Bootcamp> bootcamps = List.of(response);
+    PaginationData paginationData = ManegePaginationData.definePaginationData(1,10, "asc", "capacities");
+    given(bootcampPersistencePort.getAll(paginationData)).willReturn(bootcamps);
+
+    //WHEN
+    List<Bootcamp> result = bootcampUseCase.getAll(1,10,"asc","capacities");
+
+    //THAT
+    assertThat(result).isNotEmpty();
+  }
 }

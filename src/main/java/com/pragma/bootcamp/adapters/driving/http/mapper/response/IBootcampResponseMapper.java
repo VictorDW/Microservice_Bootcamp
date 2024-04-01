@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {ICapacityResponseMapper.class, ITechnologyResponseMapper.class})
+@Mapper(componentModel = "spring", uses = {ICapacityResponseMapper.class})
 public interface IBootcampResponseMapper {
 
 	@Mapping(source = "capacityList", target = "capacities")
