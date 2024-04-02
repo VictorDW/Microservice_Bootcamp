@@ -3,7 +3,6 @@ package com.pragma.bootcamp.domain.model;
 import com.pragma.bootcamp.domain.util.DomainConstants;
 import com.pragma.bootcamp.domain.util.ModelValidationUtil;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
