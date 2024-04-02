@@ -6,6 +6,8 @@ import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundExce
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.IBootcampEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.IBootcampRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ICapacityRepository;
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.util.IPaginationProvider;
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.util.IQuerySpecificationProvider;
 import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.model.Capacity;

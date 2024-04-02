@@ -1,4 +1,4 @@
-package com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter;
+package com.pragma.bootcamp.adapters.driven.jpa.mysql.util;
 
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
