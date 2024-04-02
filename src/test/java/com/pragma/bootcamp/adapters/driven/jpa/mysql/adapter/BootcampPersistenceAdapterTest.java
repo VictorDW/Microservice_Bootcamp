@@ -10,20 +10,31 @@ import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
+import com.pragma.bootcamp.domain.util.ManegePaginationData;
+import com.pragma.bootcamp.domain.util.PaginationData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,10 +51,13 @@ class BootcampPersistenceAdapterTest {
 	private ICapacityRepository capacityRepository;
 	@Mock
 	private IMessagePort messagePort;
-
+	@Captor
+	private ArgumentCaptor<Specification<BootcampEntity>> specificationCaptor;
 	private List<Capacity> capacities;
 	private Bootcamp givenBootcamp;
 	private Bootcamp response;
+	private List<BootcampEntity> allEntity;
+	private List<Bootcamp> allModel;
 
 	@BeforeEach
 	void setUp() {
@@ -54,7 +68,8 @@ class BootcampPersistenceAdapterTest {
 		this.givenBootcamp = new Bootcamp(1L, "Test bootcamp", "Test");
 		this.givenBootcamp.setCapacityList(capacities);
 		this.response = givenBootcamp;
-
+		this.allEntity = List.of(new BootcampEntity());
+		this.allModel = List.of(response);
 	}
 
 	@Test
@@ -131,6 +146,61 @@ class BootcampPersistenceAdapterTest {
 
 		//WHEN
 		var result = bootcampPersistenceAdapter.verifyByName(nameBootcamp);
+
+		//THAT
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	@DisplayName("Must return a list containing the bootcamps from pagination with simple ordering")
+	void test5() {
+
+		//GIVEN
+		PaginationData paginationData = ManegePaginationData.definePaginationData(1,10, "asc", "name");
+		Sort sort = Sort.by(Sort.Direction.fromString(paginationData.direction()), paginationData.property());
+		Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size(), sort);
+
+		given(bootcampRepository.findAll(pagination)).willReturn(new PageImpl<>(allEntity));
+		given(bootcampEntityMapper.toModelList(allEntity)).willReturn(allModel);
+
+		//WHEN
+		var result = bootcampPersistenceAdapter.getAll(paginationData);
+
+		//THAT
+		assertThat(result).isNotEmpty();
+	}
+
+	@Test
+	@DisplayName("Must return a list containing the bootcamps from the pagination with advanced query")
+	void test6() {
+
+		//GIVEN
+		PaginationData paginationData = ManegePaginationData.definePaginationData(0,10, "asc", "capacities");
+		Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size());
+
+		given(bootcampRepository.findAll(specificationCaptor.capture(), eq(pagination))).willReturn(new PageImpl<>(allEntity));
+		given(bootcampEntityMapper.toModelList(allEntity)).willReturn(allModel);
+
+		//WHEN
+		var result = bootcampPersistenceAdapter.getAll(paginationData);
+
+		//THAT
+		assertThat(result).isNotEmpty();
+	}
+
+	@Test
+	@DisplayName("Must return an empty list of bootcamps, since no results were found in the database")
+	void test7() {
+
+		//GIVEN
+		PaginationData paginationData = ManegePaginationData.definePaginationData(1,10, "asc", "capacities");
+		Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size());
+
+		given(bootcampRepository.findAll(specificationCaptor.capture(), eq(pagination))).willReturn(new PageImpl<>(new ArrayList<>()));
+
+
+		//WHEN
+		var result = bootcampPersistenceAdapter.getAll(paginationData);
 
 		//THAT
 		assertThat(result).isEmpty();
