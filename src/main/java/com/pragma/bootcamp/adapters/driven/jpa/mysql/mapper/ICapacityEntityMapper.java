@@ -8,9 +8,8 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ITechnologyEntityMapper.class})
 public interface ICapacityEntityMapper {
-
 
     @Mapping(target = "technologyEntities", ignore = true)//→ evitará los warning de los test al no mappear todos los elementos
     @Mapping(target = "bootcampEntities", ignore = true)//→ evitará los warning de los test al no mappear todos los elementos

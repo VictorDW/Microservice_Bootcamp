@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ICapacityEntityMapper.class})
 public interface IBootcampEntityMapper {
 
 	@Mapping(target = "capacityEntities", ignore = true) //→ evitará los warning de los test al no mappear todos los elementos
@@ -17,9 +17,6 @@ public interface IBootcampEntityMapper {
 
 	@Mapping(source = "capacityEntities", target = "capacityList")
 	Bootcamp entityToModel(BootcampEntity bootcampEntity);
-
-	@Mapping(source = "technologyEntities", target = "technologyList")
-	Capacity entityToModel(CapacityEntity capacityEntity);
 
 	@Mapping(source = "capacityEntities", target = "capacityList")
 	List<Bootcamp> toModelList(List<BootcampEntity> bootcampEntityList);
