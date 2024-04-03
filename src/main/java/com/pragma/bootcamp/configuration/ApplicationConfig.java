@@ -12,8 +12,10 @@ import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ITechnologyRepos
 import com.pragma.bootcamp.adapters.driven.message.adapter.MessageAdapter;
 import com.pragma.bootcamp.domain.api.IBootcampServicePort;
 import com.pragma.bootcamp.domain.api.ICapacityServicePort;
+import com.pragma.bootcamp.domain.api.IVersionServicePort;
 import com.pragma.bootcamp.domain.api.usecase.BootcampUseCase;
 import com.pragma.bootcamp.domain.api.usecase.CapacityUseCase;
+import com.pragma.bootcamp.domain.api.usecase.VersionUseCase;
 import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
@@ -72,5 +74,10 @@ public class ApplicationConfig {
   @Bean
   public IBootcampServicePort bootcampServicePort() {
     return new BootcampUseCase(bootcampPersistencePort(), messagePort());
+  }
+
+  @Bean
+  public IVersionServicePort versionServicePort() {
+    return new VersionUseCase();
   }
 }
