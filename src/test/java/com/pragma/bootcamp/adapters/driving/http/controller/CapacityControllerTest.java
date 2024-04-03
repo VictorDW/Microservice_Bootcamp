@@ -203,5 +203,5 @@ class CapacityControllerTest {
 
     mockMvc.perform(requestBuilder)
         .andExpect(status().isBadRequest());
-    }
+  }
 }

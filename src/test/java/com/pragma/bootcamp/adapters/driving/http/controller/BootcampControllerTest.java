@@ -40,10 +40,26 @@ class BootcampControllerTest {
 	private IBootcampHandler bootcampHandler;
 	private MockMvc mockMvc;
 
+	private List<TechnologyBasicResponse> TechnologyBasicResponse;
+	private List<CapacityBasicResponse> capacityBasicResponses;
+	private BootcampResponse bootcampResponse;
+
 
 	@BeforeEach
 	void setUp() {
 		mockMvc = MockMvcBuilders.standaloneSetup(bootcampController).build();
+
+		this.TechnologyBasicResponse = List.of(
+				new TechnologyBasicResponse(1L, "Java"),
+				new TechnologyBasicResponse(2L, "PHP"),
+				new TechnologyBasicResponse(3L, "Python")
+		);
+
+		 capacityBasicResponses = List.of(
+				new CapacityBasicResponse(1L, "Test capacity 1", TechnologyBasicResponse)
+		);
+
+		bootcampResponse = new BootcampResponse(1L, "Test Bootcamp","Test", capacityBasicResponses);
 	}
 
 	public static Stream<Arguments> provideBootcampToCreateWithValidationErrors() {
@@ -135,17 +151,6 @@ class BootcampControllerTest {
 	void test1() throws Exception {
 
 		//GIVEN
-		List<TechnologyBasicResponse> technologyResponses = List.of(
-				new TechnologyBasicResponse(1L, "Java"),
-				new TechnologyBasicResponse(2L, "PHP"),
-				new TechnologyBasicResponse(3L, "Python")
-		);
-
-		List<CapacityBasicResponse> capacityBasicResponses = List.of(
-				new CapacityBasicResponse(1L, "Test capacity 1", technologyResponses)
-		);
-
-		BootcampResponse bootcampResponse = new BootcampResponse(1L, "Test Bootcamp","Test", capacityBasicResponses);
 		given(bootcampHandler.createBootcamp(any(AddBootcampRequest.class))).willReturn(bootcampResponse);
 
 		String bodyRequest = "{\"name\":\"Test Bootcamp\"," +
