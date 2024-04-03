@@ -1,14 +1,20 @@
 package com.pragma.bootcamp.configuration;
 
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter.BootcampPersistenceAdapter;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter.CapacityPersistenceAdapter;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter.TechnologyPersistenceAdapter;
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.IBootcampEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ICapacityEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ITechnologyEntityMapper;
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.IBootcampRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ICapacityRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ITechnologyRepository;
 import com.pragma.bootcamp.adapters.driven.message.adapter.MessageAdapter;
+import com.pragma.bootcamp.domain.api.IBootcampServicePort;
 import com.pragma.bootcamp.domain.api.ICapacityServicePort;
+import com.pragma.bootcamp.domain.api.usecase.BootcampUseCase;
 import com.pragma.bootcamp.domain.api.usecase.CapacityUseCase;
+import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
@@ -23,11 +29,16 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-  private final ITechnologyEntityMapper technologyEntityMapper;
-  private final ICapacityEntityMapper capacityEntityMapper;
-  private final ITechnologyRepository technologyRepository;
-  private final ICapacityRepository capacityRepository;
   private final MessageSource messageSource;
+  private final ITechnologyEntityMapper technologyEntityMapper;
+  private final ITechnologyRepository technologyRepository;
+
+  private final ICapacityEntityMapper capacityEntityMapper;
+  private final ICapacityRepository capacityRepository;
+
+  private final IBootcampEntityMapper bootcampEntityMapper;
+  private final IBootcampRepository bootcampRepository;
+
 
   @Bean
   public IMessagePort messagePort() {
@@ -51,5 +62,15 @@ public class ApplicationConfig {
   @Bean
   public ICapacityServicePort capacityServicePort() {
     return new CapacityUseCase(capacityPersistencePort(), messagePort());
+  }
+
+  @Bean
+  public IBootcampPersistencePort bootcampPersistencePort() {
+    return new BootcampPersistenceAdapter(bootcampEntityMapper, capacityRepository, bootcampRepository, messagePort());
+  }
+
+  @Bean
+  public IBootcampServicePort bootcampServicePort() {
+    return new BootcampUseCase(bootcampPersistencePort(), messagePort());
   }
 }

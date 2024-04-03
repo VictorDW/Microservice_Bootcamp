@@ -37,18 +37,12 @@ class CapacityUseCaseTest {
     private ICapacityPersistencePort capacityPersistencePort;
     @Mock
     private IMessagePort messagePort;
-    private List<Technology> technologies;
     private Capacity givenCapacity;
     private Capacity response;
 
     @BeforeEach
     void setUp() {
-        this.technologies = List.of(
-                new Technology(null, "Java", null),
-                new Technology(null, "Python", null),
-                new Technology(null, "Javascript", null)
-        );
-        this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer", technologies);
+        this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer");
         this.response = this.givenCapacity;
     }
 
@@ -61,13 +55,13 @@ class CapacityUseCaseTest {
         Optional<Capacity> capacityResponse = Optional.of(response);
         given(capacityPersistencePort.verifyByName(any(String.class))).willReturn(capacityResponse);
         given(messagePort.getMessage(
-                DomainConstants.ALREADY_EXIST_MESSAGE,
-                DomainConstants.Class.CAPACITY.getName(),
-                "Backend Java")
+            DomainConstants.ALREADY_EXIST_MESSAGE,
+            DomainConstants.Class.CAPACITY.getName(),
+            "Backend Java")
         ).willReturn(any(String.class));
 
         //WHEN - THAT
-        assertThrows(AlreadyExistException.class, ()->  capacityUseCase.create(givenCapacity));
+        assertThrows(AlreadyExistException.class, () -> capacityUseCase.create(givenCapacity));
     }
 
     @Test

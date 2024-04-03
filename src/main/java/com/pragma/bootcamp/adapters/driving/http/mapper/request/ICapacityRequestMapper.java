@@ -1,4 +1,4 @@
-package com.pragma.bootcamp.adapters.driving.http.mapper;
+package com.pragma.bootcamp.adapters.driving.http.mapper.request;
 
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddCapacityRequest;
 import com.pragma.bootcamp.domain.model.Capacity;

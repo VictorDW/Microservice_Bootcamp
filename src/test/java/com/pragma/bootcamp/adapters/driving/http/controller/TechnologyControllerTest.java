@@ -19,11 +19,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -35,19 +37,18 @@ class TechnologyControllerTest {
     private ITechnologyHandler technologyHandler;
     @InjectMocks
     private TechnologyController restController;
-
     private MockMvc mockMvc;
+    private TechnologyResponse response;
 
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(restController).build();
+        response = new TechnologyResponse(1L,"Java","Java con versión JDK 17");
     }
 
     @DisplayName("Given an http request you should create a technology")
     @Test
     void test1() throws Exception {
-
-        TechnologyResponse response = new TechnologyResponse(1L,"Java","Java con versión JDK 17");
 
         given(technologyHandler.createTechnology(any(AddTechnologyRequest.class))).willReturn(response);
 
@@ -109,16 +110,32 @@ class TechnologyControllerTest {
     @DisplayName("should return a status 400 (bad request) when sending a technology with validation errors.")
     void test2(String bodyRequest) throws Exception {
 
+        //WHEN
+
         MockHttpServletRequestBuilder requestBuilder = post("/api/technology")
             .contentType(MediaType.APPLICATION_JSON)
             .content(bodyRequest);
 
-        //GIVEN
+        //THEN
 
         mockMvc.perform(requestBuilder)
             .andExpect(status().isBadRequest());
+    }
 
-        //WHEN - THEN
+    @Test
+    @DisplayName("Given an http request you should get all technologies")
+    void test3() throws Exception {
+        //GIVEN
+        given(technologyHandler.getAllTechnologies(any(Integer.class), any(Integer.class), any(String.class))).willReturn(List.of(response));
+
+        //WHEN
+        MockHttpServletRequestBuilder requestBuilder = get("/api/technology?page=0&size=10&direction=asc")
+            .contentType(MediaType.APPLICATION_JSON);
+
+        //THEN
+        mockMvc.perform(requestBuilder)
+            .andDo(print())
+            .andExpect(status().isOk());
     }
 
 }

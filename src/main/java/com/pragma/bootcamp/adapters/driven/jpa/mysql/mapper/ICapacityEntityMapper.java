@@ -8,16 +8,17 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ITechnologyEntityMapper.class})
 public interface ICapacityEntityMapper {
 
-    @Mapping(target = "technologyEntities", ignore = true)
+    @Mapping(target = "technologyEntities", ignore = true)//→ evitará los warning de los test al no mappear todos los elementos
+    @Mapping(target = "bootcampEntities", ignore = true)//→ evitará los warning de los test al no mappear todos los elementos
     CapacityEntity modelToEntity(Capacity capacity);
 
-    /* -> en este caso se especifico como se llama el campo en la entity(source) y como se llama en el modelo(target),
+    /* → en este caso se especificó como se llama el campo en la entity(source) y como se llama en el modelo(target),
      para asi se MapStruct lo mapee */
     @Mapping(source = "technologyEntities", target = "technologyList")
     Capacity entityToModel(CapacityEntity capacityEntity);
     @Mapping(source = "technologyEntities", target = "technologyList")
-    List<Capacity> ToModelList(List<CapacityEntity> capacityEntities);
+    List<Capacity> toModelList(List<CapacityEntity> capacityEntities);
 }

@@ -19,7 +19,7 @@ public class CapacityUseCase implements ICapacityServicePort {
 
   public CapacityUseCase(ICapacityPersistencePort capacityPersistencePort, IMessagePort messagePort) {
     this.capacityPersistencePort = capacityPersistencePort;
-      this.messagePort = messagePort;
+    this.messagePort = messagePort;
   }
 
   @Override

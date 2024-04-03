@@ -1,4 +1,4 @@
-package com.pragma.bootcamp.adapters.driving.http.mapper;
+package com.pragma.bootcamp.adapters.driving.http.mapper.request;
 
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
 import com.pragma.bootcamp.domain.model.Technology;
