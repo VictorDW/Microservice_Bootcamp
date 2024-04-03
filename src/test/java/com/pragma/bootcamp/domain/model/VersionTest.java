@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class VersionTest {
   @Test
   void test1() {
-
     //GIVEN
-    Bootcamp bootcamp = new Bootcamp(null, "Test", null);
+    LocalDate startDate = LocalDate.now();
+    LocalDate endDate = LocalDate.of(2024,4,1);
 
     //WHEN - THAT
-    assertThrows(InvalidDateException.class, () -> new Version(null, bootcamp, LocalDate.now(), LocalDate.of(2024,4,1), 20));
+    assertThrows(InvalidDateException.class, () -> new Version(null, "Test bootcamp", startDate, endDate,50));
   }
 }

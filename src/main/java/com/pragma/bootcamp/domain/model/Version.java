@@ -8,15 +8,15 @@ import java.time.LocalDate;
 public class Version {
 
   private final Long id;
-  private final Bootcamp bootcamp;
+  private final String bootcampName;
   private final LocalDate startDate;
   private final LocalDate endDate;
   private final Integer maximumCapacity;
 
-  public Version(Long id, Bootcamp bootcamp, LocalDate startDate, LocalDate endDate, Integer maximumCapacity) {
+  public Version(Long id, String bootcampName, LocalDate startDate, LocalDate endDate, Integer maximumCapacity) {
     executeValidateDate(startDate, endDate);
     this.id = id;
-    this.bootcamp = bootcamp;
+    this.bootcampName = bootcampName;
     this.startDate = startDate;
     this.endDate = endDate;
     this.maximumCapacity = maximumCapacity;
@@ -32,8 +32,8 @@ public class Version {
     return id;
   }
 
-  public Bootcamp getBootcamp() {
-    return bootcamp;
+  public String getBootcampName() {
+    return bootcampName;
   }
 
   public LocalDate getStartDate() {
