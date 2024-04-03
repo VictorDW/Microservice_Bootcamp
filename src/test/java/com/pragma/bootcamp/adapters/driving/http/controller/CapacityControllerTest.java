@@ -26,6 +26,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -39,10 +40,20 @@ class CapacityControllerTest {
   @Mock
   private ICapacityHandler capacityHandler;
   private MockMvc mockMvc;
+  private List<TechnologyBasicResponse> technologyResponses;
+  private CapacityResponse response;
 
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(capacityController).build();
+
+    this.technologyResponses = List.of(
+        new TechnologyBasicResponse(1L, "Java"),
+        new TechnologyBasicResponse(2L, "PHP"),
+        new TechnologyBasicResponse(3L, "Python")
+    );
+
+    this.response = new CapacityResponse(1L, "Backend Java", "Java Backend Developer", technologyResponses);
   }
 
   public static Stream<Arguments> provideCapacitiesToCreateWithValidationErrors() {
@@ -155,14 +166,6 @@ class CapacityControllerTest {
 
     //GIVEN
 
-    List<TechnologyBasicResponse> technologyResponses = List.of(
-        new TechnologyBasicResponse(1L, "Java"),
-        new TechnologyBasicResponse(2L, "PHP"),
-        new TechnologyBasicResponse(3L, "Python")
-    );
-
-    CapacityResponse response = new CapacityResponse(1L, "Backend Java", "Java Backend Developer", technologyResponses);
-
     given(capacityHandler.createCapacity(any(AddCapacityRequest.class))).willReturn(response);
 
     String bodyRequest = "{\"name\":\"Backend Java\"," +
@@ -203,5 +206,24 @@ class CapacityControllerTest {
 
     mockMvc.perform(requestBuilder)
         .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  @DisplayName("Given an http request you should get all capacities, and return a status 200 (Ok)")
+  void test3() throws Exception {
+
+    //GIVEN
+    given(capacityHandler.getAllCapacity(any(Integer.class), any(Integer.class), any(String.class), any(String.class))).willReturn(List.of(response));
+
+    //WHEN
+    MockHttpServletRequestBuilder requestBuilder = get("/api/capacity?=page=0&size=10&direction=ASC&orderBy=ca")
+        .contentType(MediaType.APPLICATION_JSON);
+
+    //THAT
+    mockMvc.perform(requestBuilder)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].id").value(1L))
+        .andExpect(jsonPath("$[0].name").value("Backend Java"))
+        .andExpect(jsonPath("$[0].technologies").isNotEmpty());
   }
 }

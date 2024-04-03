@@ -15,7 +15,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -23,8 +25,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -146,6 +150,19 @@ class BootcampControllerTest {
 				)
 		);
 	}
+
+	public static Stream<Arguments> provideRequestToGetAllBootcampsWithValidationErrors() {
+		return Stream.of(
+				Arguments.of(
+						"?page=-1&size=10&direction=ASC&orderBy=name"
+				),
+				Arguments.of(
+						"?page=0&size=0&direction=ASC&orderBy=name"
+				)
+		);
+	}
+
+
 	@Test
 	@DisplayName("Given an http request you should create a bootcamp, and return a status 201 (Created)")
 	void test1() throws Exception {
@@ -189,6 +206,25 @@ class BootcampControllerTest {
 
 		mockMvc.perform(requestBuilder)
 				.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	@DisplayName("Given an http request you should get all bootcamps, and return a status 200 (Ok)")
+	void test3() throws Exception {
+
+		//GIVEN
+		given(bootcampHandler.getAllBootcamp(any(Integer.class), any(Integer.class), any(String.class), any(String.class))).willReturn(List.of(bootcampResponse));
+
+		//WHEN
+		MockHttpServletRequestBuilder requestBuilder = get("/api/bootcamp?=page=0&size=10&direction=ASC&orderBy=name")
+				.contentType(MediaType.APPLICATION_JSON);
+
+		//THAT
+		mockMvc.perform(requestBuilder)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].id").value(1L))
+				.andExpect(jsonPath("$[0].name").value("Test Bootcamp"))
+				.andExpect(jsonPath("$[0].capacities").isNotEmpty());
 	}
 
 }
