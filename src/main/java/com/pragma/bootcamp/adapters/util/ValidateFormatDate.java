@@ -7,16 +7,21 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class ValidateFormatDate implements ConstraintValidator<FormatDate, LocalDate> {
+public class ValidateFormatDate implements ConstraintValidator<ValidDate, String> {
   @Override
-  public boolean isValid(LocalDate date, ConstraintValidatorContext constraintValidatorContext) {
+  public boolean isValid(String date, ConstraintValidatorContext constraintValidatorContext) {
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
     try {
-      LocalDate.parse(date.toString(), formatter);
-      return true;
+      return validateFutureAndPresentDate(LocalDate.parse(date, formatter));
     } catch (DateTimeException e) {
       return false;
     }
+  }
+
+  private Boolean validateFutureAndPresentDate(LocalDate date) {
+    LocalDate now = LocalDate.now();
+    return date.isAfter(now) || date.isEqual(now);
   }
 }

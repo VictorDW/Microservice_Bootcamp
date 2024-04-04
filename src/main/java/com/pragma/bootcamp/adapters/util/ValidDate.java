@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Constraint(validatedBy = ValidateFormatDate.class)
-public @interface FormatDate {
+public @interface ValidDate {
 
   String message() default "{"+ Constants.INVALID_FORMAT_TO_PARSE_DATE +"}";
 

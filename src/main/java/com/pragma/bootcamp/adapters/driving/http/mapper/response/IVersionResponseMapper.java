@@ -15,7 +15,7 @@ public interface IVersionResponseMapper {
   VersionResponse modelToResponse(Version version);
 
   default String assignDateFormat(LocalDate date) {
-    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     return date.format(formatter);
   }
 }
