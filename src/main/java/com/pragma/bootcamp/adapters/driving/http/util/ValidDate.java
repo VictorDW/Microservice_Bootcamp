@@ -1,4 +1,4 @@
-package com.pragma.bootcamp.adapters.util;
+package com.pragma.bootcamp.adapters.driving.http.util;
 
 import com.pragma.bootcamp.configuration.Constants;
 import jakarta.validation.Constraint;

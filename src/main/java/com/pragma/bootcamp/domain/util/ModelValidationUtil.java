@@ -63,7 +63,7 @@ public class ModelValidationUtil {
         });
   }
 
-  public static <T extends ParentModel> List<T> executeValidationNotEmptyBootcampList(List<T> list, IMessagePort messagePort) {
+  public static <T> List<T> executeValidationNotEmptyList(List<T> list, IMessagePort messagePort) {
     if (list.isEmpty()) {
       throw new NoDataFoundException(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE));
     }

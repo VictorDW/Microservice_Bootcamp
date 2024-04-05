@@ -43,7 +43,7 @@ public class BootcampUseCase implements IBootcampServicePort {
 
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
     List<Bootcamp> bootcamps = bootcampPersistencePort.getAll(paginationData);
-    return ModelValidationUtil.executeValidationNotEmptyBootcampList(bootcamps,messagePort);
+    return ModelValidationUtil.executeValidationNotEmptyList(bootcamps,messagePort);
   }
 
 }

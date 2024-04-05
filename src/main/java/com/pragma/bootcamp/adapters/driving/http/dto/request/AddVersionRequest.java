@@ -1,6 +1,6 @@
 package com.pragma.bootcamp.adapters.driving.http.dto.request;
 
-import com.pragma.bootcamp.adapters.util.ValidDate;
+import com.pragma.bootcamp.adapters.driving.http.util.ValidDate;
 
 public record AddVersionRequest(
     String bootcampName,
