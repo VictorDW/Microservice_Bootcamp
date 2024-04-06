@@ -28,5 +28,5 @@ public final class Constants {
     public static final String NOT_FOUND_BOOTCAMP_MESSAGE = "error.not.found.bootcamp.message";
     public static final String FIELD_NOT_NULL_MESSAGE = "field.notNull.message";
     public static final String INVALID_FORMAT_TO_PARSE_DATE = "invalid.format.date.message";
-
+    public static final String MINIMUM_CAPACITY_MESSAGE = "minimum.capacity.message";
 }
