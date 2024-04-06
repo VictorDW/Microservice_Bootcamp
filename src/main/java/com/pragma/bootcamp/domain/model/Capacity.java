@@ -9,6 +9,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = false)
 public class Capacity extends ParentModel {
+
     public static final  Integer DEFAULT_MIN_NUMBER_TECHNOLOGIES = 3;
     public static final Integer DEFAULT_MAX_NUMBER_TECHNOLOGIES = 20;
 
@@ -33,5 +34,19 @@ public class Capacity extends ParentModel {
 
     public List<Technology> getTechnologyList() {
         return technologyList;
+    }
+
+    public enum OrderBy {
+        NAME("name"),
+        TECHNOLOGIES("technologies");
+
+        private final String order;
+
+        OrderBy(String order) {
+            this.order = order;
+        }
+        public String getOrderBy() {
+            return order;
+        }
     }
 }

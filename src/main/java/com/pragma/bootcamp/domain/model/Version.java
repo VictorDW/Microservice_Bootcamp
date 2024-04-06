@@ -47,4 +47,19 @@ public class Version {
   public Integer getMaximumCapacity() {
     return maximumCapacity;
   }
+
+  public enum OrderBy {
+    BOOTCAMP("bootcampEntity.name"),
+    START_DATE("startDate"),
+    MAXIMUM_CAPACITY("maximumCapacity");
+
+    private final String order;
+
+    OrderBy(String order) {
+      this.order = order;
+    }
+    public String getOrderBy() {
+      return order;
+    }
+  }
 }

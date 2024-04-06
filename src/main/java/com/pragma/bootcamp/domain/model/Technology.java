@@ -9,4 +9,17 @@ public class Technology extends ParentModel {
     super(id, name, description);
   }
 
+  public enum OrderBy {
+    NAME("name");
+
+    private final String order;
+
+    OrderBy(String order) {
+      this.order = order;
+    }
+    public String getOrderBy() {
+      return order;
+    }
+  }
+
 }
