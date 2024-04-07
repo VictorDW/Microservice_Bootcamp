@@ -1,6 +1,4 @@
-package com.pragma.bootcamp.domain.util;
-
-import com.pragma.bootcamp.domain.util.order.IOrderBy;
+package com.pragma.bootcamp.domain.util.order;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -33,17 +31,18 @@ public final class ManegePaginationData {
             Direction.DESC : DEFAULT_DIRECTION);
   }
 
-  public static <E extends Enum<E>> String defineOrderBy(Class<E> enumClass, IOrderBy orderByDefault, String propertyToSearch) {
+  public static <E extends Enum<E>> String defineOrderBy(Class<E> enumClass, IOrderBy defaultOrdering, String propertyToSearch) {
 
     if(Objects.isNull(propertyToSearch)) {
-      return orderByDefault.getOrderBy();
+      return defaultOrdering.getOrderBy();
     }
 
     return getProperty(enumClass, propertyToSearch)
-          .map(propertyEnum -> (IOrderBy) propertyEnum)
-          .orElse(orderByDefault)
+          .map(IOrderBy.class::cast) //-> equivalente ->.map(propertyEnum -> (IOrderBy) propertyEnum)
+          .orElse(defaultOrdering)
           .getOrderBy();
   }
+
   private static <E extends Enum<E>> Optional<E> getProperty(Class<E> enumClass, String propertyToSearch) {
     try {
       return Optional.of(Enum.valueOf(enumClass, propertyToSearch.toUpperCase()));

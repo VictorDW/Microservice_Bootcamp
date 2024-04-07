@@ -7,12 +7,15 @@ import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
-import com.pragma.bootcamp.domain.util.ManegePaginationData;
-import com.pragma.bootcamp.domain.util.PaginationData;
+import com.pragma.bootcamp.domain.util.order.IOrderBy;
+import com.pragma.bootcamp.domain.util.order.ManegePaginationData;
+import com.pragma.bootcamp.domain.util.order.PaginationData;
 
 import java.util.List;
 
 public class TechnologyUseCase implements ITechnologyServicePort {
+
+  public static final IOrderBy DEFAULT_ORDERING = Technology.OrderBy.NAME;
   private final ITechnologyPersistencePort technologyPersistencePort;
   private final IMessagePort messagePort;
 
@@ -48,8 +51,9 @@ public class TechnologyUseCase implements ITechnologyServicePort {
   @Override
   public List<Technology> getAll(Integer page, Integer size, String direction) {
 
-    PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction);
+    PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, DEFAULT_ORDERING.getOrderBy());
     List<Technology> technologies = technologyPersistencePort.getAllTechnology(paginationData);
+
     return executeValidateNotEmptyTechnologyList(technologies);
   }
 
