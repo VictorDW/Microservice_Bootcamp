@@ -3,13 +3,12 @@ package com.pragma.bootcamp.domain.api.usecase;
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.model.Capacity;
-import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
 
-import com.pragma.bootcamp.domain.util.ManegePaginationData;
-import com.pragma.bootcamp.domain.util.PaginationData;
+import com.pragma.bootcamp.domain.util.order.ManegePaginationData;
+import com.pragma.bootcamp.domain.util.order.PaginationData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
