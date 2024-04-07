@@ -40,6 +40,7 @@ public class Bootcamp extends ParentModel {
   public enum OrderBy implements IOrderBy {
     NAME("name"),
     CAPACITIES("capacities");
+
     private final String order;
     OrderBy(String order) {
       this.order = order;

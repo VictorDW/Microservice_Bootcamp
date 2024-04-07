@@ -40,6 +40,7 @@ public class Capacity extends ParentModel {
     public enum OrderBy implements IOrderBy {
         NAME("name"),
         TECHNOLOGIES("technologies");
+
         private final String order;
         OrderBy(String order) {
             this.order = order;

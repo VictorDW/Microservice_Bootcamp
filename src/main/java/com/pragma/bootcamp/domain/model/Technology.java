@@ -12,6 +12,7 @@ public class Technology extends ParentModel {
 
   public enum OrderBy implements IOrderBy {
     NAME("name");
+    
     private final String order;
     OrderBy(String order) {
       this.order = order;
