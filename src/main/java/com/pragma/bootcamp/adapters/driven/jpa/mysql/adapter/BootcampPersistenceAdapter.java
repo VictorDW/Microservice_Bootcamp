@@ -13,7 +13,7 @@ import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
-import com.pragma.bootcamp.domain.util.order.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -66,10 +66,11 @@ public class BootcampPersistenceAdapter implements IBootcampPersistencePort, IPa
 		List<BootcampEntity> bootcampEntities;
 		Pageable pagination;
 
-		if (!paginationData.property().equalsIgnoreCase(DEFAULT_ORDERING.getOrderBy())) {
+		if (!paginationData.property().equalsIgnoreCase(DEFAULT_ORDERING.getOrderableProperty())) {
 			pagination = simplePagination(paginationData);
 			bootcampEntities = queryAdvance(pagination, paginationData.direction());
-			return bootcampEntityMapper.toModelList(bootcampEntities);
+			return bootcampEntities.stream().map(bootcampEntityMapper::entityToModel).toList();
+
 		}
 
 		pagination = paginationWithSorting(paginationData);

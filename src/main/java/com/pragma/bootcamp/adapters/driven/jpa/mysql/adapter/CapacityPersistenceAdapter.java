@@ -13,7 +13,7 @@ import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
-import com.pragma.bootcamp.domain.util.order.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -65,7 +65,7 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort, IPa
 
     List<CapacityEntity> capacityEntities;
 
-    if (!paginationData.property().equalsIgnoreCase(DEFAULT_ORDERING.getOrderBy())) {
+    if (!paginationData.property().equalsIgnoreCase(DEFAULT_ORDERING.getOrderableProperty())) {
       capacityEntities = advancedQuery(paginationData);
       return capacityEntityMapper.toModelList(capacityEntities);
     }

@@ -86,6 +86,6 @@ public class ApplicationConfig {
 
   @Bean
   public IVersionServicePort versionServicePort() {
-    return new VersionUseCase(versionPersistencePort());
+    return new VersionUseCase(versionPersistencePort(), messagePort());
   }
 }

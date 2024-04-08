@@ -1,6 +1,6 @@
 package com.pragma.bootcamp.adapters.driven.jpa.mysql.util;
 
-import com.pragma.bootcamp.domain.util.order.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
