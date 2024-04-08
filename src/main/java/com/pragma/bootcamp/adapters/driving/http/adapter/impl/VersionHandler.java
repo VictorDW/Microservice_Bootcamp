@@ -6,8 +6,11 @@ import com.pragma.bootcamp.adapters.driving.http.dto.response.VersionResponse;
 import com.pragma.bootcamp.adapters.driving.http.mapper.request.IVersionRequestMapper;
 import com.pragma.bootcamp.adapters.driving.http.mapper.response.IVersionResponseMapper;
 import com.pragma.bootcamp.domain.api.IVersionServicePort;
+import com.pragma.bootcamp.domain.model.Version;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -22,5 +25,12 @@ public class VersionHandler implements IVersionHandler {
     var version = versionRequestMapper.requestToModel(addVersionRequest);
     var response = versionServicePort.create(version);
     return versionResponseMapper.modelToResponse(response);
+  }
+
+  @Override
+  public List<VersionResponse> getAllVersion(Long bootcampId, Integer page, Integer size, String direction, String orderBy) {
+
+    List<Version> versions = versionServicePort.getAll(bootcampId, page, size, direction, orderBy);
+    return versionResponseMapper.modelToResponsList(versions);
   }
 }

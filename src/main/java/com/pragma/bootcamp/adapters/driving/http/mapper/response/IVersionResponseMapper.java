@@ -7,9 +7,11 @@ import org.mapstruct.Mapping;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface IVersionResponseMapper {
+
   @Mapping(target = "endDate", source = "version.endDate")
   @Mapping(target = "startDate", source = "version.startDate")
   VersionResponse modelToResponse(Version version);
@@ -18,4 +20,8 @@ public interface IVersionResponseMapper {
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     return date.format(formatter);
   }
+
+  @Mapping(target = "endDate", source = "version.endDate")
+  @Mapping(target = "startDate", source = "version.startDate")
+  List<VersionResponse> modelToResponsList(List<Version> versions);
 }
