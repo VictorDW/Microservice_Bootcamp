@@ -8,5 +8,5 @@ public interface IVersionServicePort {
 
   Version create(Version version);
 
-  List<Version> getAll(Integer page, Integer size, String direction, String orderBy);
+  List<Version> getAll(Long bootcampId, Integer page, Integer size, String direction, String orderBy);
 }
