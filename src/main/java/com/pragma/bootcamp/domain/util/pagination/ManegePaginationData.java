@@ -1,4 +1,4 @@
-package com.pragma.bootcamp.domain.util.order;
+package com.pragma.bootcamp.domain.util.pagination;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -31,21 +31,21 @@ public final class ManegePaginationData {
             Direction.DESC : DEFAULT_DIRECTION);
   }
 
-  public static <E extends Enum<E>> String defineOrderBy(Class<E> enumClass, IOrderBy defaultOrdering, String propertyToSearch) {
+  public static <E extends Enum<E>> String defineOrderBy(Class<E> enumClass, IOrderableProperty defaultOrdering, String constantToSearch) {
 
-    if(Objects.isNull(propertyToSearch)) {
-      return defaultOrdering.getOrderBy();
+    if(Objects.isNull(constantToSearch)) {
+      return defaultOrdering.getOrderableProperty();
     }
 
-    return getProperty(enumClass, propertyToSearch)
-          .map(IOrderBy.class::cast) //-> equivalente ->.map(propertyEnum -> (IOrderBy) propertyEnum)
+    return getEnumConstant(enumClass, constantToSearch)
+          .map(IOrderableProperty.class::cast) //-> equivalente ->.map(enumConstant -> (IOrderableProperty) enumConstant)
           .orElse(defaultOrdering)
-          .getOrderBy();
+          .getOrderableProperty();
   }
 
-  private static <E extends Enum<E>> Optional<E> getProperty(Class<E> enumClass, String propertyToSearch) {
+  private static <E extends Enum<E>> Optional<E> getEnumConstant(Class<E> enumClass, String constantToSearch) {
     try {
-      return Optional.of(Enum.valueOf(enumClass, propertyToSearch.toUpperCase()));
+      return Optional.of(Enum.valueOf(enumClass, constantToSearch.toUpperCase()));
     }catch (IllegalArgumentException exception) {
       return Optional.empty();
     }

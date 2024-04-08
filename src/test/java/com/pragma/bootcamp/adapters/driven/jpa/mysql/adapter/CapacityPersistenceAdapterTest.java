@@ -10,7 +10,7 @@ import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
-import com.pragma.bootcamp.domain.util.order.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

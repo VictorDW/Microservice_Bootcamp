@@ -7,15 +7,15 @@ import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
-import com.pragma.bootcamp.domain.util.order.IOrderBy;
-import com.pragma.bootcamp.domain.util.order.ManegePaginationData;
-import com.pragma.bootcamp.domain.util.order.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
+import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 
 import java.util.List;
 
 public class CapacityUseCase implements ICapacityServicePort {
 
-  public static final IOrderBy DEFAULT_ORDERING = Capacity.OrderBy.NAME;
+  public static final IOrderableProperty DEFAULT_ORDERING = Capacity.OrderBy.NAME;
   private final ICapacityPersistencePort capacityPersistencePort;
   private final IMessagePort messagePort;
 

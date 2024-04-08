@@ -2,7 +2,7 @@ package com.pragma.bootcamp.domain.model;
 
 import com.pragma.bootcamp.domain.exception.InvalidDateException;
 import com.pragma.bootcamp.domain.util.DomainConstants;
-import com.pragma.bootcamp.domain.util.order.IOrderBy;
+import com.pragma.bootcamp.domain.util.pagination.IOrderBy;
 
 import java.time.LocalDate;
 
