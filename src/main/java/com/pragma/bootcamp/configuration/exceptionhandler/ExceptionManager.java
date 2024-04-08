@@ -4,6 +4,7 @@ import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundExce
 import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.configuration.exceptionhandler.dto.ExceptionArgumentResponse;
 import com.pragma.bootcamp.configuration.exceptionhandler.dto.ExceptionResponse;
+import com.pragma.bootcamp.domain.exception.InvalidDateException;
 import com.pragma.bootcamp.domain.exception.ModelDomainException;
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
@@ -85,9 +86,10 @@ public class ExceptionManager {
   public ResponseEntity<ExceptionResponse> handlerNoDataFoundException(ModelDomainException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
-  @ExceptionHandler(DateTimeParseException.class)
-  public ResponseEntity<ExceptionResponse> handlerDateTimeParseException() {
-    return this.generalExceptionHandler(Constants.INVALID_FORMAT_TO_PARSE_DATE, HttpStatus.BAD_REQUEST);
+
+  @ExceptionHandler(InvalidDateException.class)
+  public ResponseEntity<ExceptionResponse> handlerInvalidDateException(InvalidDateException exception) {
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
 }

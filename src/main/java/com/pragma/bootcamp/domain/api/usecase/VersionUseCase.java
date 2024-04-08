@@ -10,7 +10,6 @@ import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 
 import java.util.List;
-import java.util.Objects;
 
 public class VersionUseCase implements IVersionServicePort {
 

@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/version")
 @RequiredArgsConstructor
+@Validated
 public class VersionController {
 
   private final IVersionHandler versionHandler;
@@ -27,7 +29,7 @@ public class VersionController {
 
   @GetMapping
   public ResponseEntity<List<VersionResponse>> getAllVersion(@RequestParam(required = false)
-                                                               @Min(value = 0, message = "{" + Constants.PAGE_INVALID_MESSAGE + "}")
+                                                               @Min(value = 1, message = "{" + Constants.PAGE_INVALID_MESSAGE + "}")
                                                                Long bootcampId,
                                                              @RequestParam(required = false)
                                                                @Min(value = 0, message = "{" + Constants.PAGE_INVALID_MESSAGE + "}")
