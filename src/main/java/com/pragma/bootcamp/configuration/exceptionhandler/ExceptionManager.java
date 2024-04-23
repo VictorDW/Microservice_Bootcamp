@@ -1,8 +1,10 @@
 package com.pragma.bootcamp.configuration.exceptionhandler;
 
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundException;
+import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.configuration.exceptionhandler.dto.ExceptionArgumentResponse;
 import com.pragma.bootcamp.configuration.exceptionhandler.dto.ExceptionResponse;
+import com.pragma.bootcamp.domain.exception.InvalidDateException;
 import com.pragma.bootcamp.domain.exception.ModelDomainException;
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
@@ -17,6 +19,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @ControllerAdvice
@@ -81,6 +84,11 @@ public class ExceptionManager {
 
   @ExceptionHandler(ModelDomainException.class)
   public ResponseEntity<ExceptionResponse> handlerNoDataFoundException(ModelDomainException exception) {
+    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(InvalidDateException.class)
+  public ResponseEntity<ExceptionResponse> handlerInvalidDateException(InvalidDateException exception) {
     return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 

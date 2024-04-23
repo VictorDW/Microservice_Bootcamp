@@ -7,13 +7,15 @@ import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
-import com.pragma.bootcamp.domain.util.ManegePaginationData;
-import com.pragma.bootcamp.domain.util.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
+import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 
 import java.util.List;
 
 public class CapacityUseCase implements ICapacityServicePort {
 
+  public static final IOrderableProperty DEFAULT_ORDERING = Capacity.OrderBy.NAME;
   private final ICapacityPersistencePort capacityPersistencePort;
   private final IMessagePort messagePort;
 
@@ -48,8 +50,10 @@ public class CapacityUseCase implements ICapacityServicePort {
   @Override
   public List<Capacity> getAll(Integer page, Integer size, String direction, String orderBy) {
 
+    orderBy = ManegePaginationData.defineOrderBy(Capacity.OrderBy.class, DEFAULT_ORDERING, orderBy);
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
     List<Capacity> capacities = capacityPersistencePort.getAllCapacity(paginationData);
+
     return executeValidationNotEmptyCapacityList(capacities);
   }
 

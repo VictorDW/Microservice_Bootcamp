@@ -1,4 +1,4 @@
-package com.pragma.bootcamp.domain.util;
+package com.pragma.bootcamp.domain.util.pagination;
 
 public record PaginationData(
     Integer page,

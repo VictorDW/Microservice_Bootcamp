@@ -13,14 +13,15 @@ import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
-import com.pragma.bootcamp.domain.util.ManegePaginationData;
-import com.pragma.bootcamp.domain.util.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.pragma.bootcamp.domain.api.usecase.BootcampUseCase.DEFAULT_ORDERING;
 
 @RequiredArgsConstructor
 public class BootcampPersistenceAdapter implements IBootcampPersistencePort, IPaginationProvider, IQuerySpecificationProvider<BootcampEntity, CapacityEntity> {
@@ -65,10 +66,11 @@ public class BootcampPersistenceAdapter implements IBootcampPersistencePort, IPa
 		List<BootcampEntity> bootcampEntities;
 		Pageable pagination;
 
-		if (!ManegePaginationData.DEFAULT_PROPERTY.equalsIgnoreCase(paginationData.property())) {
+		if (!paginationData.property().equalsIgnoreCase(DEFAULT_ORDERING.getOrderableProperty())) {
 			pagination = simplePagination(paginationData);
 			bootcampEntities = queryAdvance(pagination, paginationData.direction());
-			return bootcampEntityMapper.toModelList(bootcampEntities);
+			return bootcampEntities.stream().map(bootcampEntityMapper::entityToModel).toList();
+
 		}
 
 		pagination = paginationWithSorting(paginationData);

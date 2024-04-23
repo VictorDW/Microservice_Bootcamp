@@ -3,23 +3,25 @@ package com.pragma.bootcamp.configuration;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter.BootcampPersistenceAdapter;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter.CapacityPersistenceAdapter;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter.TechnologyPersistenceAdapter;
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter.VersionPersistenceAdapter;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.IBootcampEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ICapacityEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ITechnologyEntityMapper;
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.IVersionEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.IBootcampRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ICapacityRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ITechnologyRepository;
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.IVersionRepository;
 import com.pragma.bootcamp.adapters.driven.message.adapter.MessageAdapter;
 import com.pragma.bootcamp.domain.api.IBootcampServicePort;
 import com.pragma.bootcamp.domain.api.ICapacityServicePort;
+import com.pragma.bootcamp.domain.api.IVersionServicePort;
 import com.pragma.bootcamp.domain.api.usecase.BootcampUseCase;
 import com.pragma.bootcamp.domain.api.usecase.CapacityUseCase;
-import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
-import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
-import com.pragma.bootcamp.domain.spi.IMessagePort;
+import com.pragma.bootcamp.domain.api.usecase.VersionUseCase;
+import com.pragma.bootcamp.domain.spi.*;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
 import com.pragma.bootcamp.domain.api.usecase.TechnologyUseCase;
-import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +40,9 @@ public class ApplicationConfig {
 
   private final IBootcampEntityMapper bootcampEntityMapper;
   private final IBootcampRepository bootcampRepository;
+
+  private final IVersionRepository versionRepository;
+  private final IVersionEntityMapper versionEntityMapper;
 
 
   @Bean
@@ -72,5 +77,15 @@ public class ApplicationConfig {
   @Bean
   public IBootcampServicePort bootcampServicePort() {
     return new BootcampUseCase(bootcampPersistencePort(), messagePort());
+  }
+
+  @Bean
+  public IVersionPersistencePort versionPersistencePort() {
+    return new VersionPersistenceAdapter(versionEntityMapper, bootcampRepository, versionRepository, messagePort());
+  }
+
+  @Bean
+  public IVersionServicePort versionServicePort() {
+    return new VersionUseCase(versionPersistencePort(), messagePort());
   }
 }

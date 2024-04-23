@@ -5,14 +5,16 @@ import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
-import com.pragma.bootcamp.domain.util.ManegePaginationData;
+import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
+import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.ModelValidationUtil;
-import com.pragma.bootcamp.domain.util.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 
 import java.util.List;
 
 public class BootcampUseCase implements IBootcampServicePort {
 
+  public static final IOrderableProperty DEFAULT_ORDERING = Bootcamp.OrderBy.NAME;
   private final IBootcampPersistencePort bootcampPersistencePort;
   private final IMessagePort messagePort;
 
@@ -41,9 +43,11 @@ public class BootcampUseCase implements IBootcampServicePort {
   @Override
   public List<Bootcamp> getAll(Integer page, Integer size, String direction, String orderBy) {
 
+    orderBy = ManegePaginationData.defineOrderBy(Bootcamp.OrderBy.class, DEFAULT_ORDERING, orderBy);
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
     List<Bootcamp> bootcamps = bootcampPersistencePort.getAll(paginationData);
-    return ModelValidationUtil.executeValidationNotEmptyBootcampList(bootcamps,messagePort);
+
+    return ModelValidationUtil.executeValidationNotEmptyList(bootcamps,messagePort);
   }
 
 }
