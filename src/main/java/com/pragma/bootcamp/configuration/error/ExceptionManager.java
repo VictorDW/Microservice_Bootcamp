@@ -1,9 +1,8 @@
-package com.pragma.bootcamp.configuration.exceptionhandler;
+package com.pragma.bootcamp.configuration.error;
 
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundException;
-import com.pragma.bootcamp.configuration.Constants;
-import com.pragma.bootcamp.configuration.exceptionhandler.dto.ExceptionArgumentResponse;
-import com.pragma.bootcamp.configuration.exceptionhandler.dto.ExceptionResponse;
+import com.pragma.bootcamp.configuration.error.dto.ExceptionArgumentResponse;
+import com.pragma.bootcamp.configuration.error.dto.ExceptionResponse;
 import com.pragma.bootcamp.domain.exception.InvalidDateException;
 import com.pragma.bootcamp.domain.exception.ModelDomainException;
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
@@ -19,15 +18,14 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @ControllerAdvice
 @RequiredArgsConstructor
 public class ExceptionManager {
 
-  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-  private ResponseEntity<ExceptionResponse> generalExceptionHandler(String exceptionMessage, HttpStatus httpStatus) {
+  private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+  public static ResponseEntity<ExceptionResponse> generalExceptionHandler(String exceptionMessage, HttpStatus httpStatus) {
 
     ExceptionResponse response = new ExceptionResponse(
         formatter.format(LocalDateTime.now()),
@@ -40,7 +38,7 @@ public class ExceptionManager {
   }
   @ExceptionHandler(AlreadyExistException.class)
   public ResponseEntity<ExceptionResponse> handlerAlreadyExistException(AlreadyExistException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -74,22 +72,22 @@ public class ExceptionManager {
 
   @ExceptionHandler(NoDataFoundException.class)
   public ResponseEntity<ExceptionResponse> handlerNoDataFoundException(NoDataFoundException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(NoEntityFoundException.class)
   public ResponseEntity<ExceptionResponse> handlerNoEntityFoundException(NoEntityFoundException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(ModelDomainException.class)
   public ResponseEntity<ExceptionResponse> handlerNoDataFoundException(ModelDomainException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(InvalidDateException.class)
   public ResponseEntity<ExceptionResponse> handlerInvalidDateException(InvalidDateException exception) {
-    return this.generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    return generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
 }
