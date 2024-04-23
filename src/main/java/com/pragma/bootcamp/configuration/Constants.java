@@ -13,6 +13,11 @@ public final class Constants {
 
     //______________________________________________________________________________________________
 
+    public enum Field {
+        NAME,
+        ID;
+    }
+
     //KEY MESSAGE
     public static final String DEFAULT_MESSAGE = "error.default.message";
     public static final String FIELD_EMPTY_MESSAGE = "empty.field.message";

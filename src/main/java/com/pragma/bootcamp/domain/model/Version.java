@@ -2,6 +2,7 @@ package com.pragma.bootcamp.domain.model;
 
 import com.pragma.bootcamp.domain.exception.InvalidDateException;
 import com.pragma.bootcamp.domain.util.DomainConstants;
+import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 
 import java.time.LocalDate;
 
@@ -46,5 +47,22 @@ public class Version {
 
   public Integer getMaximumCapacity() {
     return maximumCapacity;
+  }
+
+  public enum OrderBy implements IOrderableProperty {
+    BOOTCAMP("bootcampEntity.name"),
+    START_DATE("startDate"),
+    MAXIMUM_CAPACITY("maximumCapacity");
+
+    private final String order;
+
+    OrderBy(String order) {
+      this.order = order;
+    }
+
+    @Override
+    public String getOrderableProperty() {
+      return order;
+    }
   }
 }

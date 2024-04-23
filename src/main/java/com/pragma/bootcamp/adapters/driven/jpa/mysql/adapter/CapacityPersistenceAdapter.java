@@ -13,14 +13,15 @@ import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
-import com.pragma.bootcamp.domain.util.ManegePaginationData;
-import com.pragma.bootcamp.domain.util.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.pragma.bootcamp.domain.api.usecase.CapacityUseCase.DEFAULT_ORDERING;
 
 @RequiredArgsConstructor
 public class CapacityPersistenceAdapter implements ICapacityPersistencePort, IPaginationProvider, IQuerySpecificationProvider<CapacityEntity, TechnologyEntity> {
@@ -64,7 +65,7 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort, IPa
 
     List<CapacityEntity> capacityEntities;
 
-    if (!ManegePaginationData.DEFAULT_PROPERTY.equalsIgnoreCase(paginationData.property())) {
+    if (!paginationData.property().equalsIgnoreCase(DEFAULT_ORDERING.getOrderableProperty())) {
       capacityEntities = advancedQuery(paginationData);
       return capacityEntityMapper.toModelList(capacityEntities);
     }

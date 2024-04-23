@@ -6,14 +6,21 @@ import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundExce
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.IVersionEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.IBootcampRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.IVersionRepository;
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.util.IPaginationProvider;
 import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.domain.model.Version;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.spi.IVersionPersistencePort;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
-public class VersionPersistenceAdapter implements IVersionPersistencePort {
+public class VersionPersistenceAdapter implements IVersionPersistencePort, IPaginationProvider {
 
   private final IVersionEntityMapper versionEntityMapper;
   private final IBootcampRepository bootcampRepository;
@@ -31,14 +38,39 @@ public class VersionPersistenceAdapter implements IVersionPersistencePort {
   }
 
   private BootcampEntity getBootcampEntity(String bootcampName) {
-
     return bootcampRepository
         .findByNameIgnoreCase(bootcampName)
-        .orElseThrow(()->
-            new NoEntityFoundException(
-                messagePort.getMessage(
-                    Constants.NOT_FOUND_BOOTCAMP_MESSAGE,
-                    bootcampName))
-        );
+        .orElseThrow(()-> bootcampThrow(bootcampName, Constants.Field.NAME.name()));
   }
+
+  private <T> RuntimeException bootcampThrow(T bootcamp, String field)  {
+	  throw new NoEntityFoundException(
+			  messagePort.getMessage(
+					  Constants.NOT_FOUND_BOOTCAMP_MESSAGE,
+            field,
+            bootcamp));
+  }
+
+  @Override
+  public List<Version> getAllVersion(Long bootcampId, PaginationData paginationData) {
+
+    final Pageable pagination = paginationWithSorting(paginationData);
+    Page<VersionEntity> versionEntities;
+
+    if (Objects.isNull(bootcampId)) {
+      versionEntities = versionRepository.findAll(pagination);
+    } else {
+      BootcampEntity bootcampEntity = getBootcampEntity(bootcampId);
+      versionEntities = versionRepository.findAllByBootcampEntity(bootcampEntity, pagination);
+    }
+
+    return versionEntities.map(versionEntityMapper::entityToModel).toList();
+  }
+
+  private BootcampEntity getBootcampEntity(Long bootcampId) {
+    return bootcampRepository
+        .findById(bootcampId)
+        .orElseThrow(() -> bootcampThrow(bootcampId, Constants.Field.ID.name()));
+  }
+
 }
