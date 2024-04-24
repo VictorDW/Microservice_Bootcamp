@@ -33,5 +33,8 @@ public class CapacityEntity {
        joinColumns = @JoinColumn(name = "capacity_id", referencedColumnName = "id"),
        inverseJoinColumns = @JoinColumn(name = "technology_id", referencedColumnName = "id")
     )
-    List<TechnologyEntity> technologyEntities = new ArrayList<>();
+    private List<TechnologyEntity> technologyEntities = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "capacityEntities")
+    private List<BootcampEntity> bootcampEntities = new ArrayList<>();
 }

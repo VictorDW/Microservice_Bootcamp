@@ -3,9 +3,10 @@ package com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.TechnologyEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ITechnologyEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ITechnologyRepository;
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.util.IPaginationProvider;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
-import com.pragma.bootcamp.domain.util.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 

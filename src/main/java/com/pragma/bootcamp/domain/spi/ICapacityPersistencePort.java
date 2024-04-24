@@ -1,7 +1,7 @@
 package com.pragma.bootcamp.domain.spi;
 
 import com.pragma.bootcamp.domain.model.Capacity;
-import com.pragma.bootcamp.domain.util.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 
 import java.util.List;
 import java.util.Optional;

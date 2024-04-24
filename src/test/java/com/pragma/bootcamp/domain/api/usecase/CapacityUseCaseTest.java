@@ -3,13 +3,12 @@ package com.pragma.bootcamp.domain.api.usecase;
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.model.Capacity;
-import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
 
-import com.pragma.bootcamp.domain.util.ManegePaginationData;
-import com.pragma.bootcamp.domain.util.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,18 +36,12 @@ class CapacityUseCaseTest {
     private ICapacityPersistencePort capacityPersistencePort;
     @Mock
     private IMessagePort messagePort;
-    private List<Technology> technologies;
     private Capacity givenCapacity;
     private Capacity response;
 
     @BeforeEach
     void setUp() {
-        this.technologies = List.of(
-                new Technology(null, "Java", null),
-                new Technology(null, "Python", null),
-                new Technology(null, "Javascript", null)
-        );
-        this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer", technologies);
+        this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer");
         this.response = this.givenCapacity;
     }
 
@@ -61,13 +54,13 @@ class CapacityUseCaseTest {
         Optional<Capacity> capacityResponse = Optional.of(response);
         given(capacityPersistencePort.verifyByName(any(String.class))).willReturn(capacityResponse);
         given(messagePort.getMessage(
-                DomainConstants.ALREADY_EXIST_MESSAGE,
-                DomainConstants.Class.CAPACITY.getName(),
-                "Backend Java")
+            DomainConstants.ALREADY_EXIST_MESSAGE,
+            DomainConstants.Class.CAPACITY.getName(),
+            "Backend Java")
         ).willReturn(any(String.class));
 
         //WHEN - THAT
-        assertThrows(AlreadyExistException.class, ()->  capacityUseCase.create(givenCapacity));
+        assertThrows(AlreadyExistException.class, () -> capacityUseCase.create(givenCapacity));
     }
 
     @Test

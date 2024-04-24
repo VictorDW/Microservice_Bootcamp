@@ -1,73 +1,53 @@
 package com.pragma.bootcamp.domain.model;
 
-import com.pragma.bootcamp.domain.exception.RepeatedTechnologyException;
-import com.pragma.bootcamp.domain.exception.NumberTechnolgiesLessThanException;
-import com.pragma.bootcamp.domain.exception.NumberTechnologiesGreaterThanException;
 import com.pragma.bootcamp.domain.util.DomainConstants;
+import com.pragma.bootcamp.domain.util.ModelValidationUtil;
+import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 import lombok.EqualsAndHashCode;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode
-public class Capacity {
+@EqualsAndHashCode(callSuper = false)
+public class Capacity extends ParentModel {
 
-    private final Long id;
     public static final  Integer DEFAULT_MIN_NUMBER_TECHNOLOGIES = 3;
     public static final Integer DEFAULT_MAX_NUMBER_TECHNOLOGIES = 20;
-    private final String name;
-    private final String description;
-    private final List<Technology> technologyList;
 
-    public Capacity(Long id, String name, String description, List<Technology> technologyList) {
+    private List<Technology> technologyList;
 
-        executeValidationTechnologyRanges(technologyList);
-        executeValidationNameTechnologyRepeated(technologyList);
-
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.technologyList = technologyList;
+    public Capacity(Long id, String name, String description) {
+      super(id, name, description);
+      this.technologyList = new ArrayList<>();
     }
 
-    private void executeValidationTechnologyRanges(List<Technology> technologyList) {
+    public void setTechnologyList(List<Technology> technologyList) {
 
-        if (technologyList.size() < DEFAULT_MIN_NUMBER_TECHNOLOGIES) {
-            throw new NumberTechnolgiesLessThanException(
-                String.format(DomainConstants.NUMBER_TECHNOLOGIES_MIN_MESSAGE, Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES)
-            );
-        }
-        if (technologyList.size() > DEFAULT_MAX_NUMBER_TECHNOLOGIES) {
-            throw new NumberTechnologiesGreaterThanException(
-                String.format(DomainConstants.NUMBER_TECHNOLOGIES_MAX_MESSAGE, Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES)
-            );
-        }
-    }
+    ModelValidationUtil.executeValidationModel(
+        technologyList,
+        DomainConstants.Class.TECHNOLOGY.getPluralName(),
+        DomainConstants.Class.CAPACITY.getName(),
+        DEFAULT_MIN_NUMBER_TECHNOLOGIES,
+        DEFAULT_MAX_NUMBER_TECHNOLOGIES);
 
-    private void executeValidationNameTechnologyRepeated(List<Technology> technologyList) {
-
-        HashSet<String> uniqueName = new HashSet<>(technologyList.size());
-
-        technologyList.forEach(technology -> {
-            if (!uniqueName.add(technology.getName()))
-                throw new RepeatedTechnologyException(DomainConstants.REPEATED_TECHNOLOGY_MESSAGE);
-        });
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
+    this.technologyList = technologyList;
     }
 
     public List<Technology> getTechnologyList() {
         return technologyList;
+    }
+
+    public enum OrderBy implements IOrderableProperty {
+        NAME("name"),
+        TECHNOLOGIES("technologies");
+
+        private final String order;
+        OrderBy(String order) {
+            this.order = order;
+        }
+        @Override
+        public String getOrderableProperty() {
+            return order;
+        }
     }
 }

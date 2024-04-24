@@ -1,6 +1,7 @@
 package com.pragma.bootcamp.domain.model;
 
-import com.pragma.bootcamp.domain.exception.RepeatedTechnologyException;
+import com.pragma.bootcamp.domain.exception.NumberOutOfRangeException;
+import com.pragma.bootcamp.domain.exception.RepeatedModelException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -57,27 +58,27 @@ class CapacityTest {
   @DisplayName("Should throw an exception when the number of technologies is less than three and greater than twenty.")
   void test1(List<Technology> technologies) {
 
-    assertThrows(RuntimeException.class, () -> {
-      new Capacity(1L, "Backend Java", "Developer backend java", technologies);
+    Capacity capacity = new Capacity(1L, "Backend Java", "Developer backend java");
+
+    assertThrows(NumberOutOfRangeException.class, () -> {
+      capacity.setTechnologyList(technologies);
     });
   }
 
-  @Test
-  @DisplayName("Given a number of technologies less than three, you must return the custom message of the exception.")
-  void test2() {
+  @ParameterizedTest
+  @MethodSource("provideListTechnologyToValidateMinAndMaxQuantity")
+  @DisplayName("Given a number of technologies less than three and greater that twenty, must return the custom message of the exception.")
+  void test2(List<Technology> technologies) {
 
-    List<Technology> technologies =  Arrays.asList(
-        new Technology(1L, "Java", "Java 17"),
-        new Technology(2L, "Python", "Python")
-    );
-
-     String expectedMessage = "The minimum of technologies that can be added to the capacity is " + Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES;
+    Capacity capacity = new Capacity(1L, "Backend Java", "Developer backend java");
+     String expectedMessage = "The number of Technologies that can be added to the Capacity most be between "
+         + Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES + " and " + Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES;
     //GIVEN
 
     try {
-       new Capacity(1L, "Backend Java", "Developer backend java", technologies);
+      capacity.setTechnologyList(technologies);
        //WHEN
-    }catch (RuntimeException e) {
+    }catch (NumberOutOfRangeException e) {
       assertEquals(expectedMessage, e.getMessage());
       //THAT
     }
@@ -92,9 +93,10 @@ class CapacityTest {
         new Technology(2L, "Python", "Python"),
         new Technology(2L, "Python", "Python")
     );
+    Capacity capacity = new Capacity(1L, "Backend Java", "Developer backend java");
 
-    assertThrows(RepeatedTechnologyException.class, () -> {
-      new Capacity(1L, "Backend Java", "Developer backend java", technologies);
+    assertThrows(RepeatedModelException.class, () -> {
+      capacity.setTechnologyList(technologies);
     });
   }
 

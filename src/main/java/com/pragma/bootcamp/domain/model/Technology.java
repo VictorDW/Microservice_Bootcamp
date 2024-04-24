@@ -1,30 +1,26 @@
 package com.pragma.bootcamp.domain.model;
 
+import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode
-public class Technology {
-
-  private final Long id;
-  private final String name;
-  private final String description;
+@EqualsAndHashCode(callSuper = false)
+public class Technology extends ParentModel {
 
   public Technology(Long id, String name, String description) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
+    super(id, name, description);
   }
 
-  public Long getId() {
-    return id;
-  }
+  public enum OrderBy implements IOrderableProperty {
+    NAME("name");
 
-  public String getName() {
-    return name;
-  }
-
-  public String getDescription() {
-    return description;
+    private final String order;
+    OrderBy(String order) {
+      this.order = order;
+    }
+    @Override
+    public String getOrderableProperty() {
+      return order;
+    }
   }
 
 }
