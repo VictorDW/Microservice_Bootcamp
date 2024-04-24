@@ -1,4 +1,4 @@
-package com.pragma.bootcamp.configuration.exceptionhandler.dto;
+package com.pragma.bootcamp.configuration.error.dto;
 
 import jakarta.validation.ConstraintViolation;
 import org.springframework.validation.FieldError;

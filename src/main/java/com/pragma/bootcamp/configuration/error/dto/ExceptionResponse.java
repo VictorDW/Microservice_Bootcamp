@@ -1,4 +1,4 @@
-package com.pragma.bootcamp.configuration.exceptionhandler.dto;
+package com.pragma.bootcamp.configuration.error.dto;
 
 public record ExceptionResponse(
     String localDateTime,

@@ -34,4 +34,6 @@ public final class Constants {
     public static final String FIELD_NOT_NULL_MESSAGE = "field.notNull.message";
     public static final String INVALID_FORMAT_TO_PARSE_DATE = "invalid.format.date.message";
     public static final String MINIMUM_CAPACITY_MESSAGE = "minimum.capacity.message";
+    public static final String ACCESS_DENIED_MESSAGE = "Access Denied";
+    public static final String PERMISSIONS_ACCESS_DENIED_MESSAGE = "Don´t have permissions to access this endpoint";
 }
