@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +22,14 @@ public class VersionController {
 
   private final IVersionHandler versionHandler;
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   public ResponseEntity<VersionResponse> createVersion(@RequestBody @Valid AddVersionRequest addVersionRequest) {
 
     return ResponseEntity.ok().body(versionHandler.createVersion(addVersionRequest));
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
   public ResponseEntity<List<VersionResponse>> getAllVersion(@RequestParam(required = false)
                                                                @Min(value = 1, message = "{" + Constants.PAGE_INVALID_MESSAGE + "}")

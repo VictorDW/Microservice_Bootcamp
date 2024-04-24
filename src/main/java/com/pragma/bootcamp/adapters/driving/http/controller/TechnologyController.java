@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,7 @@ public class TechnologyController {
 
   private final ITechnologyHandler technologyHandler;
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
   public ResponseEntity<TechnologyResponse> createTechnology(@RequestBody @Valid AddTechnologyRequest request) {
 
@@ -30,6 +32,7 @@ public class TechnologyController {
     return ResponseEntity.status(HttpStatus.CREATED).body(technologyCreated);
   }
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
   public ResponseEntity<List<TechnologyResponse>> getAllTechnologies(@RequestParam(required = false)
                                                                        @Min(value = 0, message = "{"+Constants.PAGE_INVALID_MESSAGE+"}")

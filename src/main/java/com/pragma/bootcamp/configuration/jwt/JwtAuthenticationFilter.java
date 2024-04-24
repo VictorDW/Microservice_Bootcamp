@@ -40,7 +40,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     final var token = getTokenFromRequest(request);
 
     if(token.isEmpty()) {
-      request.getSession().setAttribute("error_token_message", Constants.TOKEN_NOT_FOUND_MESSAGE);
       filterChain.doFilter(request, response);
       return;
     }
