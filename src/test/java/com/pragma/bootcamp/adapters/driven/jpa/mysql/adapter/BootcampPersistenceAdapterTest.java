@@ -56,8 +56,7 @@ class BootcampPersistenceAdapterTest {
 	private List<Capacity> capacities;
 	private Bootcamp givenBootcamp;
 	private Bootcamp response;
-	private List<BootcampEntity> allEntity;
-	private List<Bootcamp> allModel;
+	private BootcampEntity bootcampEntity;
 
 	@BeforeEach
 	void setUp() {
@@ -68,8 +67,7 @@ class BootcampPersistenceAdapterTest {
 		this.givenBootcamp = new Bootcamp(1L, "Test bootcamp", "Test");
 		this.givenBootcamp.setCapacityList(capacities);
 		this.response = givenBootcamp;
-		this.allEntity = List.of(new BootcampEntity());
-		this.allModel = List.of(response);
+		this.bootcampEntity = new BootcampEntity();
 	}
 
 	@Test
@@ -160,8 +158,8 @@ class BootcampPersistenceAdapterTest {
 		Sort sort = Sort.by(Sort.Direction.fromString(paginationData.direction()), paginationData.property());
 		Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size(), sort);
 
-		given(bootcampRepository.findAll(pagination)).willReturn(new PageImpl<>(allEntity));
-		given(bootcampEntityMapper.toModelList(allEntity)).willReturn(allModel);
+		given(bootcampRepository.findAll(pagination)).willReturn(new PageImpl<>(List.of(bootcampEntity)));
+		given(bootcampEntityMapper.entityToModel(bootcampEntity)).willReturn(response);
 
 		//WHEN
 		var result = bootcampPersistenceAdapter.getAll(paginationData);
@@ -178,8 +176,8 @@ class BootcampPersistenceAdapterTest {
 		PaginationData paginationData = ManegePaginationData.definePaginationData(0,10, "asc", "capacities");
 		Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size());
 
-		given(bootcampRepository.findAll(specificationCaptor.capture(), eq(pagination))).willReturn(new PageImpl<>(allEntity));
-		given(bootcampEntityMapper.toModelList(allEntity)).willReturn(allModel);
+		given(bootcampRepository.findAll(specificationCaptor.capture(), eq(pagination))).willReturn(new PageImpl<>(List.of(bootcampEntity)));
+		given(bootcampEntityMapper.entityToModel(bootcampEntity)).willReturn(response);
 
 		//WHEN
 		var result = bootcampPersistenceAdapter.getAll(paginationData);

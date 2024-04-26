@@ -69,14 +69,12 @@ public class BootcampPersistenceAdapter implements IBootcampPersistencePort, IPa
 		if (!paginationData.property().equalsIgnoreCase(DEFAULT_ORDERING.getOrderableProperty())) {
 			pagination = simplePagination(paginationData);
 			bootcampEntities = queryAdvance(pagination, paginationData.direction());
-			return bootcampEntities.stream().map(bootcampEntityMapper::entityToModel).toList();
-
+		} else {
+			pagination = paginationWithSorting(paginationData);
+			bootcampEntities = bootcampRepository.findAll(pagination).getContent();
 		}
 
-		pagination = paginationWithSorting(paginationData);
-		bootcampEntities = bootcampRepository.findAll(pagination).getContent();
-
-		return bootcampEntityMapper.toModelList(bootcampEntities);
+		return bootcampEntities.stream().map(bootcampEntityMapper::entityToModel).toList();
 	}
 
 	private List<BootcampEntity> queryAdvance(Pageable pagination, String direction) {
