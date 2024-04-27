@@ -4,6 +4,9 @@ import com.pragma.bootcamp.adapters.driving.http.adapter.IVersionHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddVersionRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.VersionResponse;
 import com.pragma.bootcamp.configuration.Constants;
+import com.pragma.bootcamp.configuration.springdoc.SpringDocConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/version")
+@SecurityRequirement(name = "bearer-key")
 @RequiredArgsConstructor
 @Validated
 public class VersionController {
@@ -24,6 +28,11 @@ public class VersionController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
+  @Operation(
+      summary = SpringDocConstants.OPERATION_SUMMARY_CREATE_VERSION,
+      description = SpringDocConstants.OPERATION_DESCRIPTION_CREATE_VERSION,
+      tags = {"Version"}
+  )
   public ResponseEntity<VersionResponse> createVersion(@RequestBody @Valid AddVersionRequest addVersionRequest) {
 
     return ResponseEntity.ok().body(versionHandler.createVersion(addVersionRequest));
@@ -31,6 +40,11 @@ public class VersionController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
+  @Operation(
+      summary = SpringDocConstants.OPERATION_SUMMARY_GET_VERSION,
+      description = SpringDocConstants.OPERATION_DESCRIPTION_GET_VERSION,
+      tags = {"Version"}
+  )
   public ResponseEntity<List<VersionResponse>> getAllVersion(@RequestParam(required = false)
                                                                @Min(value = 1, message = "{" + Constants.PAGE_INVALID_MESSAGE + "}")
                                                                Long bootcampId,

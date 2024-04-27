@@ -4,6 +4,9 @@ import com.pragma.bootcamp.adapters.driving.http.adapter.ICapacityHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddCapacityRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityResponse;
 import com.pragma.bootcamp.configuration.Constants;
+import com.pragma.bootcamp.configuration.springdoc.SpringDocConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +20,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/capacity")
+@SecurityRequirement(name = "bearer-key")
 @RequiredArgsConstructor
 @Validated
 public class CapacityController {
 
     private final ICapacityHandler capacityHandler;
 
-
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
+  @Operation(
+      summary = SpringDocConstants.OPERATION_SUMMARY_CREATE_CAPACITY,
+      description = SpringDocConstants.OPERATION_DESCRIPTION_CREATE_CAPACITY,
+      tags = {"Capacity"}
+  )
   public ResponseEntity<CapacityResponse> createCapacity(@RequestBody @Valid AddCapacityRequest request) {
     CapacityResponse capacity = capacityHandler.createCapacity(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(capacity);
@@ -33,6 +41,11 @@ public class CapacityController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
+  @Operation(
+      summary = SpringDocConstants.OPERATION_SUMMARY_GET_CAPACITY,
+      description = SpringDocConstants.OPERATION_DESCRIPTION_GET_CAPACITY,
+      tags = {"Capacity"}
+  )
   public ResponseEntity<List<CapacityResponse>> getAllCapacity(@RequestParam(required = false)
                                                                @Min(value = 0, message = "{" + Constants.PAGE_INVALID_MESSAGE + "}")
                                                                Integer page,

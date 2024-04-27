@@ -4,6 +4,9 @@ import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import com.pragma.bootcamp.configuration.Constants;
+import com.pragma.bootcamp.configuration.springdoc.SpringDocConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import java.util.List;
 @RestController
 @Validated
 @RequestMapping("/api/technology")
+@SecurityRequirement(name = "bearer-key")
 @RequiredArgsConstructor
 public class TechnologyController {
 
@@ -26,6 +30,11 @@ public class TechnologyController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping
+  @Operation(
+      summary = SpringDocConstants.OPERATION_SUMMARY_CREATE_TECHNOLOGY,
+      description = SpringDocConstants.OPERATION_DESCRIPTION_CREATE_TECHNOLOGY,
+      tags = {"Technology"}
+  )
   public ResponseEntity<TechnologyResponse> createTechnology(@RequestBody @Valid AddTechnologyRequest request) {
 
     TechnologyResponse technologyCreated = technologyHandler.createTechnology(request);
@@ -34,6 +43,11 @@ public class TechnologyController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping
+  @Operation(
+      summary = SpringDocConstants.OPERATION_SUMMARY_GET_TECHNOLOGY,
+      description = SpringDocConstants.OPERATION_DESCRIPTION_GET_TECHNOLOGY,
+      tags = {"Technology"}
+  )
   public ResponseEntity<List<TechnologyResponse>> getAllTechnologies(@RequestParam(required = false)
                                                                        @Min(value = 0, message = "{"+Constants.PAGE_INVALID_MESSAGE+"}")
                                                                        Integer page,
