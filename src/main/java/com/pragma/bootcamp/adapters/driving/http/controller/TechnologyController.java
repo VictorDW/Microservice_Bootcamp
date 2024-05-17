@@ -5,6 +5,7 @@ import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyReques
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.configuration.springdoc.SpringDocConstants;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -33,8 +34,7 @@ public class TechnologyController {
   @Operation(
       summary = SpringDocConstants.OPERATION_SUMMARY_CREATE_TECHNOLOGY,
       description = SpringDocConstants.OPERATION_DESCRIPTION_CREATE_TECHNOLOGY,
-      tags = {"Technology"}
-  )
+      tags = {"Technology"})
   public ResponseEntity<TechnologyResponse> createTechnology(@RequestBody @Valid AddTechnologyRequest request) {
 
     TechnologyResponse technologyCreated = technologyHandler.createTechnology(request);
@@ -46,15 +46,14 @@ public class TechnologyController {
   @Operation(
       summary = SpringDocConstants.OPERATION_SUMMARY_GET_TECHNOLOGY,
       description = SpringDocConstants.OPERATION_DESCRIPTION_GET_TECHNOLOGY,
-      tags = {"Technology"}
-  )
-  public ResponseEntity<List<TechnologyResponse>> getAllTechnologies(@RequestParam(required = false)
+      tags = {"Technology"})
+  public ResponseEntity<PaginationResponse<TechnologyResponse>> getAllTechnologies(@RequestParam(required = false)
                                                                        @Min(value = 0, message = "{"+Constants.PAGE_INVALID_MESSAGE+"}")
                                                                        Integer page,
-                                                                    @RequestParam(required = false)
+                                                                                   @RequestParam(required = false)
                                                                       @Min(value = 1, message = "{"+Constants.SIZE_INVALID_MESSAGE+"}")
                                                                       Integer size,
-                                                                    @RequestParam(required = false) String direction) {
+                                                                                   @RequestParam(required = false) String direction) {
 
     return ResponseEntity.ok(technologyHandler.getAllTechnologies(page, size, direction));
   }

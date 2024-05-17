@@ -7,10 +7,10 @@ import com.pragma.bootcamp.adapters.driven.jpa.mysql.util.IPaginationProvider;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -35,11 +35,21 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort,
   }
 
   @Override
-  public List<Technology> getAllTechnology(PaginationData data) {
+  public PaginationResponse<Technology> getAllTechnology(PaginationData data) {
 
     Pageable pagination = paginationWithSorting(data);
-    var technologyEntities = technologyRepository.findAll(pagination).getContent();
+    var pageTechnologies = technologyRepository.findAll(pagination);
+    var modelList = technologyEntityMapper.toModelList(pageTechnologies.getContent());
 
-    return technologyEntityMapper.toModelList(technologyEntities);
+    return new PaginationResponse.Builder<Technology>()
+        .content(modelList)
+        .isEmpty(pageTechnologies.isEmpty())
+        .isFirst(pageTechnologies.isFirst())
+        .isLast(pageTechnologies.isLast())
+        .pageNumber(pageTechnologies.getNumber())
+        .pageSize(pageTechnologies.getSize())
+        .totalElements(pageTechnologies.getTotalElements())
+        .totalPages(pageTechnologies.getTotalPages())
+        .build();
   }
 }
