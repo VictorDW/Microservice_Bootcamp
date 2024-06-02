@@ -10,6 +10,7 @@ import com.pragma.bootcamp.domain.util.DomainConstants;
 import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 
 import java.util.List;
 
@@ -48,20 +49,19 @@ public class CapacityUseCase implements ICapacityServicePort {
   }
 
   @Override
-  public List<Capacity> getAll(Integer page, Integer size, String direction, String orderBy) {
+  public PaginationResponse<Capacity> getAll(Integer page, Integer size, String direction, String orderBy) {
 
     orderBy = ManegePaginationData.defineOrderBy(Capacity.OrderBy.class, DEFAULT_ORDERING, orderBy);
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
-    List<Capacity> capacities = capacityPersistencePort.getAllCapacity(paginationData);
+    PaginationResponse<Capacity> pagination = capacityPersistencePort.getAllCapacity(paginationData);
 
-    return executeValidationNotEmptyCapacityList(capacities);
+    executeValidationNotEmptyCapacityList(pagination.getContent());
+    return pagination;
   }
 
-  private List<Capacity> executeValidationNotEmptyCapacityList(List<Capacity> capacities) {
-
+  private void executeValidationNotEmptyCapacityList(List<Capacity> capacities) {
     if (capacities.isEmpty()) {
       throw new NoDataFoundException(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE));
     }
-    return capacities;
   }
 }

@@ -5,6 +5,7 @@ import com.pragma.bootcamp.adapters.driving.http.dto.request.AddCapacityRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityResponse;
 import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.configuration.springdoc.SpringDocConstants;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -46,14 +47,14 @@ public class CapacityController {
       description = SpringDocConstants.OPERATION_DESCRIPTION_GET_CAPACITY,
       tags = {"Capacity"}
   )
-  public ResponseEntity<List<CapacityResponse>> getAllCapacity(@RequestParam(required = false)
+  public ResponseEntity<PaginationResponse<CapacityResponse>> getAllCapacity(@RequestParam(required = false)
                                                                @Min(value = 0, message = "{" + Constants.PAGE_INVALID_MESSAGE + "}")
                                                                Integer page,
-                                                               @RequestParam(required = false)
+                                                                             @RequestParam(required = false)
                                                                @Min(value = 1, message = "{" + Constants.SIZE_INVALID_MESSAGE + "}")
                                                                Integer size,
-                                                               @RequestParam(required = false) String direction,
-                                                               @RequestParam(required = false) String orderBy) {
+                                                                             @RequestParam(required = false) String direction,
+                                                                             @RequestParam(required = false) String orderBy) {
     return ResponseEntity.ok(capacityHandler.getAllCapacity(page, size, direction, orderBy));
   }
 }

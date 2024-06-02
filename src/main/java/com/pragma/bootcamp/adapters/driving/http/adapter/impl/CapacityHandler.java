@@ -7,6 +7,7 @@ import com.pragma.bootcamp.adapters.driving.http.mapper.request.ICapacityRequest
 import com.pragma.bootcamp.adapters.driving.http.mapper.response.ICapacityResponseMapper;
 import com.pragma.bootcamp.domain.api.ICapacityServicePort;
 import com.pragma.bootcamp.domain.model.Capacity;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,10 @@ public class CapacityHandler implements ICapacityHandler {
     }
 
     @Override
-    public List<CapacityResponse> getAllCapacity(Integer page, Integer size, String direction, String orderBy) {
+    public PaginationResponse<CapacityResponse> getAllCapacity(Integer page, Integer size, String direction, String orderBy) {
 
-        List<Capacity> capacities = capacityServicePort.getAll(page, size, direction, orderBy);
-        return capacityResponseMapper.toResponseList(capacities);
+        PaginationResponse<Capacity> capacities = capacityServicePort.getAll(page, size, direction, orderBy);
+        return capacityResponseMapper.toPaginationResponse(capacities);
     }
 
 

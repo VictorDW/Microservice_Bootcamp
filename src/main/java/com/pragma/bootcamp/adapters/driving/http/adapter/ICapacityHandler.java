@@ -2,10 +2,11 @@ package com.pragma.bootcamp.adapters.driving.http.adapter;
 
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddCapacityRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityResponse;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 
 import java.util.List;
 
 public interface ICapacityHandler {
   CapacityResponse createCapacity(AddCapacityRequest request);
-  List<CapacityResponse> getAllCapacity(Integer page, Integer size, String direction, String orderBy);
+  PaginationResponse<CapacityResponse> getAllCapacity(Integer page, Integer size, String direction, String orderBy);
 }
