@@ -53,15 +53,6 @@ public class CapacityUseCase implements ICapacityServicePort {
 
     orderBy = ManegePaginationData.defineOrderBy(Capacity.OrderBy.class, DEFAULT_ORDERING, orderBy);
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
-    PaginationResponse<Capacity> pagination = capacityPersistencePort.getAllCapacity(paginationData);
-
-    executeValidationNotEmptyCapacityList(pagination.getContent());
-    return pagination;
-  }
-
-  private void executeValidationNotEmptyCapacityList(List<Capacity> capacities) {
-    if (capacities.isEmpty()) {
-      throw new NoDataFoundException(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE));
-    }
+    return capacityPersistencePort.getAllCapacity(paginationData);
   }
 }

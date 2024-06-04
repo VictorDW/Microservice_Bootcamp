@@ -53,15 +53,6 @@ public class TechnologyUseCase implements ITechnologyServicePort {
   public PaginationResponse<Technology> getAll(Integer page, Integer size, String direction) {
 
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, DEFAULT_ORDERING.getOrderableProperty());
-    PaginationResponse<Technology> pagination = technologyPersistencePort.getAllTechnology(paginationData);
-
-    executeValidateNotEmptyTechnologyList(pagination.getContent());
-    return pagination;
-  }
-
-  private void executeValidateNotEmptyTechnologyList(List<Technology> technologies) {
-    if (technologies.isEmpty()) {
-      throw new NoDataFoundException(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE));
-    }
+    return technologyPersistencePort.getAllTechnology(paginationData);
   }
 }
