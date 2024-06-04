@@ -12,4 +12,5 @@ public interface ITechnologyPersistencePort {
   Technology saveTechnology(Technology technology);
   Optional<Technology> verifyByName(String name);
   PaginationResponse<Technology> getAllTechnology(PaginationData values);
+  List<Technology> getAllTechnologyWithoutPagination();
 }

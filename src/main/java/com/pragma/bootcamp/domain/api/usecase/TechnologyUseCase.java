@@ -55,4 +55,9 @@ public class TechnologyUseCase implements ITechnologyServicePort {
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, DEFAULT_ORDERING.getOrderableProperty());
     return technologyPersistencePort.getAllTechnology(paginationData);
   }
+
+  @Override
+  public List<Technology> getAllWithoutPagination() {
+    return technologyPersistencePort.getAllTechnologyWithoutPagination();
+  }
 }

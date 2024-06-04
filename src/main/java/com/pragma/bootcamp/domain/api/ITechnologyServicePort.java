@@ -11,4 +11,6 @@ public interface ITechnologyServicePort {
   Technology create(Technology technology);
 
   PaginationResponse<Technology> getAll(Integer page, Integer size, String order);
+
+  List<Technology> getAllWithoutPagination();
 }

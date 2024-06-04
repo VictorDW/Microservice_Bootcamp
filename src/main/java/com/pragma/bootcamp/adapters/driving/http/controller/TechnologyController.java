@@ -2,6 +2,7 @@ package com.pragma.bootcamp.adapters.driving.http.controller;
 
 import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
+import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyBasicResponse;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.configuration.springdoc.SpringDocConstants;
@@ -57,4 +58,15 @@ public class TechnologyController {
 
     return ResponseEntity.ok(technologyHandler.getAllTechnologies(page, size, direction));
   }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/without-pagination")
+ /* @Operation(
+      summary = SpringDocConstants.OPERATION_SUMMARY_GET_TECHNOLOGY_WITHOUT_PAGINATION,
+      description = SpringDocConstants.OPERATION_DESCRIPTION_GET_TECHNOLOGY_WITHOUT_PAGINATION,
+      tags = {"Technology"})*/
+  public ResponseEntity<List<TechnologyBasicResponse>> getAllTechnologiesWithoutPagination() {
+    return ResponseEntity.ok(technologyHandler.getAllWithoutPagination());
+  }
+
 }

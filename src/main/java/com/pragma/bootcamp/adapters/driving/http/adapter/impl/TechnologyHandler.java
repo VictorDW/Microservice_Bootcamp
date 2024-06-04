@@ -2,6 +2,7 @@ package com.pragma.bootcamp.adapters.driving.http.adapter.impl;
 
 import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
+import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyBasicResponse;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import com.pragma.bootcamp.adapters.driving.http.mapper.request.ITechnologyRequestMapper;
 import com.pragma.bootcamp.adapters.driving.http.mapper.response.ITechnologyResponseMapper;
@@ -35,5 +36,11 @@ public class TechnologyHandler implements ITechnologyHandler {
 
     PaginationResponse<Technology> technologies = technologyServicePort.getAll(page, size, direction);
     return responseMapper.toPaginationResponse(technologies);
+  }
+
+  @Override
+  public List<TechnologyBasicResponse> getAllWithoutPagination() {
+    var technologies = technologyServicePort.getAllWithoutPagination();
+    return responseMapper.toBasicResponseList(technologies);
   }
 }

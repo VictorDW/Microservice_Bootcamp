@@ -9,7 +9,6 @@ import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -44,5 +43,11 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort,
     var modelList = technologyEntityMapper.toModelList(pageTechnologies.getContent());
 
     return builderPaginationResponse(modelList, pageTechnologies);
+  }
+
+  @Override
+  public List<Technology> getAllTechnologyWithoutPagination() {
+    var technologies = technologyRepository.findAll();
+    return technologyEntityMapper.toModelList(technologies);
   }
 }
