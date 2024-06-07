@@ -50,9 +50,4 @@ public class TechnologyPersistenceAdapter implements ITechnologyPersistencePort,
     var technologies = technologyRepository.findAll();
     return technologyEntityMapper.toModelList(technologies);
   }
-
-  @Override
-  public boolean isEmptyListTechnology() {
-    return technologyRepository.count() == 0;
-  }
 }

@@ -1,5 +1,6 @@
 package com.pragma.bootcamp.domain.api.usecase;
 
+import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
@@ -58,10 +59,5 @@ public class TechnologyUseCase implements ITechnologyServicePort {
   @Override
   public List<Technology> getAllWithoutPagination() {
     return technologyPersistencePort.getAllTechnologyWithoutPagination();
-  }
-
-  @Override
-  public boolean isEmptyList() {
-    return technologyPersistencePort.isEmptyListTechnology();
   }
 }

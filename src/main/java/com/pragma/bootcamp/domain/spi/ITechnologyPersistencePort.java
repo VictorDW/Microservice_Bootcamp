@@ -13,5 +13,4 @@ public interface ITechnologyPersistencePort {
   Optional<Technology> verifyByName(String name);
   PaginationResponse<Technology> getAllTechnology(PaginationData values);
   List<Technology> getAllTechnologyWithoutPagination();
-  boolean isEmptyListTechnology();
 }

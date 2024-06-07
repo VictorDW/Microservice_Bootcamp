@@ -10,6 +10,6 @@ import java.util.List;
 public interface ITechnologyHandler {
   TechnologyResponse createTechnology(AddTechnologyRequest request);
   PaginationResponse<TechnologyResponse> getAllTechnologies(Integer page, Integer size, String direction);
+
   List<TechnologyBasicResponse> getAllWithoutPagination();
-  boolean isEmptyList();
 }
