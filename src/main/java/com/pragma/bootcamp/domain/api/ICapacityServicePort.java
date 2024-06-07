@@ -9,4 +9,5 @@ public interface ICapacityServicePort {
 
   Capacity create(Capacity capacity);
   PaginationResponse<Capacity> getAll(Integer page, Integer size, String direction, String orderBy);
+  boolean isEmptyList();
 }
