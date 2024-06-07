@@ -13,4 +13,6 @@ public interface ITechnologyServicePort {
   PaginationResponse<Technology> getAll(Integer page, Integer size, String order);
 
   List<Technology> getAllWithoutPagination();
+
+  boolean isEmptyList();
 }

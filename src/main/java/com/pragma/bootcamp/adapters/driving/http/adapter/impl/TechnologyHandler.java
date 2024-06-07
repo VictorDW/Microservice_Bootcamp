@@ -43,4 +43,9 @@ public class TechnologyHandler implements ITechnologyHandler {
     var technologies = technologyServicePort.getAllWithoutPagination();
     return responseMapper.toBasicResponseList(technologies);
   }
+
+  @Override
+  public boolean isEmptyList() {
+    return technologyServicePort.isEmptyList();
+  }
 }

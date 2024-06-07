@@ -69,4 +69,11 @@ public class TechnologyController {
     return ResponseEntity.ok(technologyHandler.getAllWithoutPagination());
   }
 
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/is-empty")
+  public ResponseEntity<Boolean> verifyIsEmptyList() {
+    return ResponseEntity.ok(technologyHandler.isEmptyList());
+  }
+
 }
