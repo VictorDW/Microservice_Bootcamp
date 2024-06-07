@@ -34,8 +34,5 @@ public class CapacityHandler implements ICapacityHandler {
         return capacityResponseMapper.toPaginationResponse(capacities);
     }
 
-    @Override
-    public boolean isEmptyList() {
-        return capacityServicePort.isEmptyList();
-    }
+
 }

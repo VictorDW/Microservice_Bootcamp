@@ -12,5 +12,4 @@ public interface ICapacityPersistencePort {
   Capacity saveCapacity(Capacity capacity);
   Optional<Capacity> verifyByName(String name);
   PaginationResponse<Capacity> getAllCapacity(PaginationData paginationData);
-  boolean isEmptyListCapacity();
 }

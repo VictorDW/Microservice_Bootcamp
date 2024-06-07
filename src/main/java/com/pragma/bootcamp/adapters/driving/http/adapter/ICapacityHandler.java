@@ -9,5 +9,4 @@ import java.util.List;
 public interface ICapacityHandler {
   CapacityResponse createCapacity(AddCapacityRequest request);
   PaginationResponse<CapacityResponse> getAllCapacity(Integer page, Integer size, String direction, String orderBy);
-  boolean isEmptyList();
 }

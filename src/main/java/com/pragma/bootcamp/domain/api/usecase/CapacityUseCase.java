@@ -2,6 +2,7 @@ package com.pragma.bootcamp.domain.api.usecase;
 
 import com.pragma.bootcamp.domain.api.ICapacityServicePort;
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
+import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
@@ -10,6 +11,8 @@ import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
+
+import java.util.List;
 
 public class CapacityUseCase implements ICapacityServicePort {
 
@@ -51,10 +54,5 @@ public class CapacityUseCase implements ICapacityServicePort {
     orderBy = ManegePaginationData.defineOrderBy(Capacity.OrderBy.class, DEFAULT_ORDERING, orderBy);
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
     return capacityPersistencePort.getAllCapacity(paginationData);
-  }
-
-  @Override
-  public boolean isEmptyList() {
-    return capacityPersistencePort.isEmptyListCapacity();
   }
 }

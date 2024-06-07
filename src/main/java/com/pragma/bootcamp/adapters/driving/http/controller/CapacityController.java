@@ -57,10 +57,4 @@ public class CapacityController {
                                                                              @RequestParam(required = false) String orderBy) {
     return ResponseEntity.ok(capacityHandler.getAllCapacity(page, size, direction, orderBy));
   }
-
-  @PreAuthorize("hasRole('ADMIN')")
-  @GetMapping("/is-empty")
-  public ResponseEntity<Boolean> verifyIsEmptyList() {
-    return ResponseEntity.ok(capacityHandler.isEmptyList());
-  }
 }
