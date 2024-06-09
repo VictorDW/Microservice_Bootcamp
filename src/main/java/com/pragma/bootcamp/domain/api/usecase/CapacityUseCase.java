@@ -11,6 +11,8 @@ import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 
+import java.util.List;
+
 public class CapacityUseCase implements ICapacityServicePort {
 
   public static final IOrderableProperty DEFAULT_ORDERING = Capacity.OrderBy.NAME;
@@ -52,5 +54,10 @@ public class CapacityUseCase implements ICapacityServicePort {
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
 
     return capacityPersistencePort.getAllCapacity(paginationData);
+  }
+
+  @Override
+  public List<Capacity> getAllWithoutPagination() {
+    return capacityPersistencePort.getAllCapacityWithoutPagination();
   }
 }

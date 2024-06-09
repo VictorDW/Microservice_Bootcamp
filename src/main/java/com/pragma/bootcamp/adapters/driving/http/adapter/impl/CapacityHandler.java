@@ -2,6 +2,7 @@ package com.pragma.bootcamp.adapters.driving.http.adapter.impl;
 
 import com.pragma.bootcamp.adapters.driving.http.adapter.ICapacityHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddCapacityRequest;
+import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityBasicResponse;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityResponse;
 import com.pragma.bootcamp.adapters.driving.http.mapper.request.ICapacityRequestMapper;
 import com.pragma.bootcamp.adapters.driving.http.mapper.response.ICapacityResponseMapper;
@@ -32,6 +33,12 @@ public class CapacityHandler implements ICapacityHandler {
 
         PaginationResponse<Capacity> capacities = capacityServicePort.getAll(page, size, direction, orderBy);
         return capacityResponseMapper.toPaginationResponse(capacities);
+    }
+
+    @Override
+    public List<CapacityBasicResponse> getAllWithoutPagination() {
+        var capacities = capacityServicePort.getAllWithoutPagination();
+        return capacityResponseMapper.toBasicResponseList(capacities);
     }
 
 

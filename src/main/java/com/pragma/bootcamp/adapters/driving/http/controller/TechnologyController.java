@@ -51,10 +51,10 @@ public class TechnologyController {
   public ResponseEntity<PaginationResponse<TechnologyResponse>> getAllTechnologies(@RequestParam(required = false)
                                                                        @Min(value = 0, message = "{"+Constants.PAGE_INVALID_MESSAGE+"}")
                                                                        Integer page,
-                                                                                   @RequestParam(required = false)
-                                                                      @Min(value = 1, message = "{"+Constants.SIZE_INVALID_MESSAGE+"}")
-                                                                      Integer size,
-                                                                                   @RequestParam(required = false) String direction) {
+                                                                       @RequestParam(required = false)
+                                                                       @Min(value = 1, message = "{"+Constants.SIZE_INVALID_MESSAGE+"}")
+                                                                       Integer size,
+                                                                       @RequestParam(required = false) String direction) {
 
     return ResponseEntity.ok(technologyHandler.getAllTechnologies(page, size, direction));
   }

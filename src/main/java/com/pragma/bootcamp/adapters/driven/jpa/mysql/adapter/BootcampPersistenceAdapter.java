@@ -7,7 +7,6 @@ import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.IBootcampEntityMappe
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.IBootcampRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ICapacityRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.util.IPaginationProvider;
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.util.IQuerySpecificationProvider;
 import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.model.Capacity;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;

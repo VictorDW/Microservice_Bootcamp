@@ -85,5 +85,11 @@ public class CapacityPersistenceAdapter implements ICapacityPersistencePort, IPa
         capacityRepository.findAllOrderedByTechnologySizeAsc(pagination) :
         capacityRepository.findAllOrderedByTechnologySizeDesc(pagination);
   }
+
+  @Override
+  public List<Capacity> getAllCapacityWithoutPagination() {
+    var capacities = capacityRepository.findAll();
+    return capacityEntityMapper.toModelList(capacities);
+  }
     
 }

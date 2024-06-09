@@ -2,6 +2,7 @@ package com.pragma.bootcamp.adapters.driving.http.controller;
 
 import com.pragma.bootcamp.adapters.driving.http.adapter.ICapacityHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddCapacityRequest;
+import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityBasicResponse;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityResponse;
 import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.configuration.springdoc.SpringDocConstants;
@@ -50,11 +51,22 @@ public class CapacityController {
   public ResponseEntity<PaginationResponse<CapacityResponse>> getAllCapacity(@RequestParam(required = false)
                                                                @Min(value = 0, message = "{" + Constants.PAGE_INVALID_MESSAGE + "}")
                                                                Integer page,
-                                                                             @RequestParam(required = false)
+                                                               @RequestParam(required = false)
                                                                @Min(value = 1, message = "{" + Constants.SIZE_INVALID_MESSAGE + "}")
                                                                Integer size,
-                                                                             @RequestParam(required = false) String direction,
-                                                                             @RequestParam(required = false) String orderBy) {
+                                                               @RequestParam(required = false) String direction,
+                                                               @RequestParam(required = false) String orderBy) {
     return ResponseEntity.ok(capacityHandler.getAllCapacity(page, size, direction, orderBy));
+  }
+
+  @PreAuthorize("hasRole('ADMIN')")
+  @GetMapping("/without-pagination")
+ /* @Operation(
+      summary = SpringDocConstants.OPERATION_SUMMARY_GET_CAPACITY_BY_ID,
+      description = SpringDocConstants.OPERATION_DESCRIPTION_GET_CAPACITY_BY_ID,
+      tags = {"Capacity"}
+  )*/
+  public ResponseEntity<List<CapacityBasicResponse>> getAllCapacityWithoutPagination() {
+    return ResponseEntity.ok(capacityHandler.getAllWithoutPagination());
   }
 }
