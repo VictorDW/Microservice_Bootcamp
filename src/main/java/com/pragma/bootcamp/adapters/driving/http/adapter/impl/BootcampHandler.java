@@ -7,6 +7,7 @@ import com.pragma.bootcamp.adapters.driving.http.mapper.request.IBootcampRequest
 import com.pragma.bootcamp.adapters.driving.http.mapper.response.IBootcampResponseMapper;
 import com.pragma.bootcamp.domain.api.IBootcampServicePort;
 import com.pragma.bootcamp.domain.model.Bootcamp;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +30,9 @@ public class BootcampHandler implements IBootcampHandler {
 	}
 
 	@Override
-	public List<BootcampResponse> getAllBootcamp(Integer page, Integer size, String direction, String orderBy) {
+	public PaginationResponse<BootcampResponse> getAllBootcamp(Integer page, Integer size, String direction, String orderBy) {
 
-		List<Bootcamp> bootcamps = bootcampServicePort.getAll(page,size,direction,orderBy);
-		return bootcampResponseMapper.toResponseList(bootcamps);
+		PaginationResponse<Bootcamp> bootcamps = bootcampServicePort.getAll(page,size,direction,orderBy);
+		return bootcampResponseMapper.toPaginationResponse(bootcamps);
 	}
 }

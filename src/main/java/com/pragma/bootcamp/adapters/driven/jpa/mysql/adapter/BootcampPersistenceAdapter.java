@@ -14,8 +14,11 @@ import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -24,7 +27,7 @@ import java.util.Optional;
 import static com.pragma.bootcamp.domain.api.usecase.BootcampUseCase.DEFAULT_ORDERING;
 
 @RequiredArgsConstructor
-public class BootcampPersistenceAdapter implements IBootcampPersistencePort, IPaginationProvider, IQuerySpecificationProvider<BootcampEntity, CapacityEntity> {
+public class BootcampPersistenceAdapter implements IBootcampPersistencePort, IPaginationProvider<Bootcamp, BootcampEntity> {
 
 	private final IBootcampEntityMapper bootcampEntityMapper;
 	private final ICapacityRepository capacityRepository;
@@ -61,24 +64,28 @@ public class BootcampPersistenceAdapter implements IBootcampPersistencePort, IPa
 	}
 
 	@Override
-	public List<Bootcamp> getAll(PaginationData paginationData) {
+	public PaginationResponse<Bootcamp> getAll(PaginationData paginationData) {
 
-		List<BootcampEntity> bootcampEntities;
+		Page<BootcampEntity> pageBootcamp;
+		List<Bootcamp> modelList;
 		Pageable pagination;
 
 		if (!paginationData.property().equalsIgnoreCase(DEFAULT_ORDERING.getOrderableProperty())) {
 			pagination = simplePagination(paginationData);
-			bootcampEntities = queryAdvance(pagination, paginationData.direction());
+			pageBootcamp = queryAdvance(pagination, paginationData.direction());
 		} else {
 			pagination = paginationWithSorting(paginationData);
-			bootcampEntities = bootcampRepository.findAll(pagination).getContent();
+			pageBootcamp = bootcampRepository.findAll(pagination);
 		}
 
-		return bootcampEntities.stream().map(bootcampEntityMapper::entityToModel).toList();
+		modelList = bootcampEntityMapper.toModelList(pageBootcamp.getContent());
+
+		return builderPaginationResponse(modelList, pageBootcamp);
 	}
 
-	private List<BootcampEntity> queryAdvance(Pageable pagination, String direction) {
-		Specification<BootcampEntity> specification = queryWithSpecification(direction, BootcampEntity.FIELD_CONTAINING_RELATIONSHIP);
-		return bootcampRepository.findAll(specification, pagination).getContent();
+	private Page<BootcampEntity> queryAdvance(Pageable pagination, String direction) {
+		return direction.equals(Sort.Direction.ASC.name()) ?
+				bootcampRepository.findAllOrderedByBootcampSizeAsc(pagination) :
+				bootcampRepository.findAllOrderedByBootcampSizeDesc(pagination);
 	}
 }

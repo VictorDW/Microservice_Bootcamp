@@ -17,4 +17,7 @@ public interface IBootcampEntityMapper {
 
 	@Mapping(source = "capacityEntities", target = "capacityList")
 	Bootcamp entityToModel(BootcampEntity bootcampEntity);
+
+	@Mapping(source = "capacityEntities", target = "capacityList")
+	List<Bootcamp> toModelList(List<BootcampEntity> bootcampEntities);
 }

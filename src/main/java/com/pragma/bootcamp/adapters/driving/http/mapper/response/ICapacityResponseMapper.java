@@ -2,9 +2,7 @@ package com.pragma.bootcamp.adapters.driving.http.mapper.response;
 
 import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityBasicResponse;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityResponse;
-import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
 import com.pragma.bootcamp.domain.model.Capacity;
-import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -9,8 +9,7 @@ import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.ModelValidationUtil;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
-
-import java.util.List;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 
 public class BootcampUseCase implements IBootcampServicePort {
 
@@ -41,13 +40,12 @@ public class BootcampUseCase implements IBootcampServicePort {
   }
 
   @Override
-  public List<Bootcamp> getAll(Integer page, Integer size, String direction, String orderBy) {
+  public PaginationResponse<Bootcamp> getAll(Integer page, Integer size, String direction, String orderBy) {
 
     orderBy = ManegePaginationData.defineOrderBy(Bootcamp.OrderBy.class, DEFAULT_ORDERING, orderBy);
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
-    List<Bootcamp> bootcamps = bootcampPersistencePort.getAll(paginationData);
 
-    return ModelValidationUtil.executeValidationNotEmptyList(bootcamps,messagePort);
+    return bootcampPersistencePort.getAll(paginationData);
   }
 
 }
