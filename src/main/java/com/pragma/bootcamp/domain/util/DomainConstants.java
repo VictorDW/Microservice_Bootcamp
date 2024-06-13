@@ -7,9 +7,9 @@ public final class DomainConstants {
   }
 
   public enum Class {
-    TECHNOLOGY("Technology", "Technologies"),
-    CAPACITY("Capacity", "Capacities"),
-    BOOTCAMP("Bootcamp", "Bootcamps");
+    TECHNOLOGY("tecnologia", "tecnologias"),
+    CAPACITY("capacidad", "capacidades"),
+    BOOTCAMP("bootcamp", "bootcamps"),;
     private final String name;
     private final String pluralName;
 
@@ -28,7 +28,10 @@ public final class DomainConstants {
 
   public static final String EMPTY_LIST_MESSAGE = "empty.list.message";
   public static final String ALREADY_EXIST_MESSAGE = "error.already.exist.message";
-  public static final String NUMBER_RANGE_MESSAGE =  "The number of %s that can be added to the %s most be between %s and %s";
-  public static final String REPEATED_MODEL_MESSAGE = "The %s must not have repeated %s";
-  public static final String INVALID_DATE_EXCEPTION = "The end date must be later than the start date";
+  public static final String ALREADY_BOOTCAMP_EXIST_MESSAGE = "error.bootcamp.already.exist.message";
+  public static final String NUMBER_RANGE_MESSAGE =  "El número de %s que se pueden añadir a la %s debe estar entre %s y %s";
+  public static final String NUMBER_RANGE_BOOTCAMP_MESSAGE =  "El número de %s que se pueden añadir al %s debe estar entre %s y %s";
+  public static final String REPEATED_MODEL_MESSAGE = "La %s no debe tener %s repetidas";
+  public static final String REPEATED_BOOTCAMP_MESSAGE = "El %s no debe tener %s repetidas";
+  public static final String INVALID_DATE_EXCEPTION = "La fecha final debe ser posterior a la fecha de inicio";
 }
