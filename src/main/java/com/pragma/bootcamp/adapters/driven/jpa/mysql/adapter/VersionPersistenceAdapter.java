@@ -40,7 +40,7 @@ public class VersionPersistenceAdapter implements IVersionPersistencePort, IPagi
   private BootcampEntity getBootcampEntity(String bootcampName) {
     return bootcampRepository
         .findByNameIgnoreCase(bootcampName)
-        .orElseThrow(()-> bootcampThrow(bootcampName, Constants.Field.NAME.name()));
+        .orElseThrow(()-> bootcampThrow(bootcampName, Constants.Field.NOMBRE.name().toLowerCase()));
   }
 
   private <T> RuntimeException bootcampThrow(T bootcamp, String field)  {
@@ -70,7 +70,7 @@ public class VersionPersistenceAdapter implements IVersionPersistencePort, IPagi
   private BootcampEntity getBootcampEntity(Long bootcampId) {
     return bootcampRepository
         .findById(bootcampId)
-        .orElseThrow(() -> bootcampThrow(bootcampId, Constants.Field.ID.name()));
+        .orElseThrow(() -> bootcampThrow(bootcampId, Constants.Field.ID.name().toLowerCase()));
   }
 
 }

@@ -7,7 +7,7 @@ public final class DomainConstants {
   }
 
   public enum Class {
-    TECHNOLOGY("tecnologia", "tecnologias"),
+    TECHNOLOGY("tecnología", "tecnologías"),
     CAPACITY("capacidad", "capacidades"),
     BOOTCAMP("bootcamp", "bootcamps"),;
     private final String name;

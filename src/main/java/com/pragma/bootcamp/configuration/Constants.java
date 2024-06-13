@@ -14,7 +14,7 @@ public final class Constants {
     //______________________________________________________________________________________________
 
     public enum Field {
-        NAME,
+        NOMBRE,
         ID;
     }
 
