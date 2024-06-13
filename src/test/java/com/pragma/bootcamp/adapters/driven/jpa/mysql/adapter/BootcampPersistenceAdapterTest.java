@@ -150,7 +150,7 @@ class BootcampPersistenceAdapterTest {
 	}
 
 	@Test
-	@DisplayName("Must return a list containing the bootcamps from pagination with simple ordering")
+	@DisplayName("Must return a non-null PaginationResponse object with the bootcamps and the data for pagination with simple ordering")
 	void test5() {
 
 		//GIVEN
@@ -159,31 +159,43 @@ class BootcampPersistenceAdapterTest {
 		Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size(), sort);
 
 		given(bootcampRepository.findAll(pagination)).willReturn(new PageImpl<>(List.of(bootcampEntity)));
-		given(bootcampEntityMapper.entityToModel(bootcampEntity)).willReturn(response);
+		given(bootcampEntityMapper.toModelList(List.of(bootcampEntity))).willReturn(List.of(response));
 
 		//WHEN
 		var result = bootcampPersistenceAdapter.getAll(paginationData);
 
 		//THAT
-		assertThat(result).isNotEmpty();
+		assertThat(result.getContent()).isNotEmpty();
+		assertThat(result.isFirst()).isTrue();
+		assertThat(result.isLast()).isTrue();
+		assertThat(result.getPageNumber()).isZero();
+		assertThat(result.getPageSize()).isEqualTo(1);
+		assertThat(result.getTotalElements()).isPositive();
+		assertThat(result.getTotalPages()).isPositive();
 	}
 
 	@Test
-	@DisplayName("Must return a list containing the bootcamps from the pagination with advanced query")
+	@DisplayName("Must return a non-null PaginationResponse object with the bootcamps and the data for pagination with advance query")
 	void test6() {
 
 		//GIVEN
 		PaginationData paginationData = ManegePaginationData.definePaginationData(0,10, "asc", "capacities");
 		Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size());
 
-		given(bootcampRepository.findAll(specificationCaptor.capture(), eq(pagination))).willReturn(new PageImpl<>(List.of(bootcampEntity)));
-		given(bootcampEntityMapper.entityToModel(bootcampEntity)).willReturn(response);
+		given(bootcampRepository.findAllOrderedByBootcampSizeAsc(pagination)).willReturn(new PageImpl<>(List.of(bootcampEntity)));
+		given(bootcampEntityMapper.toModelList(List.of(bootcampEntity))).willReturn(List.of(response));
 
 		//WHEN
 		var result = bootcampPersistenceAdapter.getAll(paginationData);
 
 		//THAT
-		assertThat(result).isNotEmpty();
+		assertThat(result.getContent()).isNotEmpty();
+		assertThat(result.isFirst()).isTrue();
+		assertThat(result.isLast()).isTrue();
+		assertThat(result.getPageNumber()).isZero();
+		assertThat(result.getPageSize()).isEqualTo(1);
+		assertThat(result.getTotalElements()).isPositive();
+		assertThat(result.getTotalPages()).isPositive();
 	}
 
 	@Test
@@ -194,13 +206,13 @@ class BootcampPersistenceAdapterTest {
 		PaginationData paginationData = ManegePaginationData.definePaginationData(1,10, "asc", "capacities");
 		Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size());
 
-		given(bootcampRepository.findAll(specificationCaptor.capture(), eq(pagination))).willReturn(new PageImpl<>(new ArrayList<>()));
+		given(bootcampRepository.findAllOrderedByBootcampSizeAsc(pagination)).willReturn(new PageImpl<>(new ArrayList<>()));
 
 
 		//WHEN
 		var result = bootcampPersistenceAdapter.getAll(paginationData);
 
 		//THAT
-		assertThat(result).isEmpty();
+		assertThat(result.getContent()).isEmpty();
 	}
 }

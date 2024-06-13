@@ -5,6 +5,7 @@ import com.pragma.bootcamp.adapters.driving.http.dto.request.AddBootcampRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.BootcampResponse;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityBasicResponse;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyBasicResponse;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -209,11 +210,14 @@ class BootcampControllerTest {
 	}
 
 	@Test
-	@DisplayName("Given an http request you should get all bootcamps, and return a status 200 (Ok)")
+	@DisplayName("Given an http request should get all bootcamps with paging data, and return a status of 200 (Ok).")
 	void test3() throws Exception {
 
+		var paginationResponse = new PaginationResponse.Builder<BootcampResponse>();
+		paginationResponse.content(List.of(bootcampResponse));
+
 		//GIVEN
-		given(bootcampHandler.getAllBootcamp(any(Integer.class), any(Integer.class), any(String.class), any(String.class))).willReturn(List.of(bootcampResponse));
+		given(bootcampHandler.getAllBootcamp(any(Integer.class), any(Integer.class), any(String.class), any(String.class))).willReturn(paginationResponse.build());
 
 		//WHEN
 		MockHttpServletRequestBuilder requestBuilder = get("/api/bootcamp?=page=0&size=10&direction=ASC&orderBy=name")

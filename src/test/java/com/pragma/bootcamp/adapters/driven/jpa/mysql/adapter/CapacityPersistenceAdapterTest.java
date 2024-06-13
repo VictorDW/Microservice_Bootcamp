@@ -30,7 +30,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -138,7 +137,7 @@ class CapacityPersistenceAdapterTest {
   }
 
   @Test
-  @DisplayName("Must return a list containing the capacities from pagination with simple ordering")
+  @DisplayName("Must return a non-null PaginationResponse object with the pagination capabilities and data with simple ordering")
   void test5() {
 
     //GIVEN
@@ -155,18 +154,24 @@ class CapacityPersistenceAdapterTest {
     var result = capacityPersistenceAdapter.getAllCapacity(paginationData);
 
     //THAT
-    assertThat(result).isNotEmpty();
+    assertThat(result.getContent()).isNotEmpty();
+    assertThat(result.isFirst()).isTrue();
+    assertThat(result.isLast()).isTrue();
+    assertThat(result.getPageNumber()).isZero();
+    assertThat(result.getPageSize()).isEqualTo(1);
+    assertThat(result.getTotalElements()).isPositive();
+    assertThat(result.getTotalPages()).isPositive();
   }
 
   @Test
-  @DisplayName("Must return a list containing the capacities from the pagination with advanced query")
+  @DisplayName("Must return a non-null PaginationResponse object with advanced query paging capabilities and data")
   void test6() {
 
     //GIVEN
     PaginationData paginationData = new PaginationData(0, 10, "DESC", "technologies");
     Pageable pagination = PageRequest.of(paginationData.page(), paginationData.size());
 
-    given(capacityRepository.findAll(specificationCaptor.capture(),eq(pagination))).willReturn(new PageImpl<>(allEntity));
+    given(capacityRepository.findAllOrderedByTechnologySizeDesc(pagination)).willReturn(new PageImpl<>(allEntity));
     given(capacityEntityMapper.toModelList(allEntity)).willReturn(allModel);
 
     //WHEN
@@ -174,7 +179,13 @@ class CapacityPersistenceAdapterTest {
     var result = capacityPersistenceAdapter.getAllCapacity(paginationData);
 
     //THAT
-    assertThat(result).isNotEmpty();
+    assertThat(result.getContent()).isNotEmpty();
+    assertThat(result.isFirst()).isTrue();
+    assertThat(result.isLast()).isTrue();
+    assertThat(result.getPageNumber()).isZero();
+    assertThat(result.getPageSize()).isEqualTo(1);
+    assertThat(result.getTotalElements()).isPositive();
+    assertThat(result.getTotalPages()).isPositive();
   }
 
   @Test
@@ -188,10 +199,9 @@ class CapacityPersistenceAdapterTest {
     given(capacityRepository.findAll(pagination)).willReturn(new PageImpl<>(new ArrayList<>()));
 
     //WHEN
-
     var result = capacityPersistenceAdapter.getAllCapacity(paginationData);
 
     //THAT
-    assertThat(result).isEmpty();
+    assertThat(result.getContent()).isEmpty();
   }
 }

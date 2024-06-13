@@ -3,7 +3,9 @@ package com.pragma.bootcamp.adapters.driving.http.controller;
 
 import com.pragma.bootcamp.adapters.driving.http.adapter.ITechnologyHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddTechnologyRequest;
+import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityResponse;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyResponse;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -123,10 +125,14 @@ class TechnologyControllerTest {
     }
 
     @Test
-    @DisplayName("Given an http request you should get all technologies")
+    @DisplayName("Given an http request should get all technologies with paging data, and return a status of 200 (Ok)")
     void test3() throws Exception {
+
+        var paginatedResponse = new PaginationResponse.Builder<TechnologyResponse>();
+        paginatedResponse.content(List.of(response));
+
         //GIVEN
-        given(technologyHandler.getAllTechnologies(any(Integer.class), any(Integer.class), any(String.class))).willReturn(List.of(response));
+        given(technologyHandler.getAllTechnologies(any(Integer.class), any(Integer.class), any(String.class))).willReturn(paginatedResponse.build());
 
         //WHEN
         MockHttpServletRequestBuilder requestBuilder = get("/api/technology?page=0&size=10&direction=asc")

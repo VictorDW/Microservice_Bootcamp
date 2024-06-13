@@ -4,6 +4,7 @@ import com.pragma.bootcamp.adapters.driving.http.adapter.ICapacityHandler;
 import com.pragma.bootcamp.adapters.driving.http.dto.request.AddCapacityRequest;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.CapacityResponse;
 import com.pragma.bootcamp.adapters.driving.http.dto.response.TechnologyBasicResponse;
+import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -209,11 +210,13 @@ class CapacityControllerTest {
   }
 
   @Test
-  @DisplayName("Given an http request you should get all capacities, and return a status 200 (Ok)")
+  @DisplayName("Given an http request should get all capacities with paging data, and return a status of 200 (Ok).")
   void test3() throws Exception {
 
+    var paginatedResponse = new PaginationResponse.Builder<CapacityResponse>();
+    paginatedResponse.content(List.of(response));
     //GIVEN
-    given(capacityHandler.getAllCapacity(any(Integer.class), any(Integer.class), any(String.class), any(String.class))).willReturn(List.of(response));
+    given(capacityHandler.getAllCapacity(any(Integer.class), any(Integer.class), any(String.class), any(String.class))).willReturn(paginatedResponse.build());
 
     //WHEN
     MockHttpServletRequestBuilder requestBuilder = get("/api/capacity?=page=0&size=10&direction=ASC&orderBy=ca")
