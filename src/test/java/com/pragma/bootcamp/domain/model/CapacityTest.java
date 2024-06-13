@@ -71,8 +71,8 @@ class CapacityTest {
   void test2(List<Technology> technologies) {
 
     Capacity capacity = new Capacity(1L, "Backend Java", "Developer backend java");
-     String expectedMessage = "The number of Technologies that can be added to the Capacity most be between "
-         + Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES + " and " + Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES;
+     String expectedMessage = "El número de tecnologías que se pueden añadir a la capacidad debe estar entre "
+         + Capacity.DEFAULT_MIN_NUMBER_TECHNOLOGIES + " y " + Capacity.DEFAULT_MAX_NUMBER_TECHNOLOGIES;
     //GIVEN
 
     try {

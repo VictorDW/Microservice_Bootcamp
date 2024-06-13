@@ -4,6 +4,7 @@ import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
+import com.pragma.bootcamp.domain.util.DomainConstants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +48,7 @@ class TechnologyUseCaseTest {
     given(technologyPersistencePort.verifyByName("Java"))
         .willReturn(Optional.of(expectedTechnology));
 
-    given(messagePort.getMessage(keyMessage, "Technology", "Java")).willReturn(responseMessage);
+    given(messagePort.getMessage(keyMessage, DomainConstants.Class.TECHNOLOGY.getName(), "Java")).willReturn(responseMessage);
 
 
     //THAT

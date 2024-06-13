@@ -2,6 +2,7 @@ package com.pragma.bootcamp.domain.api.usecase;
 
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.exception.NoDataFoundException;
+import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
@@ -101,19 +102,33 @@ class CapacityUseCaseTest {
   }*/
 
     @Test
-    @DisplayName("Given some paging data, it should return a list of capacities")
+    @DisplayName("Given some pagination data, it should return an instance of PaginationResponse containing the list of capacities and the pagination data")
     void test4() {
 
         //GIVEN
-        var paginationResponse = new PaginationResponse.Builder<Capacity>();
-        paginationResponse.content(List.of(response));
+        var paginationResponse = new PaginationResponse.Builder<Capacity>()
+            .content(List.of(response))
+            .isFirst(true)
+            .isLast(true)
+            .pageNumber(0)
+            .pageSize(1)
+            .totalElements(1L)
+            .totalPages(1)
+            .build();
+
         PaginationData paginationData = ManegePaginationData.definePaginationData(0, 10, "DESC", "name");
-        given(capacityPersistencePort.getAllCapacity(paginationData)).willReturn(paginationResponse.build());
+        given(capacityPersistencePort.getAllCapacity(paginationData)).willReturn(paginationResponse);
 
         //THAT
         var result = capacityUseCase.getAll(0, 10, "DESC", "name");
 
         //THAT
         assertThat(result.getContent()).isNotEmpty();
+        assertThat(result.isFirst()).isTrue();
+        assertThat(result.isLast()).isTrue();
+        assertThat(result.getPageNumber()).isZero();
+        assertThat(result.getPageSize()).isEqualTo(1);
+        assertThat(result.getTotalElements()).isPositive();
+        assertThat(result.getTotalPages()).isPositive();
     }
 }

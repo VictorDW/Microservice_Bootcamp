@@ -53,8 +53,8 @@ class BootcampTest {
 
     //GIVEN
     Bootcamp bootcamp = new Bootcamp(1L, "FullStack Java/Angular", "Developer FullStack");
-    String expectedMessage = "The number of Capacities that can be added to the Bootcamp most be between "
-        + Bootcamp.DEFAULT_MIN_NUMBER_CAPACITIES + " and " + Bootcamp.DEFAULT_MAX_NUMBER_CAPACITIES;
+    String expectedMessage = "El número de capacidades que se pueden añadir al bootcamp debe estar entre "
+        + Bootcamp.DEFAULT_MIN_NUMBER_CAPACITIES + " y " + Bootcamp.DEFAULT_MAX_NUMBER_CAPACITIES;
 
     try {
       //WHEN

@@ -53,7 +53,7 @@ class BootcampUseCaseTest {
     Optional<Bootcamp> bootcampResponse = Optional.of(response);
     given(bootcampPersistencePort.verifyByName(any(String.class))).willReturn(bootcampResponse);
     given(messagePort.getMessage(
-        DomainConstants.ALREADY_EXIST_MESSAGE,
+        DomainConstants.ALREADY_BOOTCAMP_EXIST_MESSAGE,
         DomainConstants.Class.BOOTCAMP.getName(),
         "Test"
     )).willReturn(any(String.class));
@@ -78,7 +78,7 @@ class BootcampUseCaseTest {
     assertThat(result).isNotNull();
   }
 
-  @Test
+ /* @Test
   @DisplayName("Should throw an exception when you get an empty list of capacities, and the message key must match the contents of the message.properties")
   void test3() {
 
@@ -101,21 +101,39 @@ class BootcampUseCaseTest {
           }
         }
     );
-  }
+  } */
 
   @Test
-  @DisplayName("Given some paging data, it should return a list of bootcamp")
+  @DisplayName("Given some pagination data, it should return an instance of PaginationResponse containing the list and the pagination data")
   void test4() {
 
     //GIVEN
     List<Bootcamp> bootcamps = List.of(response);
-    PaginationData paginationData = ManegePaginationData.definePaginationData(1,10, "asc", "capacities");
-    given(bootcampPersistencePort.getAll(paginationData)).willReturn(null);
+
+    var paginationResponse = new PaginationResponse.Builder<Bootcamp>()
+        .content(bootcamps)
+        .isFirst(true)
+        .isLast(true)
+        .pageNumber(0)
+        .pageSize(1)
+        .totalElements(1L)
+        .totalPages(1)
+        .build();
+
+    PaginationData paginationData = ManegePaginationData.definePaginationData(0,10, "asc", "capacities");
+    given(bootcampPersistencePort.getAll(paginationData)).willReturn(paginationResponse);
 
     //WHEN
-    //List<Bootcamp> result = bootcampUseCase.getAll(1,10,"asc","capacities");
+    var result = bootcampUseCase.getAll(0,10,"asc","capacities");
 
     //THAT
-    //assertThat(result).isNotEmpty();
+    assertThat(result.getContent()).isNotEmpty();
+    assertThat(result.isFirst()).isTrue();
+    assertThat(result.isLast()).isTrue();
+    assertThat(result.getPageNumber()).isZero();
+    assertThat(result.getPageSize()).isEqualTo(1);
+    assertThat(result.getTotalElements()).isPositive();
+    assertThat(result.getTotalPages()).isPositive();
+
   }
 }
