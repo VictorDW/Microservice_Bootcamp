@@ -226,9 +226,9 @@ class BootcampControllerTest {
 		//THAT
 		mockMvc.perform(requestBuilder)
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$[0].id").value(1L))
-				.andExpect(jsonPath("$[0].name").value("Test Bootcamp"))
-				.andExpect(jsonPath("$[0].capacities").isNotEmpty());
+				.andExpect(jsonPath("content[0].id").value(1L))
+				.andExpect(jsonPath("content[0].name").value("Test Bootcamp"))
+				.andExpect(jsonPath("content[0].capacities").isNotEmpty());
 	}
 
 }

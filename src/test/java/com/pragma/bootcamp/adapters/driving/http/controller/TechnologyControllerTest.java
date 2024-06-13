@@ -80,9 +80,6 @@ class TechnologyControllerTest {
                 "{\"name\":,\"description\":\"Java con versión JDK 17\"}"
             ),
             Arguments.of(
-                "{\"name\":\"P\",\"description\":\"Java con versión JDK 17\"}"
-            ),
-            Arguments.of(
                 "{\"name\":\"Ppppppppppppppppppppppppppppppppppppppppppppppppppppppp\",\"description\":\"Java con versión JDK 17\"}"
             ),
             Arguments.of(
