@@ -29,7 +29,9 @@ public class ModelValidationUtil {
     if (size < min || size > max) {
       throw new NumberOutOfRangeException(
           String.format(
-              DomainConstants.NUMBER_RANGE_MESSAGE,
+              DomainConstants.Class.BOOTCAMP.getName().equals(parentModelName) ?
+                  DomainConstants.NUMBER_RANGE_BOOTCAMP_MESSAGE :
+                  DomainConstants.NUMBER_RANGE_MESSAGE,
               pluralModelName,
               parentModelName,
               min,
@@ -45,7 +47,9 @@ public class ModelValidationUtil {
       if (!uniqueName.add(model.getName().toLowerCase()))
         throw new RepeatedModelException(
             String.format(
-                DomainConstants.REPEATED_MODEL_MESSAGE,
+                DomainConstants.Class.BOOTCAMP.getName().equals(parentModelName) ?
+                    DomainConstants.REPEATED_BOOTCAMP_MESSAGE :
+                    DomainConstants.REPEATED_MODEL_MESSAGE,
                 parentModelName,
                 pluralModelName));
     });
@@ -57,7 +61,9 @@ public class ModelValidationUtil {
         existModel -> {
           throw new AlreadyExistException(
               messagePort.getMessage(
-                  DomainConstants.ALREADY_EXIST_MESSAGE,
+                  DomainConstants.Class.BOOTCAMP.getName().equals(modelName) ?
+                      DomainConstants.ALREADY_BOOTCAMP_EXIST_MESSAGE :
+                      DomainConstants.ALREADY_EXIST_MESSAGE,
                   modelName,
                   existModel.getName()));
         });
