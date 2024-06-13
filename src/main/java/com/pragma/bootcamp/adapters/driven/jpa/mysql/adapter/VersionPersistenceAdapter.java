@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor
-public class VersionPersistenceAdapter implements IVersionPersistencePort, IPaginationProvider {
+public class VersionPersistenceAdapter implements IVersionPersistencePort, IPaginationProvider<Version, VersionEntity> {
 
   private final IVersionEntityMapper versionEntityMapper;
   private final IBootcampRepository bootcampRepository;
