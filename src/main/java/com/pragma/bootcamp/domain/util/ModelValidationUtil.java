@@ -1,7 +1,6 @@
 package com.pragma.bootcamp.domain.util;
 
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
-import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.exception.NumberOutOfRangeException;
 import com.pragma.bootcamp.domain.exception.RepeatedModelException;
 import com.pragma.bootcamp.domain.model.ParentModel;
@@ -67,12 +66,5 @@ public class ModelValidationUtil {
                   modelName,
                   existModel.getName()));
         });
-  }
-
-  public static <T> List<T> executeValidationNotEmptyList(List<T> list, IMessagePort messagePort) {
-    if (list.isEmpty()) {
-      throw new NoDataFoundException(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE));
-    }
-    return list;
   }
 }
