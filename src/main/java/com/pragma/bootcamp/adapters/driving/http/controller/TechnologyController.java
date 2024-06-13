@@ -61,10 +61,10 @@ public class TechnologyController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/without-pagination")
- /* @Operation(
-      summary = SpringDocConstants.OPERATION_SUMMARY_GET_TECHNOLOGY_WITHOUT_PAGINATION,
-      description = SpringDocConstants.OPERATION_DESCRIPTION_GET_TECHNOLOGY_WITHOUT_PAGINATION,
-      tags = {"Technology"})*/
+  @Operation(
+      summary = SpringDocConstants.OPERATION_SUMMARY_GET_ALL_TECHNOLOGY,
+      description = SpringDocConstants.OPERATION_SUMMARY_GET_ALL_TECHNOLOGY,
+      tags = {"Technology"})
   public ResponseEntity<List<TechnologyBasicResponse>> getAllTechnologiesWithoutPagination() {
     return ResponseEntity.ok(technologyHandler.getAllWithoutPagination());
   }

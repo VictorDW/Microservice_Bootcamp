@@ -61,11 +61,11 @@ public class CapacityController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/without-pagination")
- /* @Operation(
-      summary = SpringDocConstants.OPERATION_SUMMARY_GET_CAPACITY_BY_ID,
-      description = SpringDocConstants.OPERATION_DESCRIPTION_GET_CAPACITY_BY_ID,
+  @Operation(
+      summary = SpringDocConstants.OPERATION_DESCRIPTION_GET_ALL_CAPACITY,
+      description = SpringDocConstants.OPERATION_DESCRIPTION_GET_ALL_CAPACITY,
       tags = {"Capacity"}
-  )*/
+  )
   public ResponseEntity<List<CapacityBasicResponse>> getAllCapacityWithoutPagination() {
     return ResponseEntity.ok(capacityHandler.getAllWithoutPagination());
   }
