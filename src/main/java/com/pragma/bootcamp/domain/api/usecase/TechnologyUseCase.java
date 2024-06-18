@@ -7,6 +7,7 @@ import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
+import com.pragma.bootcamp.domain.util.orderby.TechnologyOrderBy;
 import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class TechnologyUseCase implements ITechnologyServicePort {
 
-  public static final IOrderableProperty DEFAULT_ORDERING = Technology.OrderBy.NAME;
+  public static final IOrderableProperty DEFAULT_ORDERING = TechnologyOrderBy.NAME;
   private final ITechnologyPersistencePort technologyPersistencePort;
   private final IMessagePort messagePort;
 

@@ -36,18 +36,4 @@ public class Bootcamp extends ParentModel {
   public List<Capacity> getCapacityList() {
     return capacityList;
   }
-
-  public enum OrderBy implements IOrderableProperty {
-    NAME("name"),
-    CAPACITIES("capacities");
-
-    private final String order;
-    OrderBy(String order) {
-      this.order = order;
-    }
-    @Override
-    public String getOrderableProperty() {
-      return order;
-    }
-  }
 }

@@ -5,6 +5,7 @@ import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
+import com.pragma.bootcamp.domain.util.orderby.BootcampOrderBy;
 import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.ModelValidationUtil;
@@ -13,7 +14,7 @@ import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 
 public class BootcampUseCase implements IBootcampServicePort {
 
-  public static final IOrderableProperty DEFAULT_ORDERING = Bootcamp.OrderBy.NAME;
+  public static final IOrderableProperty DEFAULT_ORDERING = BootcampOrderBy.NAME;
   private final IBootcampPersistencePort bootcampPersistencePort;
   private final IMessagePort messagePort;
 
@@ -42,7 +43,7 @@ public class BootcampUseCase implements IBootcampServicePort {
   @Override
   public PaginationResponse<Bootcamp> getAll(Integer page, Integer size, String direction, String orderBy) {
 
-    orderBy = ManegePaginationData.defineOrderBy(Bootcamp.OrderBy.class, DEFAULT_ORDERING, orderBy);
+    orderBy = ManegePaginationData.defineOrderBy(BootcampOrderBy.class, DEFAULT_ORDERING, orderBy);
     PaginationData paginationData = ManegePaginationData.definePaginationData(page, size, direction, orderBy);
 
     return bootcampPersistencePort.getAll(paginationData);
