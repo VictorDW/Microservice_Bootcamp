@@ -61,12 +61,12 @@ public class ApplicationConfig {
   }
   @Bean
   public ICapacityPersistencePort capacityPersistencePort() {
-    return new CapacityPersistenceAdapter(capacityEntityMapper, technologyRepository, capacityRepository, messagePort());
+    return new CapacityPersistenceAdapter(capacityEntityMapper, capacityRepository);
   }
 
   @Bean
   public ICapacityServicePort capacityServicePort() {
-    return new CapacityUseCase(capacityPersistencePort(), messagePort());
+    return new CapacityUseCase(capacityPersistencePort(), technologyPersistencePort(), messagePort());
   }
 
   @Bean

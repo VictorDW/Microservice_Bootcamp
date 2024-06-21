@@ -1,11 +1,10 @@
 package com.pragma.bootcamp.configuration.error;
 
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundException;
+import com.pragma.bootcamp.domain.exception.NoEntityFoundException;
 import com.pragma.bootcamp.configuration.error.dto.ExceptionArgumentResponse;
 import com.pragma.bootcamp.configuration.error.dto.ExceptionResponse;
 import com.pragma.bootcamp.domain.exception.InvalidDateException;
 import com.pragma.bootcamp.domain.exception.ModelDomainException;
-import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
@@ -68,11 +67,6 @@ public class ExceptionManager {
     return ResponseEntity.badRequest().body(
         new ExceptionArgumentResponse(exception.getName(), exception.getMessage())
     );
-  }
-
-  @ExceptionHandler(NoDataFoundException.class)
-  public ResponseEntity<ExceptionResponse> handlerNoDataFoundException(NoDataFoundException exception) {
-    return generalExceptionHandler(exception.getMessage(), HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler(NoEntityFoundException.class)
