@@ -1,8 +1,6 @@
 package com.pragma.bootcamp.domain.api.usecase;
 
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.util.IPaginationProvider;
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
-import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
@@ -18,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

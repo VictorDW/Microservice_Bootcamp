@@ -1,9 +1,7 @@
 package com.pragma.bootcamp.domain.api.usecase;
 
-import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
-import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;

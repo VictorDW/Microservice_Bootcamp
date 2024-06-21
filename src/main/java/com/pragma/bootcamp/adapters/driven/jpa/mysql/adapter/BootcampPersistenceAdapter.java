@@ -2,7 +2,7 @@ package com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter;
 
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.BootcampEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.CapacityEntity;
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundException;
+import com.pragma.bootcamp.domain.exception.NoEntityFoundException;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.IBootcampEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.IBootcampRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ICapacityRepository;
