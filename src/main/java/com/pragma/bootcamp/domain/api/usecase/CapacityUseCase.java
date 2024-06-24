@@ -2,13 +2,13 @@ package com.pragma.bootcamp.domain.api.usecase;
 
 import com.pragma.bootcamp.domain.exception.NoEntityFoundException;
 import com.pragma.bootcamp.domain.api.ICapacityServicePort;
-import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
+import com.pragma.bootcamp.domain.util.ModelValidationUtil;
 import com.pragma.bootcamp.domain.util.orderby.CapacityOrderBy;
 import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
@@ -33,30 +33,22 @@ public class CapacityUseCase implements ICapacityServicePort {
 
   @Override
   public Capacity create(Capacity capacity) {
+
     executeValidationCapacityAlreadyExist(capacity.getName());
     addVerifiedTechnologies(capacity);
     return capacityPersistencePort.saveCapacity(capacity);
-  }
-  private void addVerifiedTechnologies(Capacity capacity) {
-    List<Technology> technologies = verifyExistenceTechnologies(capacity.getTechnologyList());
-    capacity.setTechnologyList(technologies);
   }
 
   private void executeValidationCapacityAlreadyExist(String name) {
 
     var verifiedCapacity = capacityPersistencePort.verifyByName(name);
+    ModelValidationUtil.validationModelAlreadyExist(verifiedCapacity, DomainConstants.Class.CAPACITY.getName(), messagePort);
+  }
 
-    verifiedCapacity.ifPresent(
-       existCapacity -> {
+  private void addVerifiedTechnologies(Capacity capacity) {
 
-           throw new AlreadyExistException(
-               messagePort.getMessage(
-                   DomainConstants.ALREADY_EXIST_MESSAGE,
-                   DomainConstants.Class.CAPACITY.getName(),
-                   existCapacity.getName()
-               )
-           );
-       });
+    List<Technology> technologies = verifyExistenceTechnologies(capacity.getTechnologyList());
+    capacity.setTechnologyList(technologies);
   }
 
   private List<Technology> verifyExistenceTechnologies(List<Technology> technologies) {
