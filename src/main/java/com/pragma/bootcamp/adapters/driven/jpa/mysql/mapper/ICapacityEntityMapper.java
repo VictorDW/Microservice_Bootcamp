@@ -11,7 +11,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {ITechnologyEntityMapper.class})
 public interface ICapacityEntityMapper {
 
-    @Mapping(target = "technologyEntities", ignore = true)//→ evitará los warning de los test al no mappear todos los elementos
+   // @Mapping(target = "technologyEntities", ignore = true)//→ evitará los warning de los test al no mappear todos los elementos
+    @Mapping(source = "technologyList", target = "technologyEntities")
     @Mapping(target = "bootcampEntities", ignore = true)//→ evitará los warning de los test al no mappear todos los elementos
     CapacityEntity modelToEntity(Capacity capacity);
 
@@ -19,6 +20,10 @@ public interface ICapacityEntityMapper {
      para asi se MapStruct lo mapee */
     @Mapping(source = "technologyEntities", target = "technologyList")
     Capacity entityToModel(CapacityEntity capacityEntity);
+
+    @Mapping(source = "technologyList", target = "technologyEntities")
+    List<CapacityEntity> toEntityList(List<Capacity> capacities);
+
     @Mapping(source = "technologyEntities", target = "technologyList")
     List<Capacity> toModelList(List<CapacityEntity> capacityEntities);
 }

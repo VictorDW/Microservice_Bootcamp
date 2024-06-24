@@ -61,22 +61,22 @@ public class ApplicationConfig {
   }
   @Bean
   public ICapacityPersistencePort capacityPersistencePort() {
-    return new CapacityPersistenceAdapter(capacityEntityMapper, technologyRepository, capacityRepository, messagePort());
+    return new CapacityPersistenceAdapter(capacityEntityMapper, capacityRepository);
   }
 
   @Bean
   public ICapacityServicePort capacityServicePort() {
-    return new CapacityUseCase(capacityPersistencePort(), messagePort());
+    return new CapacityUseCase(capacityPersistencePort(), technologyPersistencePort(), messagePort());
   }
 
   @Bean
   public IBootcampPersistencePort bootcampPersistencePort() {
-    return new BootcampPersistenceAdapter(bootcampEntityMapper, capacityRepository, bootcampRepository, messagePort());
+    return new BootcampPersistenceAdapter(bootcampEntityMapper, bootcampRepository);
   }
 
   @Bean
   public IBootcampServicePort bootcampServicePort() {
-    return new BootcampUseCase(bootcampPersistencePort(), messagePort());
+    return new BootcampUseCase(bootcampPersistencePort(), capacityPersistencePort(), messagePort());
   }
 
   @Bean

@@ -13,5 +13,6 @@ public interface ITechnologyEntityMapper {
   @Mapping(target = "capacityEntities", ignore = true)//→ evitará los warning de los test al no mappear todos los elementos
   TechnologyEntity modelToEntity(Technology technology);
   Technology entityToModel(TechnologyEntity technologyEntity);
+  List<TechnologyEntity> toEntityList(List<Technology> technologies);
   List<Technology> toModelList(List<TechnologyEntity> technologyEntities);
 }

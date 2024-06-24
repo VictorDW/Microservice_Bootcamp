@@ -1,17 +1,11 @@
 package com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter;
 
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.CapacityEntity;
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.TechnologyEntity;
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundException;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.ICapacityEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ICapacityRepository;
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ITechnologyRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.util.IPaginationProvider;
-import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.domain.model.Capacity;
-import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
-import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,31 +22,14 @@ import static com.pragma.bootcamp.domain.api.usecase.CapacityUseCase.DEFAULT_ORD
 public class CapacityPersistenceAdapter implements ICapacityPersistencePort, IPaginationProvider<Capacity, CapacityEntity> {
 
     private final ICapacityEntityMapper capacityEntityMapper;
-    private final ITechnologyRepository technologyRepository;
     private final ICapacityRepository capacityRepository;
-    private final IMessagePort messagePort;
 
   @Override
   public Capacity saveCapacity(Capacity capacity) {
 
     CapacityEntity capacityEntity = capacityEntityMapper.modelToEntity(capacity);
-    capacityEntity.setTechnologyEntities(getTechnologyEntity(capacity.getTechnologyList()));
     CapacityEntity savedCapacity = capacityRepository.save(capacityEntity);
     return capacityEntityMapper.entityToModel(savedCapacity);
-  }
-
-  private List<TechnologyEntity> getTechnologyEntity(List<Technology> technologies) {
-
-    return technologies.stream()
-        .map(technology ->
-            technologyRepository.findByNameIgnoreCase(technology.getName())
-            .orElseThrow(() ->
-                new NoEntityFoundException(messagePort.getMessage(
-                        Constants.NOT_FOUND_TECHNOLOGY_MESSAGE,
-                        technology.getName()))
-            )
-        )
-        .toList();
   }
 
   @Override

@@ -2,7 +2,6 @@ package com.pragma.bootcamp.domain.model;
 
 import com.pragma.bootcamp.domain.util.DomainConstants;
 import com.pragma.bootcamp.domain.util.ModelValidationUtil;
-import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
@@ -37,17 +36,4 @@ public class Capacity extends ParentModel {
         return technologyList;
     }
 
-    public enum OrderBy implements IOrderableProperty {
-        NAME("name"),
-        TECHNOLOGIES("technologies");
-
-        private final String order;
-        OrderBy(String order) {
-            this.order = order;
-        }
-        @Override
-        public String getOrderableProperty() {
-            return order;
-        }
-    }
 }

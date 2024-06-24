@@ -1,12 +1,12 @@
 package com.pragma.bootcamp.domain.api.usecase;
 
-import com.pragma.bootcamp.domain.exception.NoDataFoundException;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.api.ITechnologyServicePort;
-import com.pragma.bootcamp.domain.exception.AlreadyExistException;
 import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
+import com.pragma.bootcamp.domain.util.ModelValidationUtil;
+import com.pragma.bootcamp.domain.util.orderby.TechnologyOrderBy;
 import com.pragma.bootcamp.domain.util.pagination.IOrderableProperty;
 import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TechnologyUseCase implements ITechnologyServicePort {
 
-  public static final IOrderableProperty DEFAULT_ORDERING = Technology.OrderBy.NAME;
+  public static final IOrderableProperty DEFAULT_ORDERING = TechnologyOrderBy.NAME;
   private final ITechnologyPersistencePort technologyPersistencePort;
   private final IMessagePort messagePort;
 
@@ -36,17 +36,7 @@ public class TechnologyUseCase implements ITechnologyServicePort {
   private void executeValidationTechnologyAlreadyExist(Technology technology) {
 
    var verifyTechnology = technologyPersistencePort.verifyByName(technology.getName());
-
-    verifyTechnology.ifPresent(
-        existingTechnology-> {
-
-          throw new AlreadyExistException(
-              messagePort.getMessage(
-                  DomainConstants.ALREADY_EXIST_MESSAGE,
-                  DomainConstants.Class.TECHNOLOGY.getName(),
-                  existingTechnology.getName())
-          );
-        });
+   ModelValidationUtil.validationModelAlreadyExist(verifyTechnology, DomainConstants.Class.TECHNOLOGY.getName(), messagePort);
   }
 
   @Override

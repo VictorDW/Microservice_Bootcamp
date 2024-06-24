@@ -1,11 +1,12 @@
 package com.pragma.bootcamp.domain.api.usecase;
 
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
-import com.pragma.bootcamp.domain.exception.NoDataFoundException;
-import com.pragma.bootcamp.domain.model.Bootcamp;
+import com.pragma.bootcamp.domain.exception.NoEntityFoundException;
 import com.pragma.bootcamp.domain.model.Capacity;
+import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
+import com.pragma.bootcamp.domain.spi.ITechnologyPersistencePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
 
 import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
@@ -19,7 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,16 +34,28 @@ class CapacityUseCaseTest {
 
     @InjectMocks
     private CapacityUseCase capacityUseCase;
+
     @Mock
     private ICapacityPersistencePort capacityPersistencePort;
+
+    @Mock
+    private ITechnologyPersistencePort technologyPersistencePort;
+
     @Mock
     private IMessagePort messagePort;
+
     private Capacity givenCapacity;
     private Capacity response;
 
     @BeforeEach
     void setUp() {
+        List<Technology> technologies = List.of(
+            new Technology(null, "Java", null),
+            new Technology(null, "Python", null),
+            new Technology(null, "Javascript", null)
+        );
         this.givenCapacity = new Capacity(1L, "Backend Java", "Java Backend Developer");
+        givenCapacity.setTechnologyList(technologies);
         this.response = this.givenCapacity;
     }
 
@@ -70,6 +82,11 @@ class CapacityUseCaseTest {
     void test2() {
 
         //GIVEN
+        given(technologyPersistencePort.verifyByName(any(String.class)))
+            .willAnswer(invocation -> {
+                String technologyName = invocation.getArgument(0);
+                return Optional.of(new Technology(1L, technologyName, null));
+            });
         given(capacityPersistencePort.saveCapacity(any(Capacity.class))).willReturn(response);
 
         Capacity result = capacityUseCase.create(givenCapacity);
@@ -77,29 +94,32 @@ class CapacityUseCaseTest {
         assertThat(result).isNotNull();
     }
 
- /* @Test
-  @DisplayName("Should throw an exception when you get an empty list of capacities, and the message key must match the contents of the message.properties")
+
+
+ @Test
+  @DisplayName("Should throw an exception when trying to create a capacity with a non-existing technology, and the message key must match the contents of the message.properties")
   void test3() {
 
       //GIVEN
-      String keyMessage = "empty.list.message";
-      PaginationData paginationData = ManegePaginationData.definePaginationData(0, 10, "DESC", "name");
-      given(capacityPersistencePort.getAllCapacity(paginationData)).willReturn(new ArrayList<>());
-      given(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE)).willReturn(DomainConstants.EMPTY_LIST_MESSAGE);
+     String nameTechnology = givenCapacity.getTechnologyList().get(0).getName();
+     String keyMessage = "error.not.found.technology.message";
+     given(technologyPersistencePort.verifyByName(any(String.class))).willReturn(Optional.empty());
+     given(messagePort.getMessage(DomainConstants.NOT_FOUND_TECHNOLOGY_MESSAGE, nameTechnology)).willReturn(keyMessage);
+
 
       //WHEN - THAT
       assertAll(
           "Grouped Assertions de CapacityUseCase",
-          () -> assertThrows(NoDataFoundException.class, () -> capacityUseCase.getAll(0, 10, "DESC", "name")),
+          () -> assertThrows(NoEntityFoundException.class, () -> capacityUseCase.create(givenCapacity)),
           ()-> {
               try {
-                  capacityUseCase.getAll(0, 10, "DESC", "name");
-              }catch(NoDataFoundException e) {
-                  assertEquals(keyMessage, e.getMessage(), "The key Message should be empty.list.message");
+                  capacityUseCase.create(givenCapacity);
+              }catch(NoEntityFoundException e) {
+                  assertEquals(keyMessage, e.getMessage(), "The key Message should be error.not.found.technology.message");
               }
           }
       );
-  }*/
+  }
 
     @Test
     @DisplayName("Given some pagination data, it should return an instance of PaginationResponse containing the list of capacities and the pagination data")

@@ -2,13 +2,14 @@ package com.pragma.bootcamp.adapters.driven.jpa.mysql.adapter;
 
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.BootcampEntity;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.CapacityEntity;
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.exception.NoEntityFoundException;
+import com.pragma.bootcamp.domain.exception.NoEntityFoundException;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper.IBootcampEntityMapper;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.IBootcampRepository;
 import com.pragma.bootcamp.adapters.driven.jpa.mysql.repository.ICapacityRepository;
 import com.pragma.bootcamp.configuration.Constants;
 import com.pragma.bootcamp.domain.model.Bootcamp;
 import com.pragma.bootcamp.domain.model.Capacity;
+import com.pragma.bootcamp.domain.model.Technology;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
 import com.pragma.bootcamp.domain.util.pagination.PaginationData;
@@ -47,13 +48,7 @@ class BootcampPersistenceAdapterTest {
 	private IBootcampEntityMapper bootcampEntityMapper;
 	@Mock
 	private IBootcampRepository bootcampRepository;
-	@Mock
-	private ICapacityRepository capacityRepository;
-	@Mock
-	private IMessagePort messagePort;
-	@Captor
-	private ArgumentCaptor<Specification<BootcampEntity>> specificationCaptor;
-	private List<Capacity> capacities;
+
 	private Bootcamp givenBootcamp;
 	private Bootcamp response;
 	private BootcampEntity bootcampEntity;
@@ -61,39 +56,13 @@ class BootcampPersistenceAdapterTest {
 	@BeforeEach
 	void setUp() {
 
-		this.capacities = List.of(
-				new Capacity(null, "Test capacity", null)
-		);
+		Capacity capacity = new Capacity(1L, "Test capacity", "Test");
+		List<Capacity> capacities = List.of(capacity);
+
 		this.givenBootcamp = new Bootcamp(1L, "Test bootcamp", "Test");
 		this.givenBootcamp.setCapacityList(capacities);
 		this.response = givenBootcamp;
 		this.bootcampEntity = new BootcampEntity();
-	}
-
-	@Test
-	@DisplayName("Should throw an exception when trying to create a bootcamp with a non-existing capacity, and the message key must match the contents of the message.properties")
-	void test1() {
-
-		//GIVEN
-		String nameCapacity = capacities.get(0).getName();
-		BootcampEntity bootcampEntity = new BootcampEntity();
-		String keyMessage = "error.not.found.capacity.message";
-
-		given(bootcampEntityMapper.modelToEntity(givenBootcamp)).willReturn(bootcampEntity);
-		given(capacityRepository.findByNameIgnoreCase(nameCapacity)).willReturn(Optional.empty());
-		given(messagePort.getMessage(Constants.NOT_FOUND_CAPACITY_MESSAGE, nameCapacity)).willReturn(Constants.NOT_FOUND_CAPACITY_MESSAGE);
-
-		//WHEN - THAT
-		assertAll(
-				() -> assertThrows(NoEntityFoundException.class, ()-> bootcampPersistenceAdapter.saveBootcamp(givenBootcamp)),
-				() -> {
-					try{
-						bootcampPersistenceAdapter.saveBootcamp(givenBootcamp);
-					}catch (NoEntityFoundException e) {
-						assertEquals(keyMessage, e.getMessage());
-					}
-				}
-		);
 	}
 	
 	@Test
@@ -102,10 +71,8 @@ class BootcampPersistenceAdapterTest {
 
 		//GIVEN
 		BootcampEntity bootcampEntity = new BootcampEntity();
-		CapacityEntity  capacityEntity = new CapacityEntity();
 
 		given(bootcampEntityMapper.modelToEntity(givenBootcamp)).willReturn(bootcampEntity);
-		given(capacityRepository.findByNameIgnoreCase(any(String.class))).willReturn(Optional.of(capacityEntity));
 		given(bootcampRepository.save(bootcampEntity)).willReturn(bootcampEntity);
 		given(bootcampEntityMapper.entityToModel(bootcampEntity)).willReturn(response);
 

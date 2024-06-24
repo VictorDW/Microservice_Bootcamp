@@ -1,10 +1,11 @@
 package com.pragma.bootcamp.domain.api.usecase;
 
-import com.pragma.bootcamp.adapters.driven.jpa.mysql.util.IPaginationProvider;
 import com.pragma.bootcamp.domain.exception.AlreadyExistException;
-import com.pragma.bootcamp.domain.exception.NoDataFoundException;
+import com.pragma.bootcamp.domain.exception.NoEntityFoundException;
 import com.pragma.bootcamp.domain.model.Bootcamp;
+import com.pragma.bootcamp.domain.model.Capacity;
 import com.pragma.bootcamp.domain.spi.IBootcampPersistencePort;
+import com.pragma.bootcamp.domain.spi.ICapacityPersistencePort;
 import com.pragma.bootcamp.domain.spi.IMessagePort;
 import com.pragma.bootcamp.domain.util.DomainConstants;
 import com.pragma.bootcamp.domain.util.pagination.ManegePaginationData;
@@ -18,7 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,16 +32,26 @@ class BootcampUseCaseTest {
 
   @InjectMocks
   private BootcampUseCase bootcampUseCase;
+
   @Mock
   IBootcampPersistencePort bootcampPersistencePort;
+
+  @Mock
+  ICapacityPersistencePort capacityPersistencePort;
+
   @Mock
   IMessagePort messagePort;
+
   private Bootcamp givenBootcamp;
   private Bootcamp response;
 
   @BeforeEach
   void setUp() {
+    Capacity capacity = new Capacity(null, "Test capacity", null);
+    List<Capacity> capacities = List.of(capacity);
+
     this.givenBootcamp = new Bootcamp(1L, "Test", "Test");
+    this.givenBootcamp.setCapacityList(capacities);
     this.response = this.givenBootcamp;
   }
 
@@ -68,7 +78,11 @@ class BootcampUseCaseTest {
   void test2() {
 
     //GIVEN
-
+    given(capacityPersistencePort.verifyByName(any(String.class)))
+        .willAnswer(invocation -> {
+          String capacityName = invocation.getArgument(0);
+          return Optional.of(new Capacity(1L, capacityName, null));
+        });
     given(bootcampPersistencePort.saveBootcamp(givenBootcamp)).willReturn(response);
 
     //WHEN
@@ -78,30 +92,19 @@ class BootcampUseCaseTest {
     assertThat(result).isNotNull();
   }
 
- /* @Test
-  @DisplayName("Should throw an exception when you get an empty list of capacities, and the message key must match the contents of the message.properties")
+ @Test
+  @DisplayName("Should throw an exception when trying to create a bootcamp with a non-existing capacity")
   void test3() {
 
     //GIVEN
 
-    String keyMessage = "empty.list.message";
-    PaginationData paginationData = ManegePaginationData.definePaginationData(1,10, "asc", "capacities");
-    given(bootcampPersistencePort.getAll(paginationData)).willReturn(null);
-    given(messagePort.getMessage(DomainConstants.EMPTY_LIST_MESSAGE)).willReturn(DomainConstants.EMPTY_LIST_MESSAGE);
+    String nameCapacity = givenBootcamp.getCapacityList().get(0).getName();
+    given(capacityPersistencePort.verifyByName(nameCapacity)).willReturn(Optional.empty());
+    given(messagePort.getMessage(DomainConstants.NOT_FOUND_CAPACITY_MESSAGE, nameCapacity)).willReturn(any(String.class));
 
     //WHEN - THAT
-
-    assertAll(
-        ()-> { assertThrows(NoDataFoundException.class, () -> bootcampUseCase.getAll(1,10,"asc","capacities"));},
-        ()-> {
-          try {
-            bootcampUseCase.getAll(1,10,"asc","capacities");
-          }catch (NoDataFoundException e) {
-            assertEquals(keyMessage, e.getMessage());
-          }
-        }
-    );
-  } */
+    assertThrows(NoEntityFoundException.class, () -> bootcampUseCase.create(givenBootcamp));
+  }
 
   @Test
   @DisplayName("Given some pagination data, it should return an instance of PaginationResponse containing the list and the pagination data")
