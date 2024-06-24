@@ -28,7 +28,6 @@ public final class Constants {
     public static final String DESCRIPTION_SIZE_MESSAGE = "description.size.message";
     public static final String PAGE_INVALID_MESSAGE = "page.invalid.message";
     public static final String SIZE_INVALID_MESSAGE = "size.invalid.message";
-    public static final String NOT_FOUND_CAPACITY_MESSAGE = "error.not.found.capacity.message";
     public static final String NOT_FOUND_BOOTCAMP_MESSAGE = "error.not.found.bootcamp.message";
     public static final String FIELD_NOT_NULL_MESSAGE = "field.notNull.message";
     public static final String INVALID_FORMAT_TO_PARSE_DATE = "invalid.format.date.message";

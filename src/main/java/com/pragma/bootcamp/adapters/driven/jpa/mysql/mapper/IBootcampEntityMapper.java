@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {ICapacityEntityMapper.class})
 public interface IBootcampEntityMapper {
 
-	@Mapping(target = "capacityEntities", ignore = true) //→ evitará los warning de los test al no mappear todos los elementos
+	@Mapping(source = "capacityList", target = "capacityEntities") //→ evitará los warning de los test al no mappear todos los elementos
 	BootcampEntity modelToEntity(Bootcamp bootcamp);
 
 	@Mapping(source = "capacityEntities", target = "capacityList")

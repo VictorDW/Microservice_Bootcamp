@@ -28,31 +28,14 @@ import static com.pragma.bootcamp.domain.api.usecase.BootcampUseCase.DEFAULT_ORD
 public class BootcampPersistenceAdapter implements IBootcampPersistencePort, IPaginationProvider<Bootcamp, BootcampEntity> {
 
 	private final IBootcampEntityMapper bootcampEntityMapper;
-	private final ICapacityRepository capacityRepository;
 	private final IBootcampRepository bootcampRepository;
-	private final IMessagePort messagePort;
 
 	@Override
 	public Bootcamp saveBootcamp(Bootcamp bootcamp) {
 
 		BootcampEntity bootcampEntity = bootcampEntityMapper.modelToEntity(bootcamp);
-		bootcampEntity.setCapacityEntities(getCapacityEntity(bootcamp.getCapacityList()));
 		BootcampEntity savedBootcamp = bootcampRepository.save(bootcampEntity);
 		return bootcampEntityMapper.entityToModel(savedBootcamp);
-	}
-
-	private List<CapacityEntity> getCapacityEntity(List<Capacity> capacityList) {
-
-		return capacityList.stream()
-				.map(capacity ->
-						capacityRepository.findByNameIgnoreCase(capacity.getName())
-						.orElseThrow(() ->
-								new NoEntityFoundException(messagePort.getMessage(
-												Constants.NOT_FOUND_CAPACITY_MESSAGE,
-												capacity.getName()))
-						)
-				)
-				.toList();
 	}
 
 	@Override

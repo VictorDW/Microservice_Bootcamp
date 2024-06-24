@@ -20,6 +20,10 @@ public interface ICapacityEntityMapper {
      para asi se MapStruct lo mapee */
     @Mapping(source = "technologyEntities", target = "technologyList")
     Capacity entityToModel(CapacityEntity capacityEntity);
+
+    @Mapping(source = "technologyList", target = "technologyEntities")
+    List<CapacityEntity> toEntityList(List<Capacity> capacities);
+
     @Mapping(source = "technologyEntities", target = "technologyList")
     List<Capacity> toModelList(List<CapacityEntity> capacityEntities);
 }

@@ -71,12 +71,12 @@ public class ApplicationConfig {
 
   @Bean
   public IBootcampPersistencePort bootcampPersistencePort() {
-    return new BootcampPersistenceAdapter(bootcampEntityMapper, capacityRepository, bootcampRepository, messagePort());
+    return new BootcampPersistenceAdapter(bootcampEntityMapper, bootcampRepository);
   }
 
   @Bean
   public IBootcampServicePort bootcampServicePort() {
-    return new BootcampUseCase(bootcampPersistencePort(), messagePort());
+    return new BootcampUseCase(bootcampPersistencePort(), capacityPersistencePort(), messagePort());
   }
 
   @Bean

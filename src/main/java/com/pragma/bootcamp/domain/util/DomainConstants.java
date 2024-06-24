@@ -29,6 +29,7 @@ public final class DomainConstants {
   public static final String ALREADY_EXIST_MESSAGE = "error.already.exist.message";
   public static final String ALREADY_BOOTCAMP_EXIST_MESSAGE = "error.bootcamp.already.exist.message";
   public static final String NOT_FOUND_TECHNOLOGY_MESSAGE = "error.not.found.technology.message";
+  public static final String NOT_FOUND_CAPACITY_MESSAGE = "error.not.found.capacity.message";
   public static final String NUMBER_RANGE_MESSAGE =  "El número de %s que se pueden añadir a la %s debe estar entre %s y %s";
   public static final String NUMBER_RANGE_BOOTCAMP_MESSAGE =  "El número de %s que se pueden añadir al %s debe estar entre %s y %s";
   public static final String REPEATED_MODEL_MESSAGE = "La %s no debe tener %s repetidas";
