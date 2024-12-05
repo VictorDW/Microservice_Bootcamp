@@ -1,0 +1,23 @@
+package com.pragma.bootcamp.adapters.driven.jpa.mysql.mapper;
+
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.BootcampEntity;
+import com.pragma.bootcamp.adapters.driven.jpa.mysql.entity.CapacityEntity;
+import com.pragma.bootcamp.domain.model.Bootcamp;
+import com.pragma.bootcamp.domain.model.Capacity;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+import java.util.List;
+
+@Mapper(componentModel = "spring", uses = {ICapacityEntityMapper.class})
+public interface IBootcampEntityMapper {
+
+	@Mapping(source = "capacityList", target = "capacityEntities") //→ evitará los warning de los test al no mappear todos los elementos
+	BootcampEntity modelToEntity(Bootcamp bootcamp);
+
+	@Mapping(source = "capacityEntities", target = "capacityList")
+	Bootcamp entityToModel(BootcampEntity bootcampEntity);
+
+	@Mapping(source = "capacityEntities", target = "capacityList")
+	List<Bootcamp> toModelList(List<BootcampEntity> bootcampEntities);
+}
